@@ -1,25 +1,24 @@
 ---
 id: get_block
-title: Get Block
-sidebar_label: Get Block
+title: ブロックを取得
+sidebar_label: ブロックを取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/block/{height_or_hash}
 ```
 
-Returns the block for the given block height or block hash.
+指定したブロック高またはブロックハッシュに対応するブロックを返します。
 
-### Arguments
+### 引数
 
-| Parameter         |     Type      | Required | Description                                     |
+| パラメーター         |     型      | 必須 | 説明                                     |
 |:------------------|:-------------:|:--------:|:------------------------------------------------|
-| `height` or `hash` | u32 or string |   Yes    | The block height or hash of the requested block |
+| `height` or `hash` | u32 or string |   Yes    | 取得したいブロックのブロック高またはブロックハッシュ |
 
 
-### Response
+### レスポンス
 
-| Parameter |                 Type                  |     Description     |
+| パラメーター |                 型                  |     説明     |
 |:---------:|:-------------------------------------:|:-------------------:|
-| `result`  | [object](../concepts/fundamentals/05_blocks.md) | The requested block |
-
+| `result`  | [object](../concepts/fundamentals/05_blocks.md) | 要求したブロック |

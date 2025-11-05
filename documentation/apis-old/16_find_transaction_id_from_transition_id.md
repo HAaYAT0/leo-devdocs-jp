@@ -1,23 +1,23 @@
 ---
 id: find_transaction_id_from_transition_id
-title: Find Transaction ID From Transition ID
-sidebar_label: Find Transaction ID from Transition ID
+title: トランジション ID からトランザクション ID を検索
+sidebar_label: トランジション ID からトランザクション ID を検索
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/find/transactionID/{transitionID}
 ```
 
-Returns the transaction ID of the transaction containing the given transition ID.
+指定したトランジション ID を含むトランザクションのトランザクション ID を返します。
 
-### Arguments
+### 引数
 
-| Parameter |  Type  |    Description    |
+| パラメーター |  型  |    説明    |
 |:---------:|:------:|:-----------------:|
-| `transitionID`  | String | The transition ID |
+| `transitionID`  | String | トランジション ID |
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |    Description     |
+| パラメーター |  型  |    説明     |
 |:---------:|:------:|:------------------:|
-| `result`  | String | The transaction ID |
+| `result`  | String | トランザクション ID |

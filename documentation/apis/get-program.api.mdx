@@ -1,8 +1,8 @@
 ---
 id: get-program
-title: "Get Program"
-description: "Retrieves program details by Program ID."
-sidebar_label: "Get Program"
+title: "プログラムを取得"
+description: "プログラム ID を指定してプログラムの詳細を取得します。"
+sidebar_label: "プログラムを取得"
 hide_title: true
 hide_table_of_contents: true
 api: eJylVktv4zYQ/isD7qU1tLZT7F58arpJFwG2QJDHqclhRI4tbihSS46cNRz992Io+ZU4aNLqInDImfk4/OaxVoyLpGZ/qyaGRcQ6qftCGUo62oZt8GqmroijpSUlGM6AIUbrEpQruBxEF2djVajQUERRuzBqphbEw7YqVIMRa2KK4m2tPNakZhuvF2eqUFacNciVeo7gpqKt73w00o/WRjJqxrGlQiVdUY1qtla8asRu4mj9QnVdsXVVE6NBxo2nHy3F1QtXF1671uzcbbTAeoiUmuATHQCYo0vHEJQhOEKfHcyxdTwc7bp7Ue8tJVH4bTqV3+tXTqGNmkAHQxJkHTyTZ9HBpnFW54hPvidRXL8ai0KxZSeC4VGuNtfpuq4r1Kfpp5cwNs/rA8M8tN78B/+h/E6ahQJR+MG2v3Zi5DZ9CYb2zlrPtKCoOkFbU2Ksm2NXmYdYI6uZMsj0UY6KSibPSxIU8vZVMK9spYQLOsqdbcTOYwzxWbw+H3u2a4pLikByPlvYeJZkUBuEajI87WS9TYBOFSpl7T5B2ujUTFXMTZpNJtjYMf1sXIgUx00MSywdjXWoJ8uTSY3W+2z+EMxfvRxOLy/g3JsmWM9KMuIdtpkSH7N908v/l22NHo+k4Jcsfmb5XrJ2Ho4nyuVgOOvYBIaSXXgywEGSaGkNQZsoJni0XAFqTSnJJlcEp44ClC7oB12h9cBVDO2igqvz65t564AGDAm4QgZ0LjxC8CT6uYZkK574McQHmIfYGwNHS3IgoIWqNvgCOKJPqGWRhpUdFugN1CHSGM5ETxIlgUYPhMm6FUhiRNQMxkbS7Fb9VTL4DeIycAWxr9bWLyDXLUzwSM7Jv4wBjcbEsrmPZXzn7/yHDzl8f2AiuL36lkT2BOd+aWPwNXkGeJINeOv3dOefPh58z5b/8ok+7HMYnuA9+ZABwD5R32pgIH1vYI+ObzbQMzuHIAf2Cpngm62thF5kt5mNGKnn00BVikIWGI0+gzQYSpxECIl08GY0yixpGzk7Gp1Mp8V0Oj08aXA1GuXnzC7d4BIerXNQEpDQUZPpLW1BpDbXaDFcOtQPzvYksXMh9wqwbBNlnss/zCG0USIyhj9DBOulGVpKwtIAoWS0XtQru6goQtxCSQU0joRhkVBXEFoGZDC0lNJnNaXf90M5hjtpoFIT+2Q/GU/H08NOtk38oTOhzp1paPryatdt04QoJYxqtFKdXvOXK3YTEtfo94x8JYbdIHNQfta7bvieOWnoNEw/edI4tF46Ua6c66FFbAcyVajZbkq6L1QVEsv+el1iotvouk7E/TgjncPYJBfazSavIn7jsHMU7QOtDoeqJbpWjuVavcRoBcQ7Af1yNcxVv8KLme8oikGIfrWPYINuF7fuvitURWgoZkj9/qnW1PCe5ot5Ru6ybeFfz29U1/0D6ITXUg==
@@ -22,7 +22,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Get Program"}
+  children={"プログラムを取得"}
 >
 </Heading>
 
@@ -36,18 +36,18 @@ import Heading from "@theme/Heading";
 
 
 
-Retrieves program details by Program ID.
+プログラム ID を指定してプログラムの詳細を取得します。
 
 <Heading
   id={"request"}
   as={"h2"}
   className={"openapi-tabs__heading"}
-  children={"Request"}
+  children={"リクエスト"}
 >
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"programID","in":"path","description":"The program ID","required":true,"schema":{"type":"string"}},{"name":"metadata","in":"query","description":"Include program metadata in response","required":false,"schema":{"type":"boolean","default":false}}]}
+  parameters={[{"name":"programID","in":"path","description":"プログラム ID","required":true,"schema":{"type":"string"}},{"name":"metadata","in":"query","description":"レスポンスにプログラムメタデータを含めるかどうか","required":false,"schema":{"type":"boolean","default":false}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Retrieves program details by Program ID.
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"The program source code.","content":{"application/json":{"schema":{"type":"string","title":"ProgramResponse"}}}},"404":{"description":"Program not found","content":{"application/json":{"schema":{"type":"object","properties":{"statusCode":{"type":"integer"},"timestamp":{"type":"string","format":"date-time"},"path":{"type":"string"},"method":{"type":"string"},"message":{"type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error"}}}
+  responses={{"200":{"description":"プログラムのソースコードです。","content":{"application/json":{"schema":{"type":"string","title":"ProgramResponse"}}}},"404":{"description":"プログラムが見つかりません","content":{"application/json":{"schema":{"type":"object","properties":{"statusCode":{"type":"integer"},"timestamp":{"type":"string","format":"date-time"},"path":{"type":"string"},"method":{"type":"string"},"message":{"type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"サーバーエラー"}}}
 >
   
 </StatusCodes>

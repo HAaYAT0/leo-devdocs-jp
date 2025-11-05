@@ -1,23 +1,23 @@
 ---
-title: Execution
-sidebar_label: Execution
+title: 実行
+sidebar_label: 実行
 ---
 
 <a name="Execution"></a>
 
-## Overview
+## 概要
 
-<p>Execution of an Aleo program. This class represents the execution state and proof of a program run on the Aleo network, providing access to execution details like global state root, proof, and transitions.</p>
+<p>Execution クラスは Aleo プログラムの実行を表します。Aleo ネットワーク上でプログラムを実行した際の状態と証明を保持し、グローバルステートルート、実行証明、トランジションといった詳細へアクセスするためのメソッドを提供します。</p>
 
 
 
-## Methods
+## メソッド
 
 <a name="Execution+toString"></a>
 
 ### toString
 
-<p>Returns the string representation of the execution</p>
+<p>実行内容の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
@@ -25,9 +25,9 @@ toString() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>string</code> | The string representation of the execution |
+| *return* | <code>string</code> | 実行の文字列表現 |
 
 ---
 
@@ -35,7 +35,7 @@ toString() ► string
 
 ### fromString
 
-<p>Creates an execution object from a string representation of an execution</p>
+<p>実行の文字列表現から Execution オブジェクトを生成します。</p>
 
 ```javascript
 fromString(execution) ► Execution
@@ -43,10 +43,10 @@ fromString(execution) ► Execution
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | execution | <code>string</code> |
-| *return* | <code>Execution</code> | The wasm representation of an execution object |
+| *return* | <code>Execution</code> | 実行オブジェクトの WASM 表現 |
 
 ---
 
@@ -54,7 +54,7 @@ fromString(execution) ► Execution
 
 ### globalStateRoot
 
-<p>Returns the global state root of the execution</p>
+<p>実行に使用されたグローバルステートルートを返します。</p>
 
 ```javascript
 globalStateRoot() ► Execution
@@ -62,9 +62,9 @@ globalStateRoot() ► Execution
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Execution</code> | The global state root used in the execution |
+| *return* | <code>Execution</code> | 実行で使用されたグローバルステートルート |
 
 ---
 
@@ -72,7 +72,7 @@ globalStateRoot() ► Execution
 
 ### proof
 
-<p>Returns the proof of the execution</p>
+<p>実行の証明を返します。</p>
 
 ```javascript
 proof() ► string
@@ -80,9 +80,9 @@ proof() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>string</code> | The execution proof |
+| *return* | <code>string</code> | 実行証明 |
 
 ---
 
@@ -90,7 +90,7 @@ proof() ► string
 
 ### transitions
 
-<p>Returns the transitions present in the execution</p>
+<p>実行に含まれるトランジションを返します。</p>
 
 ```javascript
 transitions() ► 
@@ -98,8 +98,8 @@ transitions() ►
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>undefined</code> | Array&lt;Transition&gt; the array of transitions present in the execution |
+| *return* | <code>undefined</code> | Array&lt;Transition&gt; 実行に含まれるトランジションの配列 |
 
 ---

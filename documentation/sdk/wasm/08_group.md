@@ -1,30 +1,30 @@
 ---
-title: Group
-sidebar_label: Group
+title: グループ
+sidebar_label: グループ
 ---
 
 <a name="Group"></a>
 
-## Overview
+## 概要
 
-<p>Elliptic curve group element class for operations on group elements in the Aleo network. Provides methods for creating, converting, and manipulating group elements with support for various arithmetic operations and format conversions.</p>
+<p>Group クラスは Aleo ネットワークにおける楕円曲線グループ要素を扱います。グループ要素の生成・変換・操作を行うメソッドを提供し、各種算術演算や形式変換に対応します。</p>
 
-## Methods
+## メソッド
 
 <a name="Group.fromString"></a>
 
 ### fromString
 
-<p>Creates a group object from a string representation of a group element</p>
+<p>グループ要素の文字列表現から Group オブジェクトを生成します。</p>
 
 ```javascript
 fromString(group) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| group | <code>string</code> | String representation of a group element |
-| *return* | <code>Group</code> | Group object |
+| group | <code>string</code> | グループ要素の文字列表現 |
+| *return* | <code>Group</code> | Group オブジェクト |
 
 ---
 
@@ -32,13 +32,13 @@ fromString(group) ► Group
 
 ### toString
 
-<p>Returns the string representation of the group element</p>
+<p>グループ要素の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>string</code> |
 
@@ -48,16 +48,16 @@ toString() ► string
 
 ### fromBytesLe
 
-<p>Create a group element from a Uint8Array of left endian bytes</p>
+<p>リトルエンディアンの Uint8Array からグループ要素を生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | Byte array representation |
-| *return* | <code>Group</code> | Group object |
+| bytes | <code>Uint8Array</code> | グループ要素のバイト配列表現 |
+| *return* | <code>Group</code> | Group オブジェクト |
 
 ---
 
@@ -65,13 +65,13 @@ fromBytesLe(bytes) ► Group
 
 ### toBytesLe
 
-<p>Encode the group element as a Uint8Array of left endian bytes</p>
+<p>グループ要素をリトルエンディアンの Uint8Array としてエンコードします。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -81,16 +81,16 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Reconstruct a group element from a boolean array representation</p>
+<p>真偽値配列による表現からグループ要素を再構築します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bits | <code>Array.&lt;any&gt;</code> | Boolean array representation |
-| *return* | <code>Group</code> | Group object |
+| bits | <code>Array.&lt;any&gt;</code> | 真偽値配列による表現 |
+| *return* | <code>Group</code> | Group オブジェクト |
 
 ---
 
@@ -98,13 +98,13 @@ fromBitsLe(bits) ► Group
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the group element</p>
+<p>グループ要素をリトルエンディアンの真偽値配列として取得します。</p>
 
 ```javascript
 toBitsLe() ► Array.<any>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -114,13 +114,13 @@ toBitsLe() ► Array.<any>
 
 ### toFields
 
-<p>Get the field array representation of the group</p>
+<p>グループ要素をフィールド値の配列として取得します。</p>
 
 ```javascript
 toFields() ► Array.<any>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -130,13 +130,13 @@ toFields() ► Array.<any>
 
 ### toXCoordinate
 
-<p>Get the x-coordinate of the group element</p>
+<p>グループ要素の x 座標を取得します。</p>
 
 ```javascript
 toXCoordinate() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -146,13 +146,13 @@ toXCoordinate() ► Field
 
 ### toPlaintext
 
-<p>Create a plaintext element from a group element</p>
+<p>グループ要素から Plaintext を生成します。</p>
 
 ```javascript
 toPlaintext() ► Plaintext
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Plaintext</code> |
 
@@ -162,13 +162,13 @@ toPlaintext() ► Plaintext
 
 ### clone
 
-<p>Clone the group element</p>
+<p>グループ要素を複製します。</p>
 
 ```javascript
 clone() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -178,13 +178,13 @@ clone() ► Group
 
 ### random
 
-<p>Generate a random group element</p>
+<p>ランダムなグループ要素を生成します。</p>
 
 ```javascript
 random() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -194,16 +194,16 @@ random() ► Group
 
 ### add
 
-<p>Add two group elements</p>
+<p>2 つのグループ要素を加算します。</p>
 
 ```javascript
 add(other) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Group</code> | Group element to add |
-| *return* | <code>Group</code> | Sum of the group elements |
+| other | <code>Group</code> | 加算するグループ要素 |
+| *return* | <code>Group</code> | 加算結果 |
 
 ---
 
@@ -211,16 +211,16 @@ add(other) ► Group
 
 ### subtract
 
-<p>Subtract two group elements (equivalently: add the inverse of an element)</p>
+<p>2 つのグループ要素を減算します（要素の逆元を加算するのと等価）。</p>
 
 ```javascript
 subtract(other) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Group</code> | Group element to subtract |
-| *return* | <code>Group</code> | Difference of the group elements |
+| other | <code>Group</code> | 減算するグループ要素 |
+| *return* | <code>Group</code> | 減算結果 |
 
 ---
 
@@ -228,16 +228,16 @@ subtract(other) ► Group
 
 ### scalarMultiply
 
-<p>Multiply a group element by a scalar element</p>
+<p>グループ要素にスカラー要素を掛けます。</p>
 
 ```javascript
 scalarMultiply(scalar) ► Group
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| scalar | <code>Scalar</code> | Scalar element to multiply by |
-| *return* | <code>Group</code> | Result of scalar multiplication |
+| scalar | <code>Scalar</code> | 乗算に使用するスカラー要素 |
+| *return* | <code>Group</code> | スカラー乗算の結果 |
 
 ---
 
@@ -245,13 +245,13 @@ scalarMultiply(scalar) ► Group
 
 ### double
 
-<p>Double the group element</p>
+<p>グループ要素を 2 倍します。</p>
 
 ```javascript
 double() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -261,13 +261,13 @@ double() ► Group
 
 ### inverse
 
-<p>Get the inverse of the group element. This is the reflection of the point about the axis of symmetry i.e. (x,y) -> (x, -y)</p>
+<p>グループ要素の逆元を取得します。対称軸に関する反転、すなわち (x, y) → (x, -y) を意味します。</p>
 
 ```javascript
 inverse() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -277,16 +277,16 @@ inverse() ► Group
 
 ### equals
 
-<p>Check if one group element equals another</p>
+<p>2 つのグループ要素が等しいかどうかを判定します。</p>
 
 ```javascript
 equals(other) ► boolean
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Group</code> | Group element to compare |
-| *return* | <code>boolean</code> | Whether the group elements are equal |
+| other | <code>Group</code> | 比較対象のグループ要素 |
+| *return* | <code>boolean</code> | グループ要素が等しい場合は true |
 
 ---
 
@@ -294,13 +294,13 @@ equals(other) ► boolean
 
 ### zero
 
-<p>Get the group identity element under the group operation (i.e. the point at infinity)</p>
+<p>グループ演算における単位元（無限遠点）を取得します。</p>
 
 ```javascript
 zero() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -310,12 +310,14 @@ zero() ► Group
 
 ### generator
 
-<p>Get the generator of the group</p>
+<p>グループの生成元を取得します。</p>
 
 ```javascript
 generator() ► Group
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
+
+---

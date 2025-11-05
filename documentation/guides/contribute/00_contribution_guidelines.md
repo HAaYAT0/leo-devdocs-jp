@@ -1,54 +1,55 @@
 ---
 id: contribution_guidelines
-title: Welcome
-sidebar_label: Contribution Guidelines
+title: ようこそ
+sidebar_label: 貢献ガイドライン
 ---
-## Contribution Guidelines
-Welcome to Aleo's Developer Documentation. Committed to open-source principles and decentralization, Aleo actively welcomes and values contributions from the community. All forms of contributions are encouraged, including suggesting new topics and contents, or providing examples to improve clarity and usefulness.
+## 貢献ガイドライン
+この開発者ドキュメントへようこそ。Aleo はオープンソースと分散化の理念を掲げており、コミュニティからの貢献を幅広く歓迎しています。新しいトピックやコンテンツの提案、例の追加など、あらゆる形での貢献がドキュメントの明確さと有用性を高める助けになります。
 
-## Introduction
-Aleo is a fully open-source, decentralized, programmable and privacy-preserving Layer 1 blockchain that allows developers to create applications with built-in privacy features. Using zero-knowledge proofs, programs deployed on Aleo enable sensitive data to be kept confidential while still allowing verification. The platform offers high scalability, making it capable of supporting large-scale applications, and provides an unrestricted runtime environment that removes typical blockchain limitations. This unique combination of privacy, scalability, and flexibility makes Aleo an ideal platform for building the next generation of privacy-focused decentralized applications.   
+## はじめに
+Aleo は完全なオープンソースで、分散型かつプライバシーを重視した Layer 1 ブロックチェーンです。開発者はプライバシー機能を備えたアプリケーションを作成でき、ゼロ知識証明によってセンシティブなデータを秘匿したまま検証を可能にします。高いスケーラビリティと制限の少ない実行環境を備えているため、大規模なアプリケーションを支援しつつ、従来のブロックチェーンにありがちな制約を解消できます。プライバシー、スケーラビリティ、柔軟性を兼ね備えた Aleo は、次世代のプライバシー指向な分散型アプリケーションに最適なプラットフォームです。
 
-For more details, visit the [Concepts](../../concepts/fundamentals/00_accounts.md) section to explore Aleo's architecture and features.
+詳細は [Concepts](../../concepts/fundamentals/00_accounts.md) セクションで Aleo のアーキテクチャと機能を参照してください。
 
-## Help improve our ecosystem
-### Proposing an ARC
-Have ideas on development standards or protocol improvements? Follow these steps to propose an Aleo Request for Comments (ARC):
-To create a new ARC proposal:
-1. Open a [Github Discussion](https://github.com/AleoHQ/ARCs/discussions/categories/arcs) with your proposal using template [ARC-0000](https://github.com/ProvableHQ/ARCs/tree/master/arc-0000) and an available ARC number.
-2. File a [Pull Request](https://github.com/AleoHQ/ARCs/pulls) with your proposal in a new subdirectory.
+## エコシステムをさらに良くするには
+### ARC を提案する
+開発標準やプロトコル改善のアイデアがありますか？ 以下の手順に従って Aleo Request for Comments (ARC) を提案してください。
 
-To update an existing ARC:
-1. File a pull request with your changes. 
-2. If the change is significant, you may be asked to open a new ARC entirely.
+新しい ARC を作成する場合:
+1. 提案内容を記載した [GitHub ディスカッション](https://github.com/AleoHQ/ARCs/discussions/categories/arcs) を作成し、テンプレート [ARC-0000](https://github.com/ProvableHQ/ARCs/tree/master/arc-0000) と未使用の ARC 番号を利用します。
+2. 提案内容を新しいサブディレクトリとして追加し、[Pull Request](https://github.com/AleoHQ/ARCs/pulls) を送信します。
 
-#### Progressing an ARC
+既存 ARC を更新する場合:
+1. 変更を含む Pull Request を送信します。
+2. 変更が大きい場合は、新しい ARC の作成を依頼されることがあります。
 
-An ARC will start as a "Draft" and progress through the following stages:
+#### ARC の進行状況
 
-Once a proposal is up:
-1. The community will discuss and review the proposal. A maintainer will monitor the ARC and change its status to "Active" once it is ready. 
-    * ARCs will be prioritized by number of votes and whether a prototype exists.
-    * ARCs will be discussed during certain community calls. Proposers will have the opportunity to join and participate in the discussion.
-    * Up to this point, the ARC can be withdrawn by the proposer or withdrawn by the maintainers if there is no activity for a long time.
-2. A governor or a team member of the Aleo Network Foundation (ANF) will create a formal proposal on Aleo governance (https://vote.aleo.org/) and initiate the voting process.
-3. The community will vote on the proposal for approval.
-4. If the proposal is accepted, its status will be updated to "Accepted" and the associated pull request will be merged into the ARCs repo. If the proposal is rejected, the status will be reverted to "Draft".
-5. The relevant parties should complete the implementation. Updates can be made to the ARC as needed through new PRs, which do not need votes.
-6. Once the implementation is finalized, the status will change from "Accepted" to "Final" or "Living", depending on the nature of the proposal. The associated discussion will be closed.
+ARC は「Draft（草案）」から始まり、次のステージを辿ります。
 
-A proposal can be "Deprecated" if it is replaced by a new proposal.
+提案が公開されると:
+1. コミュニティが提案を議論・レビューします。メンテナーが進捗を監視し、準備が整ったらステータスを「Active」に変更します。
+    * 投票数やプロトタイプの有無によって優先順位が付けられます。
+    * コミュニティコールで議論する場合があり、提案者は参加して意見を述べられます。
+    * ここまでは、提案者が提案を取り下げたり、長期間活動がない場合はメンテナーが取り下げたりできます。
+2. ガバナーまたは Aleo Network Foundation (ANF) のチームメンバーが Aleo ガバナンス (https://vote.aleo.org/) に正式な提案を作成し、投票を開始します。
+3. コミュニティが提案の採否を投票で決定します。
+4. 提案が承認されるとステータスは「Accepted」に更新され、関連する Pull Request が ARCs リポジトリにマージされます。否決された場合はステータスが「Draft」に戻ります。
+5. 関係者が実装を完了させます。必要に応じて、新しい Pull Request を通じて ARC を更新できます（投票は不要です）。
+6. 実装が完了したら、提案の性質に応じてステータスが「Final」または「Living」に変更され、関連するディスカッションがクローズされます。
 
-#### Statuses
+より新しい提案に置き換えられた場合は「Deprecated」に変更されることがあります。
 
-See [ARC-0001](https://github.com/ProvableHQ/ARCs/tree/master/arc-0001) for a detailed explanation of the statuses.
+#### ステータス
 
-### Contributing to Aleo
-Every component that forms Aleo is open-sourced and welcomes contributions of all kinds including [this documentation](./01_documentation_contribute.md). Each component has its own specific contribution guidelines, which are provided below for easy reference:  
-- [DevDocs](./01_documentation_contribute.md) - This developer documentation  
-- [Leo](https://github.com/ProvableHQ/leo-docs-source) - Rust-based DSL to write programs on Aleo  
-- [Provable SDK](https://github.com/ProvableHQ/sdk/tree/mainnet/sdk) - Javascript/Typescript tools for creating zero knowledge apps  
-- [Create-leo-app](https://github.com/ProvableHQ/sdk/tree/mainnet/create-leo-app) - Scaffolding your first Aleo project  
-- [Aleo Instruction](../aleo/00_aleo_overview.md) - IR that Leo language compiles into  
-- [SnarkOS](./02_snarkos_contribute.md) - The operating system or blockchain node client of Aleo  
-- [SnarkVM](./03_snarkvm_contribute.md) - The virtual machine that performs verifiable computation  
+ステータスの詳細は [ARC-0001](https://github.com/ProvableHQ/ARCs/tree/master/arc-0001) を参照してください。
+
+### Aleo へ貢献する
+Aleo を構成するすべてのコンポーネントはオープンソースであり、[このドキュメント](./01_documentation_contribute.md) を含めあらゆる形の貢献を歓迎しています。各コンポーネントには個別のガイドラインが用意されているので、以下を参照してください。  
+- [DevDocs](./01_documentation_contribute.md) - 本ドキュメント  
+- [Leo](https://github.com/ProvableHQ/leo-docs-source) - Aleo 向けプログラムを記述する Rust 製 DSL  
+- [Provable SDK](https://github.com/ProvableHQ/sdk/tree/mainnet/sdk) - ゼロ知識アプリを構築するための JavaScript/TypeScript ツール  
+- [Create-leo-app](https://github.com/ProvableHQ/sdk/tree/mainnet/create-leo-app) - Aleo プロジェクトのひな形生成ツール  
+- [Aleo Instruction](../aleo/00_aleo_overview.md) - Leo 言語がコンパイルされる中間表現  
+- [SnarkOS](./02_snarkos_contribute.md) - Aleo のブロックチェーンノード（オペレーティングシステム）  
+- [SnarkVM](./03_snarkvm_contribute.md) - 検証可能な計算を実行する仮想マシン  

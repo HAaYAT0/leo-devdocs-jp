@@ -1,21 +1,16 @@
 ---
 id: programs
-title: Programs
-sidebar_label: Programs
+title: プログラム
+sidebar_label: プログラム
 ---
 
-A **program** is a fundamental data structure for representing application logic and application state.
+**プログラム**は、アプリケーションのロジックと状態を表現するための基本的なデータ構造です。
 
-Aleo introduces a new programming language called **Aleo instructions** that enables developers to write
-private web applications. Aleo instructions is a statically-typed programming language for
-writing privacy-preserving, secure programs on Aleo. By leveraging zero-knowledge proofs, Aleo instructions offers computational
-integrity for real-world applications.
+Aleo では、開発者がプライベートな Web アプリケーションを記述できる新しいプログラミング言語 **Aleo instructions** を導入しています。Aleo instructions は静的型付け言語であり、プライバシー保護とセキュリティを備えたプログラムを Aleo 上で記述するために設計されています。ゼロ知識証明を活用することで、実世界のアプリケーションに求められる計算の完全性を提供します。
 
-## Program Logic
+## プログラムロジック
 
-Aleo instructions offers developers with an easy-to-use environment for writing programs. By designing an assembly language with
-syntax familiar to developers and composable in features, Aleo instructions is well-suited to integrate with
-existing developer frameworks to supercharge web apps with privacy and integrity.
+Aleo instructions は、開発者がプログラムを記述しやすい環境を提供します。開発者に馴染みのある構文と機能の組み合わせやすさを備えたアセンブリ言語として設計されているため、既存の開発フレームワークと統合しやすく、Web アプリにプライバシーと完全性を付与できます。
 
 ```aleo showLineNumbers
 program token.aleo;
@@ -62,24 +57,20 @@ function transfer:
     output r5 as token.record;
 ```
 
-## Program Data
+## プログラムデータ
 
-### Program ID
+### プログラム ID
 
-Each program has a unique **program ID** that is stored in the program manifest `program.json`. This program ID is used to indicate the program that was run in the
-consumption or production of [records](02_records.md).
+各プログラムには `program.json` のマニフェストに保存された一意の**プログラム ID** が存在します。このプログラム ID は、[レコード](02_records.md)を消費または生成した際にどのプログラムが実行されたのかを示すために使用されます。
 
-### Program Input
+### プログラム入力
 
-To run a program, user-defined inputs are provided in the form of a **program input**. This input provided by the user
-is fully private and not revealed to the public network, unless the user intends for it to be public.
+プログラムを実行するには、ユーザーが定義した**プログラム入力**を与えます。ユーザーが意図的に公開しない限り、この入力は完全に秘匿され、公開ネットワークには明かされません。
 
-### Program State
+### プログラムステート
 
-Each program is run with respect to user-provided **program state** on Aleo. In order to produce a valid state transition
-on Aleo, the user satisfies a series of programs encoded in [records](02_records.md), which compose a [transaction](03_transactions.md).
+Aleo では、各プログラムはユーザーが提供する**プログラムステート**に基づいて実行されます。Aleo 上で正当な状態遷移を生成するために、ユーザーは[レコード](02_records.md)にエンコードされた複数のプログラムを満たし、それらが[トランザクション](03_transactions.md)を構成します。
 
-### Program Output
+### プログラム出力
 
-Once a program is evaluated, its **program output** is produced, along with a zero-knowledge proof attesting to the
-validity of the output.
+プログラムの評価が完了すると、**プログラム出力**が生成され、その出力が正しいことを示すゼロ知識証明が付随します。

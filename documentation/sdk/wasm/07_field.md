@@ -1,30 +1,30 @@
 ---
-title: Field
-sidebar_label: Field
+title: フィールド
+sidebar_label: フィールド
 ---
 
 <a name="Field"></a>
 
-## Overview
+## 概要
 
-<p>Field element class for operations on field elements in the Aleo network. Provides methods for creating, converting, and manipulating field elements with support for various formats including strings, bytes, and BigInt.</p>
+<p>Field クラスは Aleo ネットワークにおけるフィールド要素を扱います。文字列・バイト列・BigInt を含むさまざまな形式でフィールド要素を生成・変換・操作するメソッドを提供します。</p>
 
-## Methods
+## メソッド
 
 <a name="Field.fromString"></a>
 
 ### fromString
 
-<p>Creates a field object from a string representation of a field element</p>
+<p>フィールド要素の文字列表現から Field オブジェクトを生成します。</p>
 
 ```javascript
 fromString(field) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| field | <code>string</code> | String representation of a field element |
-| *return* | <code>Field</code> | Field object |
+| field | <code>string</code> | フィールド要素の文字列表現 |
+| *return* | <code>Field</code> | Field オブジェクト |
 
 ---
 
@@ -32,13 +32,13 @@ fromString(field) ► Field
 
 ### toString
 
-<p>Returns the string representation of the field element</p>
+<p>フィールド要素の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>string</code> |
 
@@ -48,16 +48,16 @@ toString() ► string
 
 ### fromBytesLe
 
-<p>Create a field element from a Uint8Array of left endian bytes</p>
+<p>リトルエンディアンの Uint8Array からフィールド要素を生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | Byte array representation |
-| *return* | <code>Field</code> | Field object |
+| bytes | <code>Uint8Array</code> | フィールド要素のバイト配列表現 |
+| *return* | <code>Field</code> | Field オブジェクト |
 
 ---
 
@@ -65,13 +65,13 @@ fromBytesLe(bytes) ► Field
 
 ### toBytesLe
 
-<p>Encode the field element as a Uint8Array of left endian bytes</p>
+<p>フィールド要素をリトルエンディアンの Uint8Array としてエンコードします。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -81,16 +81,16 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Reconstruct a field element from a boolean array representation</p>
+<p>真偽値配列による表現からフィールド要素を再構築します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bits | <code>Array.&lt;any&gt;</code> | Boolean array representation |
-| *return* | <code>Field</code> | Field object |
+| bits | <code>Array.&lt;any&gt;</code> | 真偽値配列による表現 |
+| *return* | <code>Field</code> | Field オブジェクト |
 
 ---
 
@@ -98,13 +98,13 @@ fromBitsLe(bits) ► Field
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the field element</p>
+<p>フィールド要素をリトルエンディアンの真偽値配列として取得します。</p>
 
 ```javascript
 toBitsLe() ► Array.<any>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -114,13 +114,13 @@ toBitsLe() ► Array.<any>
 
 ### toPlaintext
 
-<p>Create a plaintext from the field element</p>
+<p>フィールド要素から Plaintext を生成します。</p>
 
 ```javascript
 toPlaintext() ► Plaintext
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Plaintext</code> |
 
@@ -130,13 +130,13 @@ toPlaintext() ► Plaintext
 
 ### clone
 
-<p>Clone the field element</p>
+<p>フィールド要素を複製します。</p>
 
 ```javascript
 clone() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -146,13 +146,13 @@ clone() ► Field
 
 ### random
 
-<p>Generate a random field element</p>
+<p>ランダムなフィールド要素を生成します。</p>
 
 ```javascript
 random() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -162,16 +162,16 @@ random() ► Field
 
 ### add
 
-<p>Add two field elements</p>
+<p>2 つのフィールド要素を加算します。</p>
 
 ```javascript
 add(other) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element to add |
-| *return* | <code>Field</code> | Sum of the field elements |
+| other | <code>Field</code> | 加算するフィールド要素 |
+| *return* | <code>Field</code> | 加算結果 |
 
 ---
 
@@ -179,16 +179,16 @@ add(other) ► Field
 
 ### subtract
 
-<p>Subtract two field elements</p>
+<p>2 つのフィールド要素を減算します。</p>
 
 ```javascript
 subtract(other) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element to subtract |
-| *return* | <code>Field</code> | Difference of the field elements |
+| other | <code>Field</code> | 減算するフィールド要素 |
+| *return* | <code>Field</code> | 減算結果 |
 
 ---
 
@@ -196,16 +196,16 @@ subtract(other) ► Field
 
 ### multiply
 
-<p>Multiply two field elements</p>
+<p>2 つのフィールド要素を乗算します。</p>
 
 ```javascript
 multiply(other) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element to multiply |
-| *return* | <code>Field</code> | Product of the field elements |
+| other | <code>Field</code> | 乗算するフィールド要素 |
+| *return* | <code>Field</code> | 乗算結果 |
 
 ---
 
@@ -213,16 +213,16 @@ multiply(other) ► Field
 
 ### divide
 
-<p>Divide two field elements</p>
+<p>2 つのフィールド要素を除算します。</p>
 
 ```javascript
 divide(other) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element to divide by |
-| *return* | <code>Field</code> | Quotient of the field elements |
+| other | <code>Field</code> | 除算の除数となるフィールド要素 |
+| *return* | <code>Field</code> | 除算結果 |
 
 ---
 
@@ -230,16 +230,16 @@ divide(other) ► Field
 
 ### pow
 
-<p>Power of a field element</p>
+<p>フィールド要素の累乗を計算します。</p>
 
 ```javascript
 pow(other) ► Field
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element as exponent |
-| *return* | <code>Field</code> | Result of the power operation |
+| other | <code>Field</code> | 指数として使用するフィールド要素 |
+| *return* | <code>Field</code> | 累乗の結果 |
 
 ---
 
@@ -247,13 +247,13 @@ pow(other) ► Field
 
 ### inverse
 
-<p>Invert the field element</p>
+<p>フィールド要素の逆元を計算します。</p>
 
 ```javascript
 inverse() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -263,13 +263,13 @@ inverse() ► Field
 
 ### zero
 
-<p>Get the additive identity element of the field</p>
+<p>フィールドの加法単位元（0）を取得します。</p>
 
 ```javascript
 zero() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -279,13 +279,13 @@ zero() ► Field
 
 ### one
 
-<p>Get the multiplicative identity of the field</p>
+<p>フィールドの乗法単位元（1）を取得します。</p>
 
 ```javascript
 one() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -295,13 +295,13 @@ one() ► Field
 
 ### double
 
-<p>Double the field element</p>
+<p>フィールド要素を 2 倍します。</p>
 
 ```javascript
 double() ► Field
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Field</code> |
 
@@ -311,13 +311,15 @@ double() ► Field
 
 ### equals
 
-<p>Check if one field element equals another</p>
+<p>2 つのフィールド要素が等しいかどうかを判定します。</p>
 
 ```javascript
 equals(other) ► boolean
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Field</code> | Field element to compare |
-| *return* | <code>boolean</code> | Whether the field elements are equal |
+| other | <code>Field</code> | 比較対象のフィールド要素 |
+| *return* | <code>boolean</code> | フィールド要素が等しい場合は true |
+
+---

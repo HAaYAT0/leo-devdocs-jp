@@ -1,180 +1,180 @@
 ---
 id: transitions
-title: Transitions
-sidebar_label: Transitions
+title: トランジション
+sidebar_label: トランジション
 ---
 
-A **transition** represents a private and optional public state transition, which Aleo validators process to change state (e.g. to transfer private or public tokens to an Aleo address).
+**トランジション**は、Aleo バリデータが処理する秘匿（必要に応じて公開）状態遷移を表し、たとえば秘匿/公開トークンを Aleo アドレスへ送信する際に用いられます。
 
-## Components of a Transition
-An Aleo transition is serialized in the following format:
+## トランジションの構成要素
+Aleo のトランジションは次の形式でシリアライズされます。
 
-|    Parameter    |         Type         |                                                                        Description                                                                        |
+|    パラメーター    |         型         |                                                                        説明                                                                        |
 |:---------------:|:--------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|      `id`       | finite field element |                         The transition id, which is computed via the Merkle tree digest formed from the `Input` and `Output` IDs                          |
-|  `program_id`   |        string        |                          The program ID, which is associated with a verification key on a globally maintained map on the ledger.                          |
-| `function_name` |        string        |                                    The function name, which is used to compute a `function_id` using the `program_id`.                                    |
-|    `inputs`     |  array of `Input`s   |                                 The transition `Input`s, which can be a `constant`, `public`, `private`, or `inputRecord`                                 |
-|    `outputs`    |  array of `Output`s  |                                The transition `Output`s, which can be a `constant`, `public`, `private`, `outputRecord` or [`Future`](https://docs.leo-lang.org/guides/async)                                |
-|      `tpk`      |    group element     |                    The transition public key, equivalent to `r * G`                    |
-|      `tcm`      | finite field element |                                                                 The transition commitment, hash of transition view key (tvk)                                                                 |
-|      `scm`      | finite field element |                                                                 Signer commitment, hash of the owner address and root transition view key (root_tvk)                                                                 |
+|      `id`       | 有限体要素 |                         トランジション ID。`Input` と `Output` の ID から構成されるマークル木ダイジェストで計算されます                          |
+|  `program_id`   |        string        |                          プログラム ID。台帳上でグローバルに管理されるマップ内の検証鍵に紐づきます。                          |
+| `function_name` |        string        |                                    関数名。`program_id` を用いて `function_id` を計算します。                                    |
+|    `inputs`     |  `Input` の配列   |                                 トランジションの入力。`constant`、`public`、`private`、`inputRecord` のいずれかです。                                 |
+|    `outputs`    |  `Output` の配列  |                                トランジションの出力。`constant`、`public`、`private`、`outputRecord`、[`Future`](https://docs.leo-lang.org/guides/async) のいずれかです。                                |
+|      `tpk`      |    グループ要素     |                    トランジション公開鍵。`r * G` に相当します。                    |
+|      `tcm`      | 有限体要素 |                                                                 トランジションコミットメント。トランジションビューキー（tvk）のハッシュです。                                                                 |
+|      `scm`      | 有限体要素 |                                                                 署名者コミットメント。所有者アドレスとルートトランジションビューキー（root_tvk）のハッシュです。                                                                 |
 
-## Transition Public Key (TPK)
+## トランジション公開鍵 (TPK)
 
-The transition public key (`tpk`) is computed as part of the transition key generation process:
+トランジション公開鍵 (`tpk`) は、トランジションキー生成プロセスの一部として以下の手順で求められます。
 
-1. **Sample Random Nonce**: A random nonce is generated as a field element
-2. **Compute Transition Secret Key (r)**: The transition secret key `r` is computed as:
+1. **ランダムノンスのサンプリング**: 有限体要素としてランダムノンスを生成します。
+2. **トランジション秘密鍵 (r) の計算**: トランジション秘密鍵 `r` を次の式で計算します。
    ```
    r = HashToScalar(serial_number_domain || sk_sig || nonce)
    ```
-   Where `sk_sig` is the signature secret key from the account's private key and `||` denotes concatenation
+   ここで `sk_sig` はアカウント秘密鍵から得られる署名秘密鍵、`||` は連結を表します。
 
-3. **Compute Transition Public Key**: The `tpk` is computed as:
+3. **トランジション公開鍵の計算**: `tpk` を次の式で求めます。
    ```
    tpk = r * G
    ```
-   Where `G` is the generator point
+   `G` は生成点です。
 
-The `tpk` is equivalent to `r * G` and serves as the random nonce used to verify the digital signature provided by the `owner` in a transaction.
+`tpk` は `r * G` と等価であり、トランザクション内で `owner` が提供するデジタル署名を検証するためのランダムノンスとして機能します。
 
-## Transition View Key (TVK)
+## トランジションビューキー (TVK)
 
-The transition view key (`tvk`) is computed after the transition public key generation:
+トランジション公開鍵を生成した後、以下の手順でトランジションビューキー (`tvk`) を計算します。
 
-**Compute Transition View Key**: The `tvk` is computed as:
+**トランジションビューキーの計算**:
 ```
 tvk = (signer_address * r).to_x_coordinate()
 ```
-Where the result is converted to its x-coordinate as a field element
+結果は x 座標に変換され、有限体要素として扱われます。
 
-The `tvk` is used in the encryption process for private inputs and outputs.
+`tvk` は秘匿入力および秘匿出力の暗号化プロセスに使用されます。
 
-## Transition Commitment (TCM)
+## トランジションコミットメント (TCM)
 
-The transition commitment (`tcm`) is computed as:
+トランジションコミットメント (`tcm`) は以下で求めます。
 ```
 tcm = Hash(tvk)
 ```
-Where `tvk` is the transition view key computed in the previous step. This commitment provides a cryptographic binding to the transition view key while maintaining privacy.
+ここで `tvk` は前段で求めたトランジションビューキーです。このコミットメントにより、プライバシーを保ったままトランジションビューキーと暗号的に結びつけられます。
 
-## Signer Commitment (SCM)
+## 署名者コミットメント (SCM)
 
-The signer commitment (`scm`) is computed as:
+署名者コミットメント (`scm`) は以下で求めます。
 ```
 scm = Hash(signer.to_x_coordinate() || root_tvk)
 ```
-Where:
-- `signer.to_x_coordinate()` is the x-coordinate of the signer's address
-- `root_tvk` is the root transition view key when multiple circuits are involved
-- The commitment binds the signer's identity to the root transition view key
+ここで:
+- `signer.to_x_coordinate()` は署名者アドレスの x 座標
+- `root_tvk` は複数サーキットが関与する場合のルートトランジションビューキー
+- このコミットメントによって、署名者の識別情報がルートトランジションビューキーへ暗号的に結び付けられます
 
-The signer commitment serves as a cryptographic proof that links the transition to its creator while preserving privacy properties.
+署名者コミットメントは、プライバシーを維持しつつトランジションとその作成者を結び付ける暗号学的証明として機能します。
 
-## Record
+## レコード
 
-### Input Record
-An `inputRecord` consists of a `record_commitment`, `gamma`, `record_view_key`, `serial_number`, and a `tag`. When a record is used as input to a transition, it is computed to its serial number through the following process:
+### 入力レコード
+`inputRecord` は `record_commitment`、`gamma`、`record_view_key`、`serial_number`、`tag` で構成されます。レコードをトランジションの入力として使用する際、以下のプロセスでシリアルナンバーを算出します。
 
-1. **Record View Key Computation**: The record view key is computed as `(record.nonce * view_key).to_x_coordinate()`. `nonce` is computed from `randomizer * G` where `randomizer = Hash(tvk || index)`.
+1. **レコードビューキーの計算**: `(record.nonce * view_key).to_x_coordinate()` でレコードビューキーを求めます。`nonce` は `randomizer * G` から計算され、`randomizer = Hash(tvk || index)` です。
 
-2. **Record Commitment**: There are currently two versions of record commitment:
-   - **Version 0**: Hash of `(program_id || record_name || record)` without the last 8 version bits
-   - **Version 1**: Take the Version 0 hash, append with version bits, then:
-     - Construct commitment nonce: `Hash(commitment_domain || record_view_key)`
-     - Compute the record `commitment` using the above nonce
+2. **レコードコミットメント**: 現在 2 種類のレコードコミットメントがあります。
+   - **バージョン 0**: `(program_id || record_name || record)` のハッシュ（末尾 8 ビットのバージョン情報を除く）
+   - **バージョン 1**: バージョン 0 のハッシュにバージョンビットを付加し、次の手順を実行
+     - コミットメントノンスの構築: `Hash(commitment_domain || record_view_key)`
+     - 上記ノンスを用いてレコード `commitment` を計算
 
 :::note
-Version 0 records from `credits.aleo` are required to upgrade by calling the `upgrade()` function.
+`credits.aleo` のバージョン 0 レコードは `upgrade()` 関数を呼び出してアップグレードする必要があります。
 :::
 
-3. **Generator H Computation**: A generator `H` is computed as `HashToGroup(serial_number_domain || commitment)` using the Poseidon hash-to-group function with the serial number domain and commitment.
+3. **生成元 H の計算**: シリアルナンバー領域とコミットメントを用いて Poseidon の hash-to-group 関数を適用し、`HashToGroup(serial_number_domain || commitment)` として生成元 `H` を求めます。
 
-4. **Gamma Calculation**: `gamma` is calculated as `sk_sig * H`, where `sk_sig` is from the owner's private key, and `h_r` is computed as `r * H` for verification purposes.
+4. **Gamma の計算**: `gamma = sk_sig * H` を計算します。`sk_sig` は所有者の秘密鍵由来で、検証用に `h_r = r * H` も計算します。
 
-5. **Serial Number Derivation**: The `serial_number` is computed by calling `Record::serial_number_from_gamma(gamma, commitment)`, which:
-   - First calculates `sn_nonce` as `Hash(serial_number_domain || (COFACTOR * gamma).to_x_coordinate())`
-   - Then computes `serial_number` as `Commit((serial_number_domain || commitment).to_bits_le(), sn_nonce)`
+5. **シリアルナンバーの導出**: `Record::serial_number_from_gamma(gamma, commitment)` を呼び出して `serial_number` を求めます。
+   - まず `sn_nonce = Hash(serial_number_domain || (COFACTOR * gamma).to_x_coordinate())` を計算
+   - 次に `serial_number = Commit((serial_number_domain || commitment).to_bits_le(), sn_nonce)` を計算
 
-6. **Tag Calculation**: The `tag` is computed as `Record::tag(sk_tag, commitment)`, where `sk_tag` is derived from the graph key.
+6. **タグの計算**: グラフキーから導出した `sk_tag` を用い、`Record::tag(sk_tag, commitment)` で `tag` を算出します。
 
-The serial number is disclosed on the ledger to publicly announce that the record has been spent, preventing double-spending while maintaining privacy. The tag is used to keep track of records that are spendable by the user.
+シリアルナンバーは台帳上で公開され、レコードが消費済みであることを周知することで二重支出を防ぎつつプライバシーを維持します。タグはユーザーが消費可能なレコードを追跡するために使用されます。
 
-### Output Record
-An `outputRecord` consists of a `record_commitment`, `checksum`, `record_ciphertext`, and `sender_ciphertext`. When a record is produced as output from a transition, it is computed through the following process:
+### 出力レコード
+`outputRecord` は `record_commitment`、`checksum`、`record_ciphertext`、`sender_ciphertext` で構成されます。トランジションがレコード出力を生成する際の処理は以下のとおりです。
 
-1. **Record Commitment**: There are currently two versions of record commitment:
-   - **Version 0**: Hash of `(program_id || record_name || record)` without the last 8 version bits
-   - **Version 1**: Take the Version 0 hash, append with version bits, then:
-     - Construct commitment nonce: `Hash(commitment_domain || record_view_key)`
-     - Compute the record `commitment` using the above nonce
+1. **レコードコミットメント**: 現在 2 種類のバージョンがあります。
+   - **バージョン 0**: `(program_id || record_name || record)` のハッシュ（末尾 8 ビットのバージョン情報を除く）
+   - **バージョン 1**: バージョン 0 のハッシュにバージョンビットを付加し、以下の手順を実施
+     - コミットメントノンスの構築: `Hash(commitment_domain || record_view_key)`
+     - 上記ノンスを用いてレコード `commitment` を計算
 
-2. **Record Encryption Randomizer**: The encryption randomizer for the record data is computed as `Hash(tvk || index)`, where `tvk` is the transition view key and `index` is the field element representation of the output register locator.
+2. **レコード暗号化用ランダマイザ**: レコードデータの暗号化に用いるランダマイザを `Hash(tvk || index)` で計算します。`tvk` はトランジションビューキー、`index` は出力レジスタの位置を表す有限体要素です。
 
-3. **Record View Key Generation**: The record view key is computed as `(owner_address * randomizer).to_x_coordinate()`, where `owner_address` is the record owner's address and `randomizer` is from step 2.
+3. **レコードビューキーの生成**: `owner_address`（レコード所有者のアドレス）と手順 2 の `randomizer` を用いて `(owner_address * randomizer).to_x_coordinate()` を計算します。
 
-4. **Record Encryption**: The `record_ciphertext` is computed by:
-   - Generating multiple randomizers using `Hash(encryption_domain || record_view_key)` based on the number of field elements needed
-   - Encrypting each private field element by adding the corresponding randomizer: `encrypted_field[i] = plaintext_field[i] + randomizer[i]`
-   - Constant and public entries remain unencrypted
+4. **レコード暗号化**: `record_ciphertext` は以下の手順で生成されます。
+   - 必要なフィールド要素数に応じて `Hash(encryption_domain || record_view_key)` から複数のランダマイザを生成
+   - 秘匿フィールド要素ごとに対応するランダマイザを加算して暗号化: `encrypted_field[i] = plaintext_field[i] + randomizer[i]`
+   - 定数および公開エントリは暗号化しない
 
-5. **Checksum Calculation**: The `checksum` is computed as a hash of the `record_ciphertext` converted to little-endian bits and is used to verify the integrity of the encrypted record.
+5. **チェックサムの計算**: `record_ciphertext` をリトルエンディアンのビット列へ変換してハッシュを取り、`checksum` として暗号化されたレコードの整合性確認に利用します。
 
-6. **Sender Ciphertext**: The `sender_ciphertext` is computed using a **different randomizer** distinct from the record encryption randomizer:
-   - **Sender Ciphertext Randomizer**: Computed as `Hash(encryption_domain || record_view_key || 1)`
-   - Encrypting the signer's address x-coordinate: `sender_ciphertext = signer_address.to_x_coordinate() + randomizer`
+6. **送信者暗号文**: レコード暗号化とは**異なるランダマイザ**を使用して `sender_ciphertext` を計算します。
+   - **送信者暗号文ランダマイザ**: `Hash(encryption_domain || record_view_key || 1)`
+   - 署名者アドレスの x 座標を加算して暗号化: `sender_ciphertext = signer_address.to_x_coordinate() + randomizer`
 
-Record checksum and commitment are publicly visible on the ledger, while the record ciphertext contains the encrypted record data that can only be decrypted by the record owner. The sender ciphertext provides an encrypted reference to the transaction signer while maintaining privacy.
+レコードのチェックサムとコミットメントは台帳上に公開されます。一方、`record_ciphertext` にはレコードデータが暗号化されて格納され、レコード所有者のみが復号できます。`sender_ciphertext` はトランザクション署名者への参照を暗号化したもので、プライバシーを保持したまま関連付けることができます。
 
 :::info
-In the latest record version, commitments appear random even for similar records, making it difficult to associate them with specific data. The use of a view key ensures that only the record owner can correlate commitments with the actual data, offering enhanced privacy against traffic analysis and pattern matching.
+最新バージョンのレコードでは、似た内容であってもコミットメントがランダムに見えるため、特定のデータと結び付けることが困難になります。ビューキーを利用することで、レコード所有者のみがコミットメントと実データを対応付けられるため、トラフィック解析やパターン照合に対するプライバシー保護が強化されます。
 :::
 
-## Non-Record Ciphertext
-Non-record ciphertext are encrypted data that hides private information on Aleo network and used to protect private inputs and outputs. Records can only be decrypted by the owner's view key, while non-record plaintext ciphertext can be decrypted using a plaintext view key derived from the function caller's view key.
+## 非レコード暗号文
+非レコード暗号文は、Aleo ネットワーク上の秘匿情報を保護するための暗号化データで、秘匿入力と秘匿出力を守る目的で使用されます。レコードは所有者のビューキーでしか復号できませんが、非レコードの平文暗号文は、関数呼び出し元のビューキーから導出した平文ビューキーで復号できます。
 
-### Encryption
+### 暗号化
 
-#### 1: Create a Plaintext View Key
-- The plaintext view key is computed as `Hash(function_id || tvk || index)`
-- Where:
-    - `function_id` is the unique identifier of the function being executed
-    - `tvk` is the transition view key from the request
-    - `index` is the field element representation of:
-        - For inputs: the input index (cast from u16)
-        - For outputs: `(num_inputs + output_index)`
-- Each private input and output gets its own unique plaintext view key
+#### 1: 平文ビューキーの作成
+- 平文ビューキーは `Hash(function_id || tvk || index)` として計算します。
+- ここで:
+    - `function_id` は実行中の関数に固有の識別子
+    - `tvk` はリクエストに由来するトランジションビューキー
+    - `index` は以下を表す有限体要素
+        - 入力の場合: 入力インデックス（u16 からキャスト）
+        - 出力の場合: `(num_inputs + output_index)`
+- 各秘匿入力および秘匿出力に対して固有の平文ビューキーが割り当てられます
 
-#### 2: Generate Randomizers
-- Determine the number of randomizers needed based on the plaintext structure
-- Generate randomizers using `Hash(encryption_domain || plaintext_view_key)` with `num_randomizers` as number of outputs
-- One randomizer is created for each field element in the plaintext
+#### 2: ランダマイザの生成
+- 平文の構造に応じて必要なランダマイザの数を決定します。
+- `Hash(encryption_domain || plaintext_view_key)` を用いてランダマイザを生成し、`num_randomizers` に出力数を指定します。
+- 平文の各フィールド要素ごとに 1 つのランダマイザを生成します。
 
-#### 3: Encrypt the Plaintext
-- Convert the plaintext to field elements
-- Add each randomizer to the corresponding field element:
+#### 3: 平文の暗号化
+- 平文をフィールド要素へ変換します。
+- 各ランダマイザを対応するフィールド要素に加算します。
   - `encrypted_field[i] = plaintext_field[i] + randomizer[i]`
-- Create the ciphertext from the encrypted field elements
+- 暗号化されたフィールド要素から暗号文を生成します。
 
-#### 4: Compute Ciphertext Hash
-- Convert the ciphertext to field elements
-- Compute the ciphertext hash as `Hash(ciphertext_fields)`
-- This hash serves as the output ID for verification
+#### 4: 暗号文ハッシュの計算
+- 暗号文をフィールド要素へ変換します。
+- `Hash(ciphertext_fields)` として暗号文のハッシュを計算します。
+- 得られたハッシュは検証用の出力 ID として利用されます。
 
-### Decryption
+### 復号
 
-#### 1: Recreate the Plaintext View Key
-- Use the same method as encryption
-- Compute `plaintext_view_key = (tpk * view_key).to_x_coordinate()`
-- Where `tpk` is the transition public key (`r * G`) and `view_key` is the account view key
-- This works because the signer address is basically a scalar multiplication of `view_key` on generator `G`
+#### 1: 平文ビューキーの再生成
+- 暗号化時と同じ方法を用います。
+- `plaintext_view_key = (tpk * view_key).to_x_coordinate()` を計算します。
+- `tpk` はトランジション公開鍵 (`r * G`)、`view_key` はアカウントビューキーです。
+- 署名者アドレスが生成元 `G` にビューキーをスカラー倍した形で表されるため、この手順が成立します。
 
-#### 2: Regenerate the Same Randomizers
-- Determine the number of randomizers needed (same as encryption)
-- Use the same hash function: `Hash(encryption_domain || plaintext_view_key)` with `num_randomizers` as number of outputs
+#### 2: 同じランダマイザの再生成
+- 必要なランダマイザ数を決定します（暗号化時と同じ数）。
+- 暗号化時と同じハッシュ関数 `Hash(encryption_domain || plaintext_view_key)` を用い、`num_randomizers` に出力数を指定します。
 
-#### 3: Decrypt the Ciphertext
-- Subtract each randomizer from the corresponding encrypted field element:
+#### 3: 暗号文の復号
+- 暗号化されたフィールド要素から対応するランダマイザを減算します。
   - `plaintext_field[i] = encrypted_field[i] - randomizer[i]`
-- Reconstruct the original plaintext from the decrypted field elements
+- 復号したフィールド要素から元の平文を復元します。

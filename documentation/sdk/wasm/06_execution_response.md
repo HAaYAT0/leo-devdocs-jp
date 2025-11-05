@@ -5,19 +5,19 @@ sidebar_label: ExecutionResponse
 
 <a name="ExecutionResponse"></a>
 
-## Overview
+## 概要
 
-<p>Webassembly Representation of an Aleo function execution response. This object is returned by the execution of an Aleo function off-chain. It provides methods for retrieving the outputs of the function execution, as well as access to execution details, program keys, and proving/verifying keys.</p>
+<p>Aleo 関数実行のレスポンスを表す WebAssembly オブジェクトです。オフチェーンで Aleo 関数を実行した際に返され、関数実行の出力や実行詳細、プログラム鍵、証明鍵／検証鍵などへアクセスするためのメソッドを備えています。</p>
 
 
 
-## Methods
+## メソッド
 
 <a name="ExecutionResponse+getOutputs"></a>
 
 ### getOutputs
 
-<p>Get the outputs of the executed function</p>
+<p>実行した関数の出力を取得します。</p>
 
 ```javascript
 getOutputs() ► Array
@@ -25,9 +25,9 @@ getOutputs() ► Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Array</code> | Array of strings representing the outputs of the function |
+| *return* | <code>Array</code> | 関数の出力を表す文字列の配列 |
 
 ---
 
@@ -35,7 +35,7 @@ getOutputs() ► Array
 
 ### getExecution
 
-<p>Returns the execution object if present, null if otherwise</p>
+<p>Execution オブジェクトが存在すればそれを返し、存在しない場合は null を返します。</p>
 
 ```javascript
 getExecution() ► Execution
@@ -43,9 +43,9 @@ getExecution() ► Execution
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Execution</code> | The execution object if present, null if otherwise |
+| *return* | <code>Execution</code> | 実行オブジェクト（存在しない場合は null） |
 
 ---
 
@@ -53,7 +53,7 @@ getExecution() ► Execution
 
 ### getKeys
 
-<p>Returns the program keys if present</p>
+<p>プログラム鍵が存在する場合に取得します。</p>
 
 ```javascript
 getKeys() ► KeyPair
@@ -61,7 +61,7 @@ getKeys() ► KeyPair
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>KeyPair</code> |
 
@@ -71,7 +71,7 @@ getKeys() ► KeyPair
 
 ### getProvingKey
 
-<p>Returns the proving_key if the proving key was cached in the Execution response. Note the proving key is removed from the response object after the first call to this function. Subsequent calls will return null.</p>
+<p>Execution レスポンス内にキャッシュされている場合、proving_key を返します。このメソッドを初めて呼び出すと proving_key はレスポンスオブジェクトから取り除かれ、2 回目以降は null を返します。</p>
 
 ```javascript
 getProvingKey() ► ProvingKey
@@ -79,9 +79,9 @@ getProvingKey() ► ProvingKey
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>ProvingKey</code> | The proving key |
+| *return* | <code>ProvingKey</code> | 証明鍵 |
 
 ---
 
@@ -89,7 +89,7 @@ getProvingKey() ► ProvingKey
 
 ### getVerifyingKey
 
-<p>Returns the verifying_key associated with the program</p>
+<p>プログラムに紐づく verifying_key を返します。</p>
 
 ```javascript
 getVerifyingKey() ► VerifyingKey
@@ -97,9 +97,9 @@ getVerifyingKey() ► VerifyingKey
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>VerifyingKey</code> | The verifying key |
+| *return* | <code>VerifyingKey</code> | 検証鍵 |
 
 ---
 
@@ -107,7 +107,7 @@ getVerifyingKey() ► VerifyingKey
 
 ### getFunctionId
 
-<p>Returns the function identifier</p>
+<p>関数 ID を返します。</p>
 
 ```javascript
 getFunctionId() ► string
@@ -115,7 +115,7 @@ getFunctionId() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>string</code> |
 
@@ -125,7 +125,7 @@ getFunctionId() ► string
 
 ### getProgram
 
-<p>Returns the program</p>
+<p>Program オブジェクトを返します。</p>
 
 ```javascript
 getProgram() ► Program
@@ -133,7 +133,7 @@ getProgram() ► Program
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Program</code> |
 

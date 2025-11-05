@@ -1,23 +1,23 @@
 ---
 id: find_transition_id
-title: Find Transition ID
-sidebar_label: Find Transition ID
+title: トランジション ID を検索
+sidebar_label: トランジション ID を検索
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/find/transitionID/{inputOrOutputID}
 ```
 
-Returns the transition ID of the transition corresponding to the ID of the input or output.
+入力または出力の ID に対応するトランジションのトランジション ID を返します。
 
-### Arguments
+### 引数
 
-|     Parameter     |  Type  |      Description       |
+|     パラメーター     |  型  |      説明       |
 |:-----------------:|:------:|:----------------------:|
-| `inputOrOutputID` | String | The input or output ID |
+| `inputOrOutputID` | String | 入力または出力の ID |
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |    Description    |
+| パラメーター |  型  |    説明    |
 |:---------:|:------:|:-----------------:|
-| `result`  | String | The transition ID |
+| `result`  | String | トランジション ID |

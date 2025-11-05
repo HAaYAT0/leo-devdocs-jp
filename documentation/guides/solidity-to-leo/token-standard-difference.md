@@ -1,53 +1,54 @@
 ---
 id: token-standard-difference
-title: Token Standard Differences
-sidebar_label: Token Standard Differences
+title: トークン標準の違い
+sidebar_label: トークン標準の違い
 ---
-## Introduction
 
-The [Token Registry Program (ARC-21)](../standards/00_token_registry.md) serves as the standard "hub" that all tokens and DeFi programs interface with, providing interoperability between new tokens and DeFi programs without requiring program re-deployment. This approach was chosen because on Aleo, all imported programs must be known and deployed before the importing program, and dynamic cross-program calls are not currently supported, which makes composability difficult to implement. However, dynamic dispatch is currently in development and will enable more flexible program interactions in the future.
+## はじめに
 
-## Quick-glance Comparison
+[トークンレジストリプログラム (ARC-21)](../standards/00_token_registry.md) は、Aleo ネットワーク上でトークンや DeFi プログラムが相互運用するための標準的なハブです。新しいトークンと DeFi プログラムを再デプロイせずに連携させられるように設計されています。Aleo では、import するプログラムを事前にデプロイしておく必要があり、動的なクロスプログラム呼び出しも現時点ではサポートされていません。そのため、構成可能性を確保する仕組みとしてトークンレジストリが採用されました。なお、動的ディスパッチ機能は現在開発中であり、将来はより柔軟なプログラム間連携が可能になる予定です。
 
-| Feature | ERC-20 | ARC-21 Token Registry |
-|---------|-------|-------------------|
-| Token Creation | Deploy new contract | Register with registry |
-| State Management | Per contract | Centralized registry |
-| Transfer Mechanism | Direct contract call | Registry program call |
-| Privacy | None | Built-in private transfers |
-| Approval Flow | Required | Optional |
-| Token Metadata | In contract | In registry |
-| Supply Management | Per contract | Centralized registry |
+## クイック比較
 
-## Architectural Differences
+| 項目                 | ERC-20                         | ARC-21 Token Registry                     |
+|----------------------|--------------------------------|-------------------------------------------|
+| トークンの作成       | コントラクトをデプロイ         | レジストリに登録                          |
+| 状態管理             | 各コントラクトごとに管理       | レジストリで一元管理                      |
+| 転送方法             | コントラクトに直接呼び出し     | レジストリの関数を呼び出し                |
+| プライバシー         | なし                            | 秘匿転送を標準サポート                    |
+| 承認フロー           | 必須                            | 任意（必要な場合のみ利用）                |
+| トークンメタデータ   | 各コントラクトに格納           | レジストリに格納                          |
+| 供給管理             | 各コントラクトで個別に管理     | レジストリで集中管理                      |
 
-### Program Structure
+## アーキテクチャの違い
 
-**ERC-20**
-- Each token is deployed as a separate smart contract
-- Requires approval flow for token transfers
-- New smart contract deployment needed for each token
-
-**ARC-21 Token Registry**
-- Single program (Token Registry) manages all tokens
-- No separate approval flow needed for basic transfers
-- New tokens are created through registration, not deployment
-
-### State Management
+### プログラム構造
 
 **ERC-20**
-- State is stored within each token contract
-- Direct state access within the contract
-- Only supports public visibility for all states
+- トークンごとに個別のスマートコントラクトをデプロイ。
+- トークン転送には承認フローが必要。
+- 新しいトークンを発行するたびにコントラクトを作成する必要がある。
 
-**ARC-21 Token Registry**
-- State is managed through the registry program
-- State access through API endpoints or `mappings::get()` calls within async functions
-- Supports both public state visibility with mappings and private state with records
+**ARC-21 トークンレジストリ**
+- 単一のレジストリプログラムがすべてのトークンを管理。
+- 基本的な転送では承認フローが不要。
+- 新しいトークンは登録のみで利用でき、再デプロイは不要。
 
-## Functional Differences
+### 状態管理
 
-### Token Creation
+**ERC-20**
+- 状態は各トークンコントラクト内部に保存。
+- 状態アクセスもコントラクト内で完結。
+- すべての状態が公開情報。
+
+**ARC-21 トークンレジストリ**
+- 状態はレジストリプログラムで一元管理。
+- API 経由、または async 関数内の `mappings::get()` で状態を取得。
+- 公開マッピングと秘匿レコードの両方を利用可能。
+
+## 機能面の違い
+
+### トークン作成
 
 **ERC-20**
 ```solidity
@@ -58,9 +59,8 @@ contract MyToken is ERC20 {
 }
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```leo
-// Register a new token
 register_token(
     token_id: field,
     name: u128,
@@ -72,12 +72,13 @@ register_token(
 )
 ```
 
-#### External Authorization
-The ARC-21 Token Registry supports an optional external authorization system where a designated party (usually a program) can control token spending permissions with time-limited approvals. This feature enforces extra requirements on tokens before they can be transferred, such as time-locked tokens, tokens with vesting schedules or spending limits, compliance requirements, and more. The authorization party can be updated later using `update_token_management`.
+#### 外部承認
 
-`prehook_public` and `prehook_private` are both functions that the `external_authorization_party` can use to unlock token transfers once the extra requirements have been fulfilled.
+ARC-21 では任意で外部承認機構を設定できます。指定された主体（多くの場合プログラム）が、一定時間のみ有効な承認を付与してトークン使用を管理する仕組みです。ベスティングや支払い上限、コンプライアンス要件など追加条件を課す際に利用できます。承認主体は `update_token_management` で後から変更できます。
 
-### Token Transfer
+`prehook_public` と `prehook_private` は、`external_authorization_party` が条件達成を検証したうえでトークン転送を許可するために利用する関数です。
+
+### トークン転送
 
 **ERC-20**
 ```solidity
@@ -85,71 +86,26 @@ function transfer(address to, uint256 amount) public returns (bool)
 function transferFrom(address from, address to, uint256 amount) public returns (bool)
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```leo
-// Public transfer from function caller
-async transition transfer_public(
-    public token_id: field,
-    public recipient: address,
-    public amount: u128
-) -> Future
-
-// Public transfer from transaction signer
-async transition transfer_public_as_signer(
-    public token_id: field,
-    public recipient: address,
-    public amount: u128
-) -> Future
-
-// Private transfer
-async transition transfer_private(
-    recipient: address,
-    amount: u128,
-    input_record: Token
-) -> (Token, Token, Future)
-
-// Public transfer by an approved spender
-async transition transfer_from_public(
-    public token_id: field,
-    public owner: address,
-    public recipient: address,
-    public amount: u128
-) -> Future
-
-// Convert public balance to private Token
-async transition transfer_public_to_private(
-    public token_id: field,
-    recipient: address,
-    public amount: u128,
-    public external_authorization_required: bool
-) -> (Token, Future)
-
-// Convert public balance to private Token by an approved spender
-async transition transfer_from_public_to_private(
-    public token_id: field,
-    public owner: address,
-    recipient: address,
-    public amount: u128,
-    public external_authorization_required: bool
-) -> (Token, Future)
-
-// Conver private Token to public balance
-async transition transfer_private_to_public(
-    public recipient: address,
-    public amount: u128,
-    input_record: Token
-) -> (Token, Future)
+async transition transfer_public(...)
+async transition transfer_public_as_signer(...)
+async transition transfer_private(...)
+async transition transfer_from_public(...)
+async transition transfer_public_to_private(...)
+async transition transfer_from_public_to_private(...)
+async transition transfer_private_to_public(...)
 ```
 
-#### Privacy Features
+#### プライバシー機能
 
-The ARC-21 Token Registry provides additional privacy features not available in ERC-20:
+ARC-21 トークンレジストリには、以下のようなプライバシー機能があります。
 
-1. **Private Transfers**: Ability to transfer tokens privately using the `transfer_private` function
-2. **Public to Private Conversion**: Convert public tokens to private using `transfer_public_to_private`
-3. **Private to Public Conversion**: Convert private tokens to public using `transfer_private_to_public`
+1. **秘匿転送**: `transfer_private` を利用することで、トークンを秘匿したまま送付できます。
+2. **公開 → 秘匿の変換**: `transfer_public_to_private` で公開残高を秘匿トークンに変換。
+3. **秘匿 → 公開の変換**: `transfer_private_to_public` で秘匿トークンを公開残高に戻す。
 
-### Token Minting
+### トークンのミント
 
 **ERC-20**
 ```solidity
@@ -158,29 +114,15 @@ function mint(address to, uint256 amount) public onlyOwner {
 }
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```leo
-// Public minting
-async transition mint_public(
-    public token_id: field,
-    public recipient: address,
-    public amount: u128,
-    public authorized_until: u32
-) -> Future
-
-// Private minting
-async transition mint_private(
-    public token_id: field,
-    recipient: address,
-    public amount: u128,
-    public external_authorization_required: bool,
-    public authorized_until: u32
-) -> (Token, Future)
+async transition mint_public(...)
+async transition mint_private(...)
 ```
 
-The ARC-21 Token Registry provides both public and private minting capabilities. Access to minting is controlled through roles that can be assigned using `set_role` and revoked using `remove_role`. Only addresses with `MINTER_ROLE` or `SUPPLY_MANAGER_ROLE` can mint tokens if not the admin.
+ARC-21 では公開・秘匿いずれのミントも可能です。`set_role` や `remove_role` でロールを管理し、`MINTER_ROLE` や `SUPPLY_MANAGER_ROLE` を持つアドレスのみがミントできます（管理者以外の場合）。
 
-### Token Burning
+### トークンのバーン
 
 **ERC-20**
 ```solidity
@@ -189,25 +131,15 @@ function burn(uint256 amount) public {
 }
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```leo
-// Public burning
-async transition burn_public(
-    public token_id: field,
-    public owner: address,
-    public amount: u128
-) -> Future
-
-// Private burning
-async transition burn_private(
-    input_record: Token,
-    public amount: u128
-) -> (Token, Future)
+async transition burn_public(...)
+async transition burn_private(...)
 ```
 
-The ARC-21 Token Registry supports both public and private burning mechanisms. Similar to minting, burning permissions are managed through roles using `set_role` and `remove_role`. Only addresses with `BURNER_ROLE` or `SUPPLY_MANAGER_ROLE` can burn tokens if not the admin.
+バーン権限もロールで制御され、`BURNER_ROLE` または `SUPPLY_MANAGER_ROLE` が必要です。
 
-### Token Approval
+### トークンの承認
 
 **ERC-20**
 ```solidity
@@ -215,24 +147,13 @@ function approve(address spender, uint256 amount) public returns (bool)
 function allowance(address owner, address spender) public view returns (uint256)
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```leo
-// Public approval
-async transition approve_public(
-    public token_id: field,
-    public spender: address,
-    public amount: u128
-) -> Future
-
-// Revoke public unapproval
-async transition unapprove_public(
-    public token_id: field,
-    public spender: address,
-    public amount: u128
-) -> Future
+async transition approve_public(...)
+async transition unapprove_public(...)
 ```
 
-### Balance and Supply Queries
+### 残高・供給量の取得
 
 **ERC-20**
 ```solidity
@@ -240,19 +161,17 @@ function balanceOf(address account) public view returns (uint256)
 function totalSupply() public view returns (uint256)
 ```
 
-**ARC-21 Token Registry**
+**ARC-21 トークンレジストリ**
 ```bash
-# Get balance via RPC endpoint
+# RPC エンドポイントで取得
 GET /{network}/program/token_registry.aleo/mapping/balances/{token_id}_{account}
-
-# Get total supply via RPC endpoint
 GET /{network}/program/token_registry.aleo/mapping/registered_tokens/{token_id}
 ```
 
-The ARC-21 Token Registry uses RPC endpoints to query balances and supply by accessing the program's mappings directly. This approach allows for efficient querying of on-chain state without requiring a transaction. The balance is stored in the `balances` mapping with a composite key of `token_id` and `account`, while the supply information is stored in the `registered_tokens` mapping.
+ARC-21 では、マッピングを参照する RPC エンドポイントから残高や供給量を取得します。残高は `balances` マッピングに `token_id` と `account` の複合キーで保存され、供給量は `registered_tokens` マッピングに保存されます。
 
-## Summary and Future
+## まとめと今後
 
-The ARC-21 Token Registry provides a more centralized and feature-rich approach to token management compared to ERC-20. While ERC-20 requires separate contracts for each token, the Token Registry manages all tokens through a single program, providing additional features like privacy and role-based access control. This design choice makes it easier to implement DeFi applications and ensures better interoperability between different tokens on the Aleo blockchain.
+ARC-21 トークンレジストリは、ERC-20 と比べて集中管理された機能とプライバシー機能を提供します。ERC-20 のようにトークンごとにコントラクトを用意する必要はなく、レジストリへの登録だけでトークンが利用できます。これにより DeFi アプリケーションの開発が容易になり、Aleo 上のトークン同士で高い互換性を確保できます。
 
-With the future implementation of dynamic dispatch, the ARC-20 standard will provide a more familiar approach for Ethereum developers, allowing different individual token programs to be called at runtime rather than being strictly defined.
+将来的に動的ディスパッチが実装されれば、ARC-20 標準が導入され、Ethereum 開発者にとってより馴染みのある形で、個別のトークンプログラムを実行時に呼び出せるようになる見込みです。

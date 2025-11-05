@@ -1,61 +1,58 @@
 ---
 id: quick_start
-title: Quick Start
-sidebar_label: Quick Start
+title: クイックスタート
+sidebar_label: クイックスタート
 ---
-Welcome to the Aleo Quickstart. This quickstart will guide you through the core concepts of building on Aleo. You will be guided through the process of deploying and interacting with your own Aleo program directly on the web via the [Leo Playground](https://play.leo-lang.org). 
 
-## What You'll Learn
-1. **Aleo Accounts:** Learn how to create an Aleo account and create private and public data.
-2. **Aleo Programs:** Learn how to interact with the Aleo network by deploying and executing your own program.
-3. **Private and Public State:** Learn how to manage both private and public data on Aleo in order to create privacy preserving apps.
+Aleo クイックスタートへようこそ。このガイドでは、Aleo でアプリケーションを構築するための基本的な流れを紹介します。  
+[Leo Playground](https://play.leo-lang.org) を使って独自の Aleo プログラムをデプロイし、ブラウザ上で直接操作する手順を体験してください。
 
-## 1. Generate a New Aleo Account
+## 学べること
+1. **Aleo アカウント:** Aleo アカウントの作成方法と、秘匿データと公開データの扱い方を学びます。
+2. **Aleo プログラム:** 自分のプログラムをデプロイし、Aleo ネットワークと対話する方法を習得します。
+3. **秘匿状態と公開状態:** プライバシーを保ちながらアプリを構築するために、秘匿データと公開データをどのように管理するかを学びます。
 
-The first step in building on Aleo is to create an Aleo account. An Aleo account is a unique identifier that allows you 
-to interact with the Aleo network. With it you can execute program functions, create your own private and public data, 
-and deploy new programs. You can create an account using the Leo Playground or by using one of the ecosystem wallets.
+## 1. 新しい Aleo アカウントを作成する
 
-### 1.1 Using the Leo Playground Widget
+Aleo で開発を始めるには、まず Aleo アカウントを作成します。Aleo アカウントはネットワークと対話するための識別子で、プログラムの実行、秘匿/公開データの作成、新しいプログラムのデプロイに使用します。Leo Playground から生成する方法と、エコシステムのウォレットを利用する方法があります。
 
-Click on the Account Widget to generate a new Aleo Account.
+### 1.1 Leo Playground ウィジェットを使用する
+
+Account ウィジェットをクリックして新しい Aleo アカウントを生成します。
 
 <img src={require('./images/new_account.png').default} width="400"/>
 
 :::note
-Save your **Address**, **View Key**, and **Private Key** in a safe place, you'll need them later.
+**Address**、**View Key**、**Private Key** は安全な場所に保管してください。後のステップで必要になります。
 :::
 
-### 1.2 Using an Ecosystem Wallet
+### 1.2 エコシステムのウォレットを使用する
 
-An account can be created using one of the wallets below. After installing any of the wallets below, you will be 
-prompted to create an Aleo account.
+以下のウォレットをインストールすると、アカウント作成を求められます。指示に従って Aleo アカウントを準備してください。
 
 * [Puzzle Wallet](https://puzzle.online/wallet)
 * [Fox Wallet](https://foxwallet.com/)
 * [Soter Wallet](https://sotertech.io/)
 
-## 2. Seed Your Wallet With Testnet Credits
+## 2. ウォレットにテストネットクレジットを補充する
 
-### 2.1 Get Credits from an Ecosystem Faucet
+### 2.1 エコシステムのファーセットからクレジットを受け取る
 
-To seed your wallet, you can request from the official faucet https://faucet.aleo.org/.
+ウォレットを補充するには、公式ファーセット https://faucet.aleo.org/ からクレジットを申請します。
 
-The credits received from the faucet will be public credits, which means they are publicly visible on the Aleo network.
+ファーセットから受け取るクレジットは公開クレジットであり、Aleo ネットワーク上で誰でも閲覧できます。
 
-### 2.2 Verify Receipt of Your Testnet Credits
+### 2.2 テストネットクレジットの受領を確認する
 
-After receiving a successful confirmation from one of the faucets above, you can check your account balance by selecting
- `Get Account Balance` from the list of options in the query widget. Simply paste your wallet address in and press 
-`Get`. Don't worry if they don't appear right away as your testnet credits may take a few minutes to arrive.
+ファーセットからの送金が完了したら、クエリウィジェットで `Get Account Balance` を選び、ウォレットアドレスを貼り付けて `Get` をクリックすると残高を確認できます。テストネットクレジットが反映されるまで数分かかる場合がありますが心配はいりません。
 
 <img src={require('./images/account_balance.png').default} width="400"/>
 
-When the credits arrive, you should see the following output in the query widget after pressing `Get`.
+クレジットが届くと、`Get` を押した後に以下のような出力が表示されます。
 
 <img src={require('./images/provable_explorer.png').default} width="400"/>
 
-Alternatively you can search for the transaction ID provided by the faucets on any one of the ecosystem's block explorers.
+ファーセットから渡されたトランザクション ID を、エコシステムのブロックエクスプローラーで検索することもできます。
 
 <!-- markdown-link-check-disable -->
 - [Provable Explorer](https://testnet.explorer.provable.com/)
@@ -63,105 +60,86 @@ Alternatively you can search for the transaction ID provided by the faucets on a
 <!-- markdown-link-check-enable -->
 
 :::tip
-While waiting for the credits to be sent to your wallet, you can proceed to the next step.
+ウォレットにクレジットが届くのを待つ間に、次のステップへ進んで構いません。
 :::
 
-## 3. Deploy Your First Aleo program
+## 3. 最初の Aleo プログラムをデプロイする
 
-### 3.1 The Token Program
+### 3.1 トークンプログラム
 
-In this section, you'll learn how to deploy a sample `Token` program to the Aleo Testnet from the Leo Playground. 
-By the end of this section you'll be familiar with how to deploy your own privacy preserving program to Aleo.
+このセクションでは、Leo Playground からサンプルの `Token` プログラムを Aleo テストネットにデプロイします。  
+セクションの最後には、自分のプライバシー保護プログラムを Aleo にデプロイする手順が理解できるようになります。
 
 :::info
-The `Token` program provides a simple example how to build a program with both public and private features by creating a
-token that allows users to hold both public and private balances. This program will show you how to use encrypted data 
-structures called Records to represent private data and public on-chain datastores called mappings to represent public 
-data.
+`Token` プログラムは、公開残高と秘匿残高の両方を扱えるトークンを通じて、公開機能と秘匿機能を組み合わせたプログラムを構築する方法を示すシンプルな例です。暗号化されたデータ構造である Record を使って秘匿データを表現し、公開オンチェーンデータストアであるマッピングを用いて公開データを表現する方法を学べます。
 :::
 
-### 3.2 Customize the Name of Your Program
+### 3.2 プログラム名をカスタマイズする
 
-To begin deploying, select the `Token` program from the Examples dropdown menu on the Leo Playground. 
+まず Leo Playground の Examples ドロップダウンから `Token` プログラムを選択します。
 
 <img src={require('./images/select_token.png').default} width="800"/>
 
-Next, customize the the name of the program in line 1 of `src/main.leo` to use a unique identifier and then update the 
-`program` field in the `program.json` file to match the new name. 
+次に、`src/main.leo` の 1 行目にあるプログラム名をユニークな識別子に変更し、`program.json` の `program` フィールドも同じ名前に更新します。
 
 <img src={require('./images/program_name_.png').default} width="800"/>
 
 <img src={require('./images/program_json_.png').default} width="800"/>
 
 :::tip
-The length of the application name should be at least 10 characters. Deployment costs are higher for names shorter than 10 characters.
+アプリケーション名は 10 文字以上にしましょう。それより短い名前をデプロイすると手数料が高くなります。
 :::
 
-You are now ready to deploy your first Aleo program to the Testnet! Before proceeding, make sure that your account is 
-funded with sufficient Testnet credits to deploy to the network.
+これでテストネットに最初の Aleo プログラムをデプロイする準備が整いました。続行する前に、ウォレットに十分なテストネットクレジットがあることを確認してください。
 
-### 3.3 Deploy Your Program to Testnet
+### 3.3 テストネットへデプロイする
 
-Click on the deploy widget to bring up the deployment window. Enter your program name in the `Program ID` field and then 
-enter your Private Key. You can view an estimate for the deployment cost by clicking `Estimate Fee`.  When you are 
-ready to deploy, click `Deploy`.
+Deploy ウィジェットをクリックしてデプロイ画面を開きます。`Program ID` 欄にプログラム名を入力し、Private Key を入力します。`Estimate Fee` を押すとデプロイコストの見積もりを確認できます。準備ができたら `Deploy` をクリックしてください。
 
 <img src={require('./images/deploy.png').default} width="400"/>
 
-
-
-When you click `Deploy`, the Leo Playground will build a `Deployment Transaction` and submit to the Aleo Network. 
-This process may take a while. When it is finished, you should see a confirmation that your Aleo application was 
-deployed in a pop-up containing the transaction ID. 
-
-<img src={require('./images/deployment.png').default} width="800"/>
-
-Copy the transaction ID to view the details of your deployment transaction on any of the Aleo block explorers:
-
-<!-- markdown-link-check-disable -->
-- [Provable Explorer](https://testnet.explorer.provable.com/)
-- [Aleoscan](https://testnet.aleoscan.io/)
-<!-- markdown-link-check-enable -->
-
-:::info
-Depending on the size of your program, you may not have sufficient credits to deploy your program if you are using an account funded with only one faucet transaction.  If that's the case, you can still interact with a program already deployed to the Testnet.
-:::
-
-## 4. Execute Public and Private Program Functions
-
-You can now use your deployed token program by executing its functions!
+`Deploy` を押すと、Leo Playground が `Deployment Transaction`（デプロイトランザクション）を生成し、Aleo ネットワークに送信します。このプロセスには数秒〜数分かかる場合があります。完了するとトランザクション ID が表示されるので、控えておきましょう。
 
 :::tip
-If you did not have enough funds to deploy a program, you can use the [`token_quickstart.aleo`](https://play.leo-lang.org/?gistId=b6730338a24169308348d5e38243665d&revision=3339199a4ac60976dc5ce6c0c35c5eefb0488ee0) program to test the execution of the token program methods.
+Leo Playground の Query ウィジェットにトランザクション ID を貼り付けると、デプロイトランザクションの進捗をリアルタイムで確認できます。
 :::
 
-### 4.1 Building Execution Transactions
+## 4. 公開関数と秘匿関数を実行する
 
-When you call one of your program's functions, the logic is executed locally and a zero-knowledge proof is built. This proof attests to the correctness of the program execution and its corresponding outputs while keeping hidden inputs or outputs encrypted. After a function is executed, an Execution Transaction is submitted to the Aleo Network that contains a summary of the execution and a proof of its correctness. This transaction will be accepted when a network validator validates the proof and that the proper fee was paid. 
-
-### 4.2 Mint a Token Privately
-
-Below we will mint a private token using the `mint_private` function. This function will create an Aleo `Record` which represents the new token.  Records are encrypted data structures stored on-chain as ciphertexts that can only be decrypted by the owner of the record (using the owner's View key). This ensures that only the owner of the record knows its content, thus keeping the token private.
-
-To mint a private token, navigate to the Execute widget in the Leo Playground and enter the name of your program in the Program ID tab.  Alternatively, you can use the deployed token program 'token_quickstart.aleo`.  
+デプロイしたトークンプログラムの関数を実行してみましょう。
 
 :::tip
-Click the magnifying glass icon to confirm that the Program ID corresponds to a deployed program.
+十分なクレジットがなくてデプロイできなかった場合は、[`token_quickstart.aleo`](https://play.leo-lang.org/?gistId=b6730338a24169308348d5e38243665d&revision=3339199a4ac60976dc5ce6c0c35c5eefb0488ee0) を利用するとトークンプログラムのメソッドをテストできます。
+:::
+
+### 4.1 実行トランザクションを構築する
+
+プログラムの関数を呼び出すと、そのロジックはローカルで実行され、ゼロ知識証明が生成されます。この証明は、入力や出力を秘匿したまま処理が正しく行われたことを示すものです。関数の実行後、実行結果の概要と証明を含む Execution Transaction が Aleo ネットワークに送信されます。ネットワークバリデータが証明を検証し、適切な手数料が支払われていると確認できれば、トランザクションは受理されます。
+
+### 4.2 秘匿トークンをミントする
+
+ここでは `mint_private` 関数を使って秘匿トークンをミントします。この関数は新しい Aleo `Record` を作成します。Record は暗号化されたデータ構造で、所有者のみが View Key を使って復号できます。そのため、トークンの内容は所有者以外には明らかになりません。
+
+Leo Playground の Execute ウィジェットを開き、Program ID タブにプログラム名を入力します。デプロイしたプログラムがない場合は、`token_quickstart.aleo` を利用しても構いません。
+
+:::tip
+虫眼鏡アイコンを押すと、Program ID がデプロイ済みのプログラムか確認できます。
 :::
 
 <img src={require('./images/execute.png').default} width="400"/>
 
-Next, enter your Private Key and select the `mint_private` method from the Function drop-down menu.  In the Inputs tab, enter your Account Address and a `u64` integer.
+次に Private Key を入力し、Function ドロップダウンから `mint_private` を選択します。Inputs タブにはアカウントアドレスと `u64` 整数を入力します。
 
 ```
 ["ALEO_ADDRESS_HERE", "50u64"]
 ```
-Click Estimate Fee followed by Execute.  As before with the deploy transaction, you can copy and past your transaction ID in a block explorer.  You should see something resembling the following:
+
+`Estimate Fee` をクリックしたあと `Execute` を押してください。デプロイトランザクションと同様に、トランザクション ID をコピーしてブロックエクスプローラーで確認すると、次のような表示が得られます。
 
 <img src={require('./images/mint_private.png').default} width="1000"/>
 
 :::info
-The output of the transaction is a Record.  In order to decrypt the Record, you need to copy and past the ciphertext, navigate to the Records widget in the Leo Playground, enter the Record ciphertext along with the View Key that corresponds to your Account's Private Key, and click Decrypt.  The decrypted Record should resemble the following:
+このトランザクションの出力は Record です。Record を復号するには、トランザクションの暗号文をコピーし、Leo Playground の Records ウィジェットで Record の暗号文と対応する View Key を入力して `Decrypt` をクリックします。復号結果は次のようになります。
 ```
 {
   owner: aleo1kypwp5m7qtk9mwazgcpg0tq8aal23mnrvwfvug65qgcg9xvsrqgspyjm6n.private,
@@ -169,27 +147,27 @@ The output of the transaction is a Record.  In order to decrypt the Record, you 
   _nonce: 3175255370513411091535466147458245312227668453916963245036391157478647265587group.public
 }
 ```
-To learn more about Records, click [here](../../concepts/fundamentals/02_records.md)
+Record の詳細については [こちら](../../concepts/fundamentals/02_records.md) を参照してください。
 :::
 
-### 4.3 Mint a Token Publicly
+### 4.3 公開トークンをミントする
 
-In the Token program, public balances are stored in program mappings. Mappings are public key-value stores on Aleo Network nodes which store long term persistent public state onchain.
+Token プログラムでは、公開残高はプログラムのマッピングに保存されます。マッピングは Aleo ネットワーク上の公開キーバリューストアで、長期的な公開状態をオンチェーンに保持します。
 
-Below we will mint a public token using the `mint_public` function. When this function is run, it will update the balance in the `account` mapping corresponding to the specified Aleo `address`. 
+ここでは `mint_public` 関数を使って公開トークンをミントします。実行すると、指定した Aleo `address` に対応する `account` マッピングの残高が更新されます。
 
-Navigate back to the Execute widget and repeat the steps in the previous section for minting a public token.  The transaction summary from the block explorer should resemble the following:
+Execute ウィジェットに戻り、先ほどと同じ手順で `mint_public` を実行します。ブロックエクスプローラーでは次のようなトランザクション概要が表示されます。
 
 <img src={require('./images/mint_public.png').default} width="1000"/>
 
-Unlike the `mint_private` function, the `mint_public` function creates an execution transaction that contains a `Future` instead of a `Record`.  A `Future`  contains a set of instructions for validators to execute on-chain which can read or update mappings.  If the `mint_public` execution transaction is valid, it will be accepted by the validators which will run the instructions in the `mint_public` `Future` that update the `account` mapping.
+`mint_private` と異なり、`mint_public` 関数は Record ではなく `Future` を含む実行トランザクションを生成します。`Future` はマッピングを読み書きするオンチェーン命令の集合です。`mint_public` の実行が有効だと検証されると、バリデータは `mint_public` の `Future` に含まれる命令を実行し、`account` マッピングを更新します。
 
-Mapping values can be queried by selecting the `Get Mapping Value By Key` option in the query widget. You will need to enter the Program ID, mapping name, and mapping key in their respective fields.  For the Token program, the mapping key is the Aleo address that owns the public tokens.
+マッピングの値はクエリウィジェットの `Get Mapping Value By Key` で確認できます。Program ID、マッピング名、マッピングキーを順に入力してください。Token プログラムではマッピングキーとして公開トークンを保有する Aleo アドレスを指定します。
 
 <img src={require('./images/quickstart_mapping.png').default} width="400"/>
 
 :::info
-Awesome! You have successfully deployed a Leo program and executed transactions on the Testnet 🎉
+お疲れさまでした！ これで Leo プログラムのデプロイと、テストネットでのトランザクション実行を完了しました 🎉
 :::
 
-To get started with local development, navigate to the [installation guide](./02_installation.md) to install the necessary tools to deploy your Leo programs locally.
+ローカル開発を始める場合は、必要なツールをセットアップするために [インストールガイド](./02_installation.md) を参照してください。

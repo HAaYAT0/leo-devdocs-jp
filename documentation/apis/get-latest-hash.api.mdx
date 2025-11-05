@@ -1,8 +1,8 @@
 ---
 id: get-latest-hash
-title: "Get Latest Block Hash"
-description: "Retrieves the latest block hash from the Aleo blockchain."
-sidebar_label: "Get Latest Block Hash"
+title: "最新ブロックハッシュの取得"
+description: "Aleo ブロックチェーンから最新のブロックハッシュを取得します。"
+sidebar_label: "最新ブロックハッシュの取得"
 hide_title: true
 hide_table_of_contents: true
 api: eJylVk1z2zgM/SsY9OZRbWenvfi0aTf9mMnOdJzk1OQAU7DFhiIVErLrcfTfd0ApqRO703Sri0wSeHgCHwDvUGiVcPYVFy6Y24Q3BZacTLSN2OBxhnOWaHnNCaRicCScBLIxVJQqWMZQ56NTx6E/MBVZP8YCQ8ORFOdziTNcsZxn90+UKiwwcmqCT5xwtsO/plN9PY19uh8oLA8ZPAY35IO3htwxGiZ4YS+KT03jrMmcJt+SBtlhMhXXpL9k2zDOMEm0foUFihWnG0p4PrDFruu6At9M3xzyfZdJ+SCwDK0v/0fosPjGRrDAJmryxPbZSULSpveh5D1b64VXHLFTojUnobo59hXLEGsSnGFJwq/VVF0akurQuiuwZqlC+ZOjlGjFR866H8k6izHEZ9l6e+x2LziuOQKrfUZ4iKxKwQeGOMmXOVENTPrLxwJT9lXh7rCNDmdYiTRpNplQY8f8vXEhchw3Maxp4XhsQj1Zn0xqst5n8KdU/u334fTLZzjzZROsF+yK38JWZsewL/v9P8I25CluD6Df5+1nyDcFWr8Mh/m+rBi+DMDZxyYoOdmV5xIkgAa1JUObOCbYWKmAjOGU9PBIhYNUMbSrCuZnF5fL1gEPHLRVkAA5FzYQPKv/Xctxm1E8yybEW1iGOFSx4zU7UNIqVBt8ARLJJzK6SMPKDgvyJdQh8hj+UT8tk6T1D0zJui1oWUQyAqWNbMRt+0/J5B8YL4JUEPvOZv0KShICSrBh5/S9iIFKQ0n0cJ/L+Npf+1evcvreUWK4mp8n3buHM7+2MfiavQDc6wG89Lm/9vevnzzPlr941B/2NQz38Dv1kAnAvlBfCjCIvgfYk+OLAXpl5xTkxM5JGM5tbTX1uneV1UiRez0NUuWoYoHR6C1Evms5SdJNSGyCL0ejrJK2UdvR6GQ6LabT6VPLkrajUb7OHNINIWFjnYMFA6scDZc90iOJ1OYOrcALR+bW2V4kNk+nLdCiTZx1ru+whNBGzcgYPoQI1t+1NlpOqtIAYSFkvbpXdlVxhPhIJRXQOFaFRSZTQWgFSKDktbY+azj9vZ/KMVx7LFB7Yl/sJ+PpeLo3wvYLf5hLZPJc8lSrgd7aRds0IWoL45qsdqefxcv9uglJavJ7IB9ZoJ/x0M/CYdQ/aUS7H1Pxj/5dDCNI+LtMGkfW64jKTXU3zI7hXw0WWPU8hvlxU2AVkqjBbregxFfRdZ1u5zaFs683Ba4pWv1cXXUFVkwlxzxwbnmrCTOGG83VmlyrRA4GvLbix5n28ewSu+4/Iag8Wg==
@@ -22,7 +22,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Get Latest Block Hash"}
+  children={"最新ブロックハッシュの取得"}
 >
 </Heading>
 
@@ -36,7 +36,7 @@ import Heading from "@theme/Heading";
 
 
 
-Retrieves the latest block hash from the Aleo blockchain.
+Aleo ブロックチェーンから最新のブロックハッシュを取得します。
 
 <ParamsDetails
   parameters={undefined}
@@ -54,7 +54,7 @@ Retrieves the latest block hash from the Aleo blockchain.
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"A block hash of the latest block from the canonical Aleo blockchain.","content":{"application/json":{"schema":{"type":"string","title":"HashResponse"}}}},"404":{"description":"Block not found","content":{"application/json":{"schema":{"type":"object","properties":{"statusCode":{"type":"integer"},"timestamp":{"type":"string","format":"date-time"},"path":{"type":"string"},"method":{"type":"string"},"message":{"type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error"}}}
+  responses={{"200":{"description":"正規の Aleo ブロックチェーンにおける最新ブロックのハッシュです。","content":{"application/json":{"schema":{"type":"string","title":"HashResponse"}}}},"404":{"description":"ブロックが見つかりません","content":{"application/json":{"schema":{"type":"object","properties":{"statusCode":{"type":"integer"},"timestamp":{"type":"string","format":"date-time"},"path":{"type":"string"},"method":{"type":"string"},"message":{"type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"サーバーエラー"}}}
 >
   
 </StatusCodes>

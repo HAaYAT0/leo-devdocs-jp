@@ -5,35 +5,35 @@ sidebar_label: OfflineQuery
 
 <a name="OfflineQuery"></a>
 
-## Overview
+## 概要
 
-<p>An offline query object used to insert the global state root and state paths needed to create a valid inclusion proof offline. This is useful for creating proofs without requiring a live connection to the network.</p>
+<p>OfflineQuery オブジェクトは、グローバルステートルートとステートパスを挿入してオフラインで有効な包含証明を作成するために使用します。ネットワークへ接続しなくても証明を生成できるようにする際に役立ちます。</p>
 
 
 
-## Constructors
+## コンストラクター
 
 ### OfflineQuery
 
-<p>Creates a new offline query object. The state root is required to be passed in as a string</p>
+<p>新しい OfflineQuery オブジェクトを作成します。ステートルートは文字列として渡す必要があります。</p>
 
 ```javascript
 OfflineQuery(block_height, state_root)
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| block_height | <code>u32</code> | The block height |
-| state_root | <code>string</code> | The state root of the current network |
-| *return* | <code>OfflineQuery</code> | The newly created offline query object |
+| block_height | <code>u32</code> | ブロック高 |
+| state_root | <code>string</code> | 現在のネットワークのステートルート |
+| *return* | <code>OfflineQuery</code> | 生成された OfflineQuery オブジェクト |
 
-## Methods
+## メソッド
 
 <a name="OfflineQuery+addBlockHeight"></a>
 
 ### addBlockHeight
 
-<p>Add a new block height to the offline query object</p>
+<p>OfflineQuery オブジェクトに新しいブロック高を追加します。</p>
 
 ```javascript
 addBlockHeight(block_height) ► void
@@ -41,9 +41,9 @@ addBlockHeight(block_height) ► void
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| block_height | <code>u32</code> | The block height to add |
+| block_height | <code>u32</code> | 追加するブロック高 |
 | *return* | <code>void</code> |
 
 ---
@@ -52,7 +52,7 @@ addBlockHeight(block_height) ► void
 
 ### addStatePath
 
-<p>Add a new state path to the offline query object</p>
+<p>OfflineQuery オブジェクトに新しいステートパスを追加します。</p>
 
 ```javascript
 addStatePath(commitment:, state_path:) ► void
@@ -60,10 +60,10 @@ addStatePath(commitment:, state_path:) ► void
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| commitment: | <code>string</code> | The commitment corresponding to a record input |
-| state_path: | <code>string</code> | The state path corresponding to the commitment |
+| commitment: | <code>string</code> | レコード入力に対応するコミットメント |
+| state_path: | <code>string</code> | コミットメントに対応するステートパス |
 | *return* | <code>void</code> |
 
 ---
@@ -72,7 +72,7 @@ addStatePath(commitment:, state_path:) ► void
 
 ### toString
 
-<p>Get a json string representation of the offline query object</p>
+<p>OfflineQuery オブジェクトの JSON 文字列表現を取得します。</p>
 
 ```javascript
 toString() ► string
@@ -80,9 +80,9 @@ toString() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>string</code> | JSON string representation of the offline query object |
+| *return* | <code>string</code> | OfflineQuery オブジェクトの JSON 文字列表現 |
 
 ---
 
@@ -90,7 +90,7 @@ toString() ► string
 
 ### fromString
 
-<p>Create an offline query object from a json string representation</p>
+<p>JSON 文字列表現から OfflineQuery オブジェクトを生成します。</p>
 
 ```javascript
 fromString(JSON) ► OfflineQuery
@@ -98,9 +98,9 @@ fromString(JSON) ► OfflineQuery
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| JSON | <code>string</code> | string representation of the offline query object |
+| JSON | <code>string</code> | OfflineQuery オブジェクトの文字列表現 |
 | *return* | <code>OfflineQuery</code> |
 
 ---

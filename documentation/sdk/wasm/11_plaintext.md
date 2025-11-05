@@ -5,42 +5,42 @@ sidebar_label: Plaintext
 
 <a name="Plaintext"></a>
 
-## Overview
+## 概要
 
-<p>SnarkVM Plaintext object. Plaintext is a fundamental monadic type used to represent Aleo primitive types (boolean, field, group, i8, i16, i32, i64, i128, u8, u16, u32, u64, u128, scalar, and signature), struct types, and array types.</p>
+<p>SnarkVM の Plaintext オブジェクトです。Plaintext は Aleo のプリミティブ型（boolean、field、group、i8、i16、i32、i64、i128、u8、u16、u32、u64、u128、scalar、signature）や構造体、配列を表現する基本的なモナド型です。</p>
 
-<p>In the context of a web or NodeJS application, this type is useful for turning an Aleo type into a JS value, object, or array that might be necessary for performing computations within the application.</p>
+<p>Web / Node.js アプリケーションでは、Aleo の型を JS の値・オブジェクト・配列へ変換してアプリ内での計算に利用する際に役立ちます。</p>
 
-## Examples
+## 使用例
 
 ```javascript
-// Get the bond state of an existing address.
+// 既存アドレスの bond state を取得します。
 const bondState = await fetch(https://api.explorer.provable.com/v1/mainnet/program/credits.aleo/mapping/bond_state/aleo12zlythl7htjdtjjjz3ahdj4vl6wk3zuzm37s80l86qpx8fyx95fqnxcn2f);
-// Convert the bond state to a Plaintext object.
+// bond state を Plaintext オブジェクトへ変換します。
 const bondStatePlaintext = Plaintext.fromString(bond_state);
-// Convert the Plaintext object to a JS object.
+// Plaintext オブジェクトを JS オブジェクトへ変換します。
 const bondStateObject = bond_state_plaintext.toObject();
-// Check if the bond state matches the expected object.
+// 期待するオブジェクトと一致するか確認します。
 const expectedObject = { validator: "aleo12zlythl7htjdtjjjz3ahdj4vl6wk3zuzm37s80l86qpx8fyx95fqnxcn2f", microcredits: 100000000u64 };
 assert( JSON.stringify(bondStateObject) === JSON.stringify(expectedObject) );
 ```
 
-## Methods
+## メソッド
 
 <a name="Plaintext+find"></a>
 
 ### find
 
-<p>Find plaintext member if the plaintext is a struct. Returns null if the plaintext is not a struct or the member does not exist</p>
+<p>Plaintext が構造体である場合、指定したメンバーを検索します。構造体でない場合やメンバーが存在しない場合は null を返します。</p>
 
 ```javascript
 find(name) ► Plaintext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| name | <code>string</code> | The name of the plaintext member to find |
-| *return* | <code>Plaintext</code> | The plaintext member |
+| name | <code>string</code> | 検索するメンバーの名前 |
+| *return* | <code>Plaintext</code> | 見つかったメンバー |
 
 ---
 
@@ -48,17 +48,17 @@ find(name) ► Plaintext
 
 ### encrypt
 
-<p>Encrypt a plaintext with an address and randomizer</p>
+<p>アドレスとランダマイザーを使って Plaintext を暗号化します。</p>
 
 ```javascript
 encrypt(address, randomizer) ► Ciphertext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| address | <code>Address</code> | The address to encrypt the plaintext for |
-| randomizer | <code>Scalar</code> | The randomizer to use for encryption |
-| *return* | <code>Ciphertext</code> | The encrypted ciphertext |
+| address | <code>Address</code> | 暗号化対象となるアドレス |
+| randomizer | <code>Scalar</code> | 暗号化に使用するランダマイザー |
+| *return* | <code>Ciphertext</code> | 暗号化された Ciphertext |
 
 ---
 
@@ -66,16 +66,16 @@ encrypt(address, randomizer) ► Ciphertext
 
 ### encryptSymmetric
 
-<p>Encrypt a plaintext with a transition view key</p>
+<p>トランジションビューキーを使って Plaintext を暗号化します。</p>
 
 ```javascript
 encryptSymmetric(transition_view_key) ► Ciphertext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| transition_view_key | <code>Field</code> | The transition view key of the transition associated with the plaintext |
-| *return* | <code>Ciphertext</code> | The encrypted ciphertext |
+| transition_view_key | <code>Field</code> | Plaintext に対応するトランジションのトランジションビューキー |
+| *return* | <code>Ciphertext</code> | 暗号化された Ciphertext |
 
 ---
 
@@ -83,16 +83,16 @@ encryptSymmetric(transition_view_key) ► Ciphertext
 
 ### fromString
 
-<p>Creates a plaintext object from a string representation of a plaintext</p>
+<p>Plaintext の文字列表現から Plaintext オブジェクトを生成します。</p>
 
 ```javascript
 fromString(plaintext) ► Plaintext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| plaintext | <code>string</code> | The string representation of the plaintext |
-| *return* | <code>Plaintext</code> | The plaintext object |
+| plaintext | <code>string</code> | Plaintext の文字列表現 |
+| *return* | <code>Plaintext</code> | Plaintext オブジェクト |
 
 ---
 
@@ -100,16 +100,16 @@ fromString(plaintext) ► Plaintext
 
 ### fromBytesLe
 
-<p>Get a plaintext object from a series of bytes</p>
+<p>リトルエンディアンのバイト列から Plaintext オブジェクトを生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Plaintext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | A left endian byte array representing the plaintext |
-| *return* | <code>Plaintext</code> | The plaintext object |
+| bytes | <code>Uint8Array</code> | Plaintext を表すリトルエンディアンのバイト配列 |
+| *return* | <code>Plaintext</code> | Plaintext オブジェクト |
 
 ---
 
@@ -117,15 +117,15 @@ fromBytesLe(bytes) ► Plaintext
 
 ### toBytesLe
 
-<p>Get the left endian byte array representation of the plaintext</p>
+<p>Plaintext のリトルエンディアンのバイト配列表現を取得します。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>Uint8Array</code> | The left endian byte array representation of the plaintext |
+| *return* | <code>Uint8Array</code> | Plaintext のリトルエンディアンバイト配列 |
 
 ---
 
@@ -133,16 +133,16 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Get a plaintext object from a series of bits represented as a boolean array</p>
+<p>リトルエンディアンの真偽値配列から Plaintext オブジェクトを生成します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Plaintext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bits | <code>Array</code> | A left endian boolean array representing the bits plaintext |
-| *return* | <code>Plaintext</code> | The plaintext object |
+| bits | <code>Array</code> | Plaintext を表すリトルエンディアンの真偽値配列 |
+| *return* | <code>Plaintext</code> | Plaintext オブジェクト |
 
 ---
 
@@ -150,15 +150,15 @@ fromBitsLe(bits) ► Plaintext
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the bits of the plaintext</p>
+<p>Plaintext のビット列をリトルエンディアンの真偽値配列として取得します。</p>
 
 ```javascript
 toBitsLe() ► Array
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>Array</code> | The left endian boolean array representation of the bits of the plaintext |
+| *return* | <code>Array</code> | Plaintext のビット列を表すリトルエンディアンの真偽値配列 |
 
 ---
 
@@ -166,16 +166,16 @@ toBitsLe() ► Array
 
 ### fromFields
 
-<p>Get a plaintext object from an array of fields</p>
+<p>フィールド値の配列から Plaintext オブジェクトを生成します。</p>
 
 ```javascript
 fromFields(fields) ► Plaintext
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| fields | <code>Array</code> | An array of fields |
-| *return* | <code>Plaintext</code> | The plaintext object |
+| fields | <code>Array</code> | フィールド値の配列 |
+| *return* | <code>Plaintext</code> | Plaintext オブジェクト |
 
 ---
 
@@ -183,15 +183,15 @@ fromFields(fields) ► Plaintext
 
 ### toFields
 
-<p>Get the field array representation of the plaintext</p>
+<p>Plaintext のフィールド値配列表現を取得します。</p>
 
 ```javascript
 toFields() ► Array
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>Array</code> | The field array representation of the plaintext |
+| *return* | <code>Array</code> | Plaintext のフィールド値配列 |
 
 ---
 
@@ -199,15 +199,15 @@ toFields() ► Array
 
 ### toString
 
-<p>Returns the string representation of the plaintext</p>
+<p>Plaintext の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>string</code> | The string representation of the plaintext |
+| *return* | <code>string</code> | Plaintext の文字列表現 |
 
 ---
 
@@ -215,15 +215,15 @@ toString() ► string
 
 ### plaintextType
 
-<p>Gives the type of the plaintext</p>
+<p>Plaintext の型名を返します。</p>
 
 ```javascript
 plaintextType() ► string
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>string</code> | The type of the plaintext |
+| *return* | <code>string</code> | Plaintext の型 |
 
 ---
 
@@ -231,12 +231,14 @@ plaintextType() ► string
 
 ### toObject
 
-<p>Attempt to convert the plaintext to a JS object</p>
+<p>Plaintext を JS オブジェクトへ変換します。</p>
 
 ```javascript
 toObject() ► Object
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| *return* | <code>Object</code> | The JS object representation of the plaintext |
+| *return* | <code>Object</code> | Plaintext の JS オブジェクト表現 |
+
+---

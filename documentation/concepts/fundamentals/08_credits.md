@@ -1,24 +1,19 @@
 ---
 id: credits
-title: Aleo Credits
-sidebar_label: Aleo Credits
+title: Aleo クレジット
+sidebar_label: Aleo クレジット
 ---
-## Overview
+## 概要
 
-The official currency of Aleo Network are called Aleo Credits. All fees paid for transactions, as well as rewards for staking
-and mining, are in the form of Aleo Credits.
+Aleo ネットワークの公式通貨は Aleo クレジットです。トランザクション手数料の支払い、ステーキングおよびマイニング報酬の受け取りはすべて Aleo クレジットで行われます。
 
-Unlike other popular Blockchains like Ethereum, there is no special `transfer` transaction type. Instead, a native
-program called [`credits.aleo`](https://explorer.provable.com/program/credits.aleo) governs transfers, usage, and ownership
-of Aleo Credits. All value transfers on the Aleo Network are done by calling functions in the `credits.aleo` program
-via `Execute` transactions. This enables users to send Aleo Credits privately, publicly, or a mix of both as well as
-initiate staking and other advanced on-chain operations with Aleo credits.
+Ethereum のような一般的なブロックチェーンとは異なり、Aleo には特別な `transfer` トランザクションタイプは存在しません。その代わりに、[`credits.aleo`](https://explorer.provable.com/program/credits.aleo) というネイティブプログラムがクレジットの送金・利用・所有権を管理します。Aleo ネットワーク上での価値移転は、`Execute` トランザクションを通じて `credits.aleo` プログラムの関数を呼び出すことで行われます。これにより、クレジットを秘匿・公開・ハイブリッドの形で送金できるほか、ステーキングなど高度なオンチェーン操作も実行できます。
 
-Aleo Credits are denominated as either credits or microcredits, where the smallest unit is 1 microcredit (equal to 0.000001 credit). The `credits.aleo` program function parameters take amounts in microcredits. There is a denomination table [here](../fundamentals/03A_transaction_fees.md#aleo-credits-denomination-table) for reference.
+Aleo クレジットには credit と microcredit の 2 種類の単位があり、最小単位は 1 microcredit（credit の 0.000001）です。`credits.aleo` プログラムの関数パラメータは microcredit 単位で指定します。単位換算は [Aleo クレジットの単位表](../fundamentals/03A_transaction_fees.md#aleo-credits-denomination-table)を参照してください。
 
-The same `credits.aleo` program also hosts all staking-related functions and states. For more information about staking functionality, please refer to the [Staking](../network/staking.md) documentation.
+同じ `credits.aleo` プログラムにはステーキング関連の関数とステートも含まれます。ステーキング機能の詳細は [Staking](../network/staking.md) をご覧ください。
 
-A small selection of the credit transfer functions available in `credits.aleo` is visualized below:
+以下は `credits.aleo` で利用できる送金関数の一部を図示したものです。
 
 ```mermaid
 graph
@@ -29,21 +24,21 @@ graph
         transfer_private_to_public[["transfer_private_to_public"]]
         transfer_public_to_private[["transfer_public_to_private"]]
     end
-    sender1(["function caller (aleo1123...)"])-."Public Inputs:
-    (receiver, amount)".-transfer_public-."Public Outputs:
-    (sender, receiver, amount)".->receiver1(["receiver (aleo1456...)"])
-    sender1a(["txn signer (aleo1123...)"])-."Public Inputs:
-    (receiver, amount)".-transfer_public_as_signer-."Public Outputs:
-    (signer, receiver, amount)".->receiver1a(["receiver (aleo1456...)"])
-    sender2(["function caller (hidden)"])-."Private (Hidden) Inputs:
-    record".-transfer_private-."Private (Hidden)  Outputs:
-    record".->receiver2(["receiver (hidden)"])
-    sender3(["function caller (hidden)"])-."Private (Hidden) Inputs:
-    record".-transfer_private_to_public-."Public Outputs:
-    (receiver, amount)".->receiver3(["receiver (aleo1456...)"])
-    sender4(["function caller (aleo1123...)"])-."Public Inputs:
-    (amount)".-transfer_public_to_private-."Private Outputs:
-    record".->receiver4(["receiver (hidden)"])
+    sender1(["関数呼び出し元 (aleo1123...)"])-."公開入力:
+    (receiver, amount)".-transfer_public-."公開出力:
+    (sender, receiver, amount)".->receiver1(["受取人 (aleo1456...)"])
+    sender1a(["トランザクション署名者 (aleo1123...)"])-."公開入力:
+    (receiver, amount)".-transfer_public_as_signer-."公開出力:
+    (signer, receiver, amount)".->receiver1a(["受取人 (aleo1456...)"])
+    sender2(["関数呼び出し元 (秘匿)"])-."秘匿入力:
+    record".-transfer_private-."秘匿出力:
+    record".->receiver2(["受取人 (秘匿)"])
+    sender3(["関数呼び出し元 (秘匿)"])-."秘匿入力:
+    record".-transfer_private_to_public-."公開出力:
+    (receiver, amount)".->receiver3(["受取人 (aleo1456...)"])
+    sender4(["関数呼び出し元 (aleo1123...)"])-."公開入力:
+    (amount)".-transfer_public_to_private-."秘匿出力:
+    record".->receiver4(["受取人 (秘匿)"])
 
 classDef default fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000;
 style credits fill:#ffdbf0,stroke:#f229e0,stroke-width:2px,color:#000;
@@ -51,42 +46,37 @@ linkStyle default stroke:#f229e0,stroke-width:2px;
 ```
 
 :::note
-**Important distinction between function caller and transaction signer:**
-- **Function Caller**: The immediate function caller, which could be an intermediate program or contract that initiated the current function call
-- **Transaction Signer**: The original transaction signer who initiated the entire transaction, regardless of how many intermediate programs are involved in the call chain
+**関数呼び出し元とトランザクション署名者の違い**
+- **関数呼び出し元**: 現在の関数を直接呼び出した主体。中間プログラムやコントラクトの場合もあります。
+- **トランザクション署名者**: 呼び出しチェーンに何段階あっても、トランザクション全体を開始した元の署名者です。
 :::
 
 :::warning[important]
-Private transfers or any functions involving records should use a **private key controlled account address** as the recipient. This is because:
+レコードを扱う秘匿送金では、**秘密鍵で管理されるアカウントアドレス**を受取人に指定する必要があります。理由は以下のとおりです。
 
-- Records are encrypted with the recipient's public key and can only be decrypted with the corresponding private key
-- A program address is derived from a hash function and has no associated private key, making it incapable of decrypting any records
-- **Records should never be sent to a program address** because they would become permanently inaccessible
+- レコードは受取人の公開鍵で暗号化され、対応する秘密鍵でしか復号できない
+- プログラムアドレスはハッシュから導出されるため秘密鍵を持たず、レコードを復号できない
+- **レコードをプログラムアドレスへ送信すると永久にアクセス不能になる**
 
-When performing private transfers or any operations involving records, always ensure the recipient is a user account address (controlled by a private key) rather than a program address.
+秘匿送金やレコードを伴う操作では、必ずユーザーのアカウントアドレスを受取人に指定してください。
 :::
 
-## Public/Private Credits
+## 公開/秘匿クレジット
 
-There are two main ways to hold Aleo Credits on the network:
+Aleo クレジットを保有する方法は大きく 2 つあります。
 
-### Private Balances via  `credits` Records
-The first method is owning a `credits` record which enables a participant in the Aleo
-network to hold a private balance of Aleo credits.
+### `credits` レコードによる秘匿残高
+1 つ目は `credits` レコードを所有して秘匿残高を保持する方法です。
 ```aleo
 record credits:
     owner as address.private;
     microcredits as u64.private;
 ```
 
-A user's total private credits balance will consist of all unspent `credits` records owned by the user with a non-zero
-`microcredits` value. These records are analogous to UTXOs in Bitcoin. It is generally the responsibility of a wallet
-application to scan the chain for records that belong to a user and determine which are spent and unspent in order
-to calculate the user's total private balance and private transaction history.
+ユーザーの秘匿残高は、`microcredits` が 0 でない未使用の `credits` レコード（UTXO に相当）の合計です。ウォレットはユーザーのレコードをチェーンから取得し、消費済みかどうかを判断して秘匿残高や秘匿トランザクション履歴を算出します。
 
-### Public Balances via the `account` Mapping
-The second method is by holding a balance in the `account` mapping in the `credits.aleo` program on the Aleo network.
-This mapping is an on-chain key-value store that is maintained and updated by Aleo validators at each block. This public balance is visible to all participants in the network and is analogous to the account balances in Ethereum.
+### `account` マッピングによる公開残高
+2 つ目は、`credits.aleo` プログラム内の `account` マッピングに残高を保持する方法です。`account` はオンチェーンのキー・バリューストアで、バリデータが各ブロックで更新します。公開残高は誰でも閲覧でき、Ethereum のアカウント残高と同様のモデルです。
 
 ```aleo
 mapping account:
@@ -94,22 +84,20 @@ mapping account:
     value microcredits as u64.public;
 ```
 
-The total public credits balance of a user is the value of the account mapping at the user's address. Users can hold both private and public balances simultaneously.
+公開残高はユーザーアドレスに対応する `account` の値となり、秘匿残高と公開残高を同時に保有できます。
 
-## Transferring Aleo Credits
+## Aleo クレジットの送金
 
-
-There are five transfer functions available within `credits.aleo`.
+`credits.aleo` には 5 種類の送金関数が用意されています。
 
 ### `transfer_private`
 
-Takes a `credits` record owned by the sender, subtracts an amount from it, and adds that amount
-to a new record owned by the receiver. This function is 100% private and does not affect the `account` mapping.
+送信者が所有する `credits` レコードから金額を差し引き、受取人に宛てた新しいレコードを生成します。100% 秘匿であり、`account` マッピングには影響しません。
 
-**Input Parameters:**
-- `credits.record` - The sender's record containing the credits to transfer
-- `address.private` - The receiver's address (private)
-- `u64.private` - The amount of microcredits to transfer in u64 (private)
+**入力パラメータ**
+- `credits.record` — 送信者のクレジットレコード
+- `address.private` — 受取人アドレス（秘匿）
+- `u64.private` — 送金額（microcredit, 秘匿）
 
 ```mermaid
 graph LR
@@ -125,39 +113,35 @@ graph LR
 
 ### `transfer_private_to_public`
 
-Takes a `credits` record owned by the sender, subtracts an amount from it, and adds
-that amount to the `account` mapping of the receiver. This function is 50% private and 50% public. It consumes a record
-as a private input and generates a public balance in the `account` mapping entry belonging to the receiver.
+送信者の `credits` レコードを秘匿入力として消費し、受取人の `account` マッピングに公開残高として加算します。半分秘匿・半分公開の処理です。
 
-**Input Parameters:**
-- `credits.record` - The sender's record containing the credits to transfer
-- `address.public` - The receiver's address (public)
-- `u64.public` - The amount of microcredits to transfer in u64 (public)
+**入力パラメータ**
+- `credits.record` — 送信者のクレジットレコード
+- `address.public` — 受取人アドレス（公開）
+- `u64.public` — 送金額（microcredit, 公開）
 
 ```mermaid
 graph LR
     subgraph credits.aleo
-                    m1[account mapping<br>key:user3address<br>value:3000u64]
+        m1[account mapping<br>key:user3address<br>value:3000u64]
     end
     user1--record3 owner:user2address balance:4000u64-->t1[transfer_private_to_public]
     user1--amount:3000u64-->t1
     user1--recipient:user3address-->t1
     t1-.record4 owner:user2address amount:1000u64.->user1
     t1-->m1
-    
+
     classDef default fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000;
     linkStyle default stroke:#f229e0,stroke-width:2px;
 ```
 
 ### `transfer_public`
 
-Subtracts an amount of `credits` stored in the `account` mapping of the `credits.aleo` program, and
-adds that amount to the `account` mapping of the receiver. This function is 100% public and does not consume or generate
-any records.
+`credits.aleo` の `account` マッピングから送信者の公開残高を減算し、受取人の公開残高へ加算します。完全公開でレコードは発生しません。
 
-**Input Parameters:**
-- `address.public` - The receiver's address (public)
-- `u64.public` - The amount of microcredits to transfer in u64 (public)
+**入力パラメータ**
+- `address.public` — 受取人アドレス（公開）
+- `u64.public` — 送金額（microcredit, 公開）
 
 ```mermaid
 graph LR
@@ -182,19 +166,16 @@ graph LR
 ```
 
 :::note
-The mapping key being modified is `intermediate_program.aleo`, which this is the "from" address in this transfer, not the transaction signer's address.
+更新されるマッピングキーは `intermediate_program.aleo` であり、これはこの送金における「送信元」アドレスであってトランザクション署名者ではありません。
 :::
 
 ### `transfer_public_to_private`
 
-Subtracts an amount `credits` stored in the `account` mapping of the `credits.aleo program`
-and adds that amount to a new private record owned by the receiver. This function is 50% private and 50% public.
-It publicly consumes a balance in the `account` mapping entry belonging to the sender and generates a private record
-as a private output.
+`credits.aleo` の `account` マッピングから公開残高を減算し、受取人が所有する新しい秘匿レコードを生成します。公開入力を消費し秘匿出力を生成する半公開・半秘匿の処理です。
 
-**Input Parameters:**
-- `address.private` - The receiver's address (private)
-- `u64.public` - The amount of microcredits to transfer in u64 (public)
+**入力パラメータ**
+- `address.private` — 受取人アドレス（秘匿）
+- `u64.public` — 送金額（microcredit, 公開）
 
 ```mermaid
 graph LR
@@ -217,16 +198,16 @@ graph LR
 ```
 
 :::note
-The mapping key being modified is same as `transfer_public`, where the "from" address in this transfer is the immediate caller of the function. Not the signer's address, if there is an intermediate program in between.
+更新されるマッピングキーは `transfer_public` と同様に、関数を呼び出した主体（中間プログラムではなく現在の呼び出し元）です。
 :::
 
 ### `transfer_public_as_signer`
 
-Similar to `transfer_public`, this function subtracts an amount of `credits` stored in the `account` mapping of the `credits.aleo` program, and adds that amount to the `account` mapping of the receiver. However, this function uses the signer's address as the sender instead of the caller's address, ensures that the "from" context is always the original transaction initiator. This function is 100% public and does not consume or generate any records.
+`transfer_public` と同様に公開残高を移動させますが、送信元に関数呼び出し元ではなくトランザクション署名者のアドレスを使用します。常に元の署名者が「送信元」となる点が異なります。完全公開でレコードは発生しません。
 
-**Input Parameters:**
-- `address.public` - The receiver's address (public)
-- `u64.public` - The amount of microcredits to transfer in u64 (public)
+**入力パラメータ**
+- `address.public` — 受取人アドレス（公開）
+- `u64.public` — 送金額（microcredit, 公開）
 
 ```mermaid
 graph LR
@@ -251,11 +232,11 @@ graph LR
 ```
 
 :::note
-The mapping key being modified is the transaction signer, which this is the "from" address in this transfer, not the intermediate program address.
+更新されるマッピングキーはトランザクション署名者であり、中間プログラムのアドレスではありません。
 :::
 
 :::tip
-A program can use `transfer_public_from_signer` to receive funds from a user to itself, then use `transfer_public` to transfer funds from itself back to the user.
+プログラムは `transfer_public_as_signer` を利用してユーザーから自分自身へ資金を受け取り、その後 `transfer_public` を使って資金をユーザーへ戻す、といったフローを構築できます。
 :::
 <!-- 
 ## Leo code examples
@@ -358,4 +339,5 @@ const tx_id_4 = await programManager.transfer(1, myAddress, "transfer_public_to_
 // Check the value of the public balance and assert that it has been updated
 public_balance = programManager.networkClient.getMappingValue("credits.aleo", myAddress);
 assert(public_balance === 0);
-``` -->
+```
+-->

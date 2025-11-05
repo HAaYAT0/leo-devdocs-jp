@@ -1,12 +1,11 @@
----
 id: overview
-title: Overview
-sidebar_label: Overview
+title: 概要
+sidebar_label: 概要
 ---
 
-The core `sdk/` library offers a wide variety of features to help streamline the development process on Aleo, including account management, program deployment, function execution, Aleo Credit transfers, program state management, and network queries.
+コアとなる `sdk/` ライブラリは、アカウント管理、プログラムのデプロイ、関数の実行、Aleo クレジットの送金、プログラム状態の管理、ネットワークへの問い合わせなど、Aleo 上での開発を効率化する多彩な機能を提供します。
 
-## Table of Contents
+## 目次
 
 * [Getting Started](./01_getting_started.md)
 * [Creating Aleo Accounts](./02_create_account.md)
@@ -22,8 +21,8 @@ The core `sdk/` library offers a wide variety of features to help streamline the
     * [Programs](./07_querying_network.md#programs)
 
 
-## Further Documentation
+## さらに詳しく
 
-API documentation for the SDK can be found in the [API Specification](../../category/api-specification) section.
+SDK の API ドキュメントは [API Specification](../../category/api-specification) セクションでご覧いただけます。
 
 Additi

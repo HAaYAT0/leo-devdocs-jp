@@ -1,53 +1,41 @@
 ---
 id: validators 
-title: Validators
-sidebar_label: Validators
+title: バリデータ
+sidebar_label: バリデータ
 ---
 
-### Role and Function of Validator Nodes in the Network
+### ネットワークにおけるバリデータノードの役割
 
-Validator nodes in the Aleo network form a consensus network and determine block generation through the Aleo Byzantine Fault Tolerance ([AleoBFT])(./consensus.md) consensus protocol. Validators acquire voting power by staking `AleoCredits`, with the node's voting power directly proportional to the amount of `AleoCredits` staked. AleoBFT ensures that when a new block is generated, it receives approval from over 2/3 of the votes, indicating consensus among honest validators. This effectively ensures network security and prevents attacks from malicious nodes. Once a block is formed, it achieves `finalized`, meaning blocks and the transactions they contain will not be reverted.
+Aleo ネットワークのバリデータノードはコンセンサスネットワークを形成し、Aleo Byzantine Fault Tolerance（[AleoBFT](./consensus.md)）コンセンサスプロトコルを通じてブロック生成を決定します。バリデータは `AleoCredits` をステークすることで投票権を獲得し、その投票権はステーク量に比例します。AleoBFT により、新しいブロックは誠実なバリデータの 3 分の 2 を超える承認を得た場合にのみ確定し、ネットワークの安全性が担保されます。ブロックが形成されると `finalized` 状態となり、そのブロックと含まれるトランザクションが巻き戻されることはありません。
 
+### バリデータの経済的インセンティブ
 
+AleoBFT の仕組みにより、悪意あるノードがネットワークを攻撃しようとすると、新しいブロックの生成を止めるには投票権の少なくとも 3 分の 1 を確保する必要があります。つまり、ネットワーク全体でステークされる `AleoCredits` が多いほどコンセンサスネットワークは堅牢になります。バリデータが `AleoCredits` をステークする動機づけとして、生成される各ブロックには `BlockReward` が含まれており、バリデータは自分がステークした割合に応じて報酬を受け取ります。
 
-### Economic Incentives for Validator Nodes
+### バリデータになるには
 
-The mechanism of AleoBFT ensures that if a malicious node attempts to attack the network, it would need to acquire at least 1/3 of the voting power to prevent the production of new blocks.. This implies that the more `AleoCredits` staked in the network, the more secure the consensus network becomes. To incentivize validator nodes to stake their `AleoCredits`, each block produced includes a corresponding `BlockReward` for validator nodes. The proportion of `BlockReward` that validator nodes receive is consistent with the proportion of `AleoCredits` they have staked.
+バリデータノードになるためには最低 10,000,000（1,000 万）`AleoCredits` をステークする必要があります。ステーキングトランザクションがコンセンサスネットワークに受理されると、新しいバリデータは即座にコンセンサスへ参加し、Narwhal/Bullshark から改良された AleoBFT のおかげで直ちに `BlockReward` を獲得できます。
 
+保有する `AleoCredits` が少額の場合は独立したバリデータにはなれませんが、委任を通じてステーキングに参加することが可能です。
 
+バリデータノード同士はステータス情報を取得するために相互通信を行うため、ノード数が増えるほど通信量が増大し、通信の複雑性は `O(n)` に比例して大きくなります。通信量の増加はブロック生成時間の延長につながるため、Aleo ネットワークでは分散性と効率のバランスを取る目的でバリデータノード数を最大 200 に制限しています。
 
-### Become a Validator Node
+### 委任ステーキング
 
-To become a validator node, one needs to stake a minimum of 10,000,000 (10 million) `AleoCredits`. Once the staking transaction is accepted by the consensus network, the new validator node can immediately participate in the consensus and receive `BlockReward` incentives, thanks to the improvements made by AleoBFT over Narwhal Bullshark.
+委任ステーキングでは、ユーザーがプログラム（Aleo のスマートコントラクト）を通じて特定のバリデータに `AleoCredits` をステークできます。ステークによって獲得した投票権も該当バリデータに委任されます。ユーザーはステーク量に応じて `BlockReward` を受け取り、バリデータは `Program` 内で設定された割合の手数料を徴収できます。複数のウォレットやブロックエクスプローラが委任機能を提供しており、UI 上で各バリデータの手数料率を確認しながら容易にステーキングを行えます。
 
-When one possesses only a small amount of `AleoCredits`, although unable to become an independent validator node, they can participate in staking through delegation.
+ユーザーはいつでもステークを解除でき、解除後 360 ブロックが経過すると返還された `AleoCredits` を残高として受け取れます。
 
-Due to the fact that validator nodes in the network communicate with each other to obtain status information, the more validator nodes there are, the greater the magnitude of network communication required, with communication complexity being `O(n)`. The increase in communication complexity leads to longer block generation times. In the Aleo network, the maximum number of validator nodes is limited to 200 to balance decentralization and network efficiency.
-
-
-
-### Delegated Staking
-
-Delegated staking allows users to stake `AleoCredits` on a specific validator node through a Program (Aleo's smart contract). The voting power gained from staking `AleoCredits` is also delegated to the respective validator node. Users receive `BlockReward` incentives in proportion to their stake, while validators may charge a certain percentage of fees set within the `Program`. Various wallets and browsers provide users with the functionality to delegate stake. Users can view fee percentages of various validators on their UI interface, facilitating the staking process.
-
-Users can cancel their stake at any time. After cancellation, users can withdraw the `AleoCredits` refunded from the cancellation to their balance after 360 blocks.
-
-
-
-
-
-### How validators confirm transactions/solutions
+### バリデータがトランザクション／ソリューションを確定する仕組み
 
 ![image-20240422165659999](./images/validator-process-transaction.png)
 
-The process by which validator nodes confirm Transactions and Solutions involves the following steps:
+バリデータノードがトランザクションおよびソリューションを確定する流れは次のとおりです。
 
-- Transactions/Solutions enter the validator nodes' mempool via the P2P network or RPC.
-- Validator nodes select some Transactions/Solutions from the mempool and include them in a `BatchPropose` (in addition to Transactions and Solutions, `BatchPropose` needs to contain `2f + 1` `BatchCertificates` from the previous round) and broadcast it to other validator nodes.
-- Upon receiving `BatchPropose`, other validator nodes validate its legitimacy, sign the `BatchPropose` to generate `BatchSignature`, and return the `BatchSignature` to the originating validator node.
-- When the originating validator node receives more than `2f + 1` `BatchSignatures`, it aggregates them into a `BatchCertificate` and broadcasts it to other validator nodes.
-- All nodes execute and repeat this process, resulting in a DAG formed by the `BatchCertificates`. When the DAG is committed, a new block is produced, and Transactions and Solutions are included in the new block.
-
-
+- トランザクションやソリューションは P2P ネットワークまたは RPC を通じてバリデータのメモリプールに流入します。
+- バリデータはメモリプールから一部を選択し、トランザクション／ソリューションに加えて前ラウンドの `2f + 1` 個の `BatchCertificate` を含む `BatchPropose` を作成し、他のバリデータへブロードキャストします。
+- 受信したバリデータは `BatchPropose` の正当性を検証し、署名して `BatchSignature` を生成し、送信元バリデータへ返送します。
+- 送信元バリデータが `2f + 1` 個を超える `BatchSignature` を受け取ると、それらを集約して `BatchCertificate` を作成し、再び他のバリデータへブロードキャストします。
+- すべてのノードがこのプロセスを繰り返すことで `BatchCertificate` による DAG が形成されます。DAG がコミットされると新しいブロックが生成され、トランザクションとソリューションがそのブロックへ組み込まれます。
 
 ![image-20240422175911657](./images/Illustration_DAG.png)

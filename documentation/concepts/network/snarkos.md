@@ -4,12 +4,12 @@ title: SnarkOS
 sidebar_label: SnarkOS
 ---
 
-SnarkOS is a decentralized operating system for zero-knowledge applications. This code forms the backbone of Aleo network, which verifies transactions and stores the encrypted state of applications in a publicly-verifiable manner.
+SnarkOS はゼロ知識アプリケーション向けの分散型オペレーティングシステムです。このコードが Aleo ネットワークの中核を成し、トランザクションを検証しつつ、アプリケーションの暗号化された状態を公開検証可能な形で保存します。
 
-The network client has to take care of verifying the transactions computed off chain using snarkvm, allowing all snarkOS nodes to reach consensus and to store the private and non private state in Aleo's distributed ledger.
+ネットワーククライアントは SnarkVM によってオフチェーンで計算されたトランザクションを検証し、すべての SnarkOS ノードがコンセンサスに到達できるようにするとともに、Aleo の分散型台帳に秘匿データと公開データの両方を保存します。
 
-## Aleo Node Options
-An Aleo node can be run in three modes.
+## Aleo ノードのオプション
+Aleo ノードは 3 つのモードで稼働させることができます。
 
 <!-- ### [Client](../network/) -->
 
@@ -19,18 +19,18 @@ An Aleo node can be run in three modes.
 - [Validator](../network/validators.md)
 
 
-### JWT Authentication
-The snarkOS accepts runtime parameters for JWT authentication:
+### JWT 認証
+SnarkOS は JWT 認証のために実行時パラメータを受け付けます。
 
-- `--jwt-secret`: An optional base64-encoded JWT secret used for token generation and validation
-- `--jwt-timestamp`: An optional UNIX timestamp used to determine the validity of the token
+- `--jwt-secret`: トークンの生成と検証に使用するオプションの Base64 エンコード済み JWT シークレット
+- `--jwt-timestamp`: トークンの有効性を判断するためのオプションの UNIX タイムスタンプ
 
-#### Protected Endpoints
-The following endpoints require valid JWT authentication:
+#### 保護されたエンドポイント
+以下のエンドポイントにアクセスするには有効な JWT 認証が必要です。
 
-- `/{network}/node/address` - Get node address information
-- `/{network}/program/{id}/mapping/{name}` - Access program mapping data
-- `/{network}/db_backup?path={path}` - Database backup operations
+- `/{network}/node/address` - ノードアドレス情報を取得
+- `/{network}/program/{id}/mapping/{name}` - プログラムのマッピングデータへアクセス
+- `/{network}/db_backup?path={path}` - データベースのバックアップ操作
 
-## Who uses snarkOS ?
-Everyone involved in Aleo uses snarkOS both to submit transactions and to fetch their data.
+## SnarkOS を使うのは誰か
+Aleo に関わるすべてのユーザーが、トランザクションの送信やデータ取得のために SnarkOS を利用します。

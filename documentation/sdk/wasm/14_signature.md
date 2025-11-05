@@ -4,210 +4,184 @@ title: Signature
 sidebar_label: Signature
 ---
 
-## Class `Signature`
+## クラス `Signature`
 
-Cryptographic signature of a message signed by an Aleo account
+Aleo アカウントがメッセージに対して行う暗号署名を表します。
 
-## Methods
+## メソッド
 
 ### sign
-
-
-Sign a message with a private key
+秘密鍵でメッセージに署名します。
 
 ```javascript
 sign(private_key, message) ► Signature
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__private_key__ | PrivateKey | *The private key to sign the message with*
-__message__ | `Uint8Array` | *Byte representation of the message to sign*
-__*return*__ | Signature | *Signature of the message*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| private_key | PrivateKey | メッセージの署名に使用する秘密鍵 |
+| message | `Uint8Array` | 署名対象のメッセージ（バイト配列） |
+| *return* | Signature | 生成された署名 |
 
 ---
 
 ### to_address
-
-
-Get an address from a signature.
+署名からアドレスを取得します。
 
 ```javascript
 to_address() ► Address
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Address | *Address object*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Address | アドレスオブジェクト |
 
 ---
 
 ### challenge
-
-
-Get the challenge of a signature.
+署名のチャレンジ値を取得します。
 
 ```javascript
 challenge() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | チャレンジ値 |
 
 ---
 
 ### response
-
-
-Get the response of a signature.
+署名のレスポンス値を取得します。
 
 ```javascript
 response() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | レスポンス値 |
 
 ---
 
 ### verify
-
-
-Verify a signature of a message with an address
+署名が正しいかアドレスを用いて検証します。
 
 ```javascript
 verify(address, message) ► boolean
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__address__ | Address | *The address to verify the signature with*
-__message__ | `Uint8Array` | *Byte representation of the message to verify*
-__*return*__ | `boolean` | *True if the signature is valid, false otherwise*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| address | Address | 検証に使用するアドレス |
+| message | `Uint8Array` | 検証対象のメッセージ（バイト配列） |
+| *return* | `boolean` | 署名が有効なら true、無効なら false |
 
 ---
 
 ### fromBytesLe
-
-
-Get a signature from a series of bytes.
+リトルエンディアンのバイト列から署名を生成します。
 
 ```javascript
 fromBytesLe(bytes) ► Signature
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__bytes__ | `Uint8Array` | *A left endian byte array representing the signature.*
-__*return*__ | Signature | *The signature object.*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| bytes | `Uint8Array` | 署名を表すリトルエンディアンのバイト配列 |
+| *return* | Signature | 署名オブジェクト |
 
 ---
 
 ### toBytesLe
-
-
-Get the left endian byte array representation of the signature.
+署名をリトルエンディアンのバイト配列に変換します。
 
 ```javascript
 toBytesLe() ► Uint8Array
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `Uint8Array` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `Uint8Array` | 署名のバイト配列 |
 
 ---
 
 ### fromBitsLe
-
-
-Get a signature from a series of bits represented as a boolean array.
+真偽値配列（リトルエンディアン）から署名を生成します。
 
 ```javascript
 fromBitsLe(bits) ► Signature
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__bits__ | `Array` | *A left endian boolean array representing the bits of the signature.*
-__*return*__ | Signature | *The signature object.*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| bits | `Array` | 署名を表す真偽値配列 |
+| *return* | Signature | 署名オブジェクト |
 
 ---
 
 ### toBitsLe
-
-
-Get the left endian boolean array representation of the bits of the signature.
+署名をリトルエンディアンの真偽値配列として取得します。
 
 ```javascript
 toBitsLe() ► Array.<any>
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `Array.<any>` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `Array.<any>` | 署名のビット配列 |
 
 ---
 
 ### toFields
-
-
-Get the field array representation of the signature.
+署名をフィールド配列として取得します。
 
 ```javascript
 toFields() ► Array.<any>
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `Array.<any>` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `Array.<any>` | フィールド値の配列 |
 
 ---
 
 ### from_string
-
-
-Get a signature from a string representation of a signature
+署名の文字列表現から署名オブジェクトを生成します。
 
 ```javascript
 from_string(signature) ► Signature
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__signature__ | `string` | *String representation of a signature*
-__*return*__ | Signature | *Signature*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| signature | `string` | 署名の文字列表現 |
+| *return* | Signature | 署名オブジェクト |
 
 ---
 
 ### to_string
-
-
-Get a string representation of a signature
+署名の文字列表現を取得します。
 
 ```javascript
 to_string() ► string
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `string` | *String representation of a signature*
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `string` | 署名の文字列表現 |
 
 ---
 
 ### toPlaintext
-
-
-Get the plaintext representation of the signature.
+署名を Plaintext 表現へ変換します。
 
 ```javascript
 toPlaintext() ► Plaintext
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Plaintext | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Plaintext | Plaintext オブジェクト |
 
 ---

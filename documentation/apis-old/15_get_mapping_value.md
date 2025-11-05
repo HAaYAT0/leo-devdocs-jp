@@ -1,26 +1,26 @@
 ---
 id: get_mapping_value
-title: Get Mapping Value
-sidebar_label: Get Mapping Value
+title: マッピング値を取得
+sidebar_label: マッピング値を取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/program/{programID}/mapping/{mappingName}/{mappingKey}
 ```
 
-Returns the value in a key-value mapping corresponding to the supplied mappingKey.
+指定した mappingKey に対応するキーと値のマッピングの値を返します。
 
 
-### Arguments
+### 引数
 
-| Parameter     |  Type  | Required | Description                                  |
+| パラメーター     |  型  | 必須 | 説明                                  |
 |:--------------|:------:|:--------:|:---------------------------------------------|
-| `programID`   | string |   Yes    | The program id of the requested mapping      |
-| `mappingName` | string |   Yes    | The name of the mapping to access            |
-| `mappingKey`  | string |   Yes    | The key of the key-value pair in the mapping |
+| `programID`   | string |   Yes    | 取得したいマッピングが属する program ID      |
+| `mappingName` | string |   Yes    | 参照するマッピングの名前            |
+| `mappingKey`  | string |   Yes    | マッピング内のキーと値のペアのキー |
 
-### Response
+### レスポンス
 
-| Parameter |                  Type                   |                  Description                   |
+| パラメーター |                  型                   |                  説明                   |
 |:---------:|:---------------------------------------:|:----------------------------------------------:|
-| `result`  | [object](../concepts/fundamentals/01_programs.md) | The value of the key-value pair in the mapping |
+| `result`  | [object](../concepts/fundamentals/01_programs.md) | マッピング内のキーと値のペアの値 |

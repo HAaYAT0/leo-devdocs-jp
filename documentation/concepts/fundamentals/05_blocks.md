@@ -1,64 +1,62 @@
 ---
 id: blocks
-title: Blocks
-sidebar_label: Blocks
+title: ブロック
+sidebar_label: ブロック
 ---
 
-A **block** is a fundamental data structure for organizing Aleo [transactions](03_transactions.md) over time.
+**ブロック**は、Aleo の[トランザクション](03_transactions.md)を時系列に整理するための基本的なデータ構造です。
 
-## Components of a Block
+## ブロックの構成要素
 
-An Aleo block is serialized in the following format:
+Aleo のブロックは以下の形式でシリアライズされます。
 
 
-|    Parameter     |  Type  |                                        Description                                        |
+|    パラメーター     |  型  |                                        説明                                        |
 |:----------------:|:------:|:-----------------------------------------------------------------------------------------:|
-|   `block_hash`   | string |                                   The hash of the block                                   |
-| `previous_hash`  | string |                              The hash of the previous block                               |
-|     `header`     | object |                                  The header of the block                                  |
-|  `transactions`  | array  |                               The transactions in the block                               |
-| `ratificactions` | array  |                    The ratifications for proving rewards in the block                     |
-|    `coinbase`    | string | The coinbase puzzle solution constructed by accumulating the individual prover solutions. |
-|   `signature`    | string |                                The signature for the block                                |
+|   `block_hash`   | string |                                   ブロックのハッシュ                                   |
+| `previous_hash`  | string |                              直前のブロックのハッシュ                               |
+|     `header`     | object |                                  ブロックヘッダー                                  |
+|  `transactions`  | array  |                               ブロック内のトランザクション                               |
+| `ratificactions` | array  |                    報酬証明のためのラティフィケーション                     |
+|    `coinbase`    | string | 各プローバーの解を集約して構成されるコインベースパズルの解 |
+|   `signature`    | string |                                ブロックの署名                                |
 
-#### Transactions
+#### トランザクション
 
-The [**transactions**](./03_transactions.md) are a list of all transactions that are included in the specified block.
+[**トランザクション**](./03_transactions.md) には、該当ブロックに含まれるすべてのトランザクションが列挙されます。
 
-#### Block Header
+#### ブロックヘッダー
 
-The **block header** contains components that summarize the state of the specified block,
-as well as the state of the ledger at this point in history. See the [components of a block header](#components-of-a-block-header)
-for more details.
+**ブロックヘッダー**は、当該ブロックの状態と、その時点における台帳の状態を要約した情報を含みます。詳細は[ブロックヘッダーの構成要素](#components-of-a-block-header)を参照してください。
 
-## Components of a Block Header
+## ブロックヘッダーの構成要素
 
-An Aleo block header is serialized in the following format:
+Aleo のブロックヘッダーは次の形式でシリアライズされます。
 
-|          Parameter           |  Type  |                                   Description                                   |
+|          パラメーター           |  型  |                                   説明                                   |
 |:----------------------------:|:------:|:-------------------------------------------------------------------------------:|
-|    `previous_state_root`     | string | The Merkle root representing the blocks in the ledger up to the previous block. |
-|     `transactions_root`      | string |           The Merkle root representing the transactions in the block.           |
-|       `finalize_root`        | string | The Merkle root representing the on-chain finalize including the current block. |
-|     `ratifications_root`     | string |          The Merkle root representing the ratifications in the block.           |
-| `coinbase_accumulator_point` | string |                  The accumulator point of the coinbase puzzle.                  |
-|          `metadata`          | object |                           The metadata of the block.                            |
+|    `previous_state_root`     | string | 直前のブロックまでの台帳を表すマークルルート |
+|     `transactions_root`      | string |           ブロック内トランザクションを表すマークルルート           |
+|       `finalize_root`        | string | 現在のブロックを含むオンチェーン finalize を表すマークルルート |
+|     `ratifications_root`     | string |          ブロック内のラティフィケーションを表すマークルルート           |
+| `coinbase_accumulator_point` | string |                  コインベースパズルのアキュムレータポイント                  |
+|          `metadata`          | object |                           ブロックのメタデータ                            |
 
-#### Metadata
+#### メタデータ
 
-|           Parameter            | Type |                       Description                        |
+|           パラメーター            | 型 |                       説明                        |
 |:------------------------------:|:----:|:--------------------------------------------------------:|
-|           `network`            | u16  |               The network ID of the block                |
-|            `round`             | u64  |       The round that produced this block - 8 bytes       |
-|            `height`            | u32  |            The height of this block - 4 bytes            |
-| `total_supply_in_microcredits` | u64  |        The total supply of microcredits - 8 bytes        |
-|      `cumulative_weight`       | u128 |     The cumulative weight for this block - 16 bytes      |
-|   `cumulative_proof_weight`    | u128 |  The cumulative proof target for this block - 16 bytes   |
-|       `coinbase_target`        | u64  |       The coinbase target for this block - 8 bytes       |
-|         `proof_target`         | u64  |        The proof target for this block - 8 bytes         |
-|     `last_coinbase_target`     | u64  |   The coinbase target for the last coinbase - 8 bytes    |
-|   `last_coinbase_timestamp`    | u64  | The Unix timestamp (UTC) for the last coinbase - 8 bytes |
-|          `timestamp`           | i64  |    The Unix timestamp (UTC) for this block - 8 bytes     |
+|           `network`            | u16  |               ブロックのネットワーク ID                |
+|            `round`             | u64  |       このブロックを生成したラウンド（8 バイト）       |
+|            `height`            | u32  |            ブロックの高さ（4 バイト）            |
+| `total_supply_in_microcredits` | u64  |        マイクロクレジットの総供給量（8 バイト）        |
+|      `cumulative_weight`       | u128 |     このブロックの累積ウェイト（16 バイト）      |
+|   `cumulative_proof_weight`    | u128 |  このブロックの累積証明ターゲット（16 バイト）   |
+|       `coinbase_target`        | u64  |       ブロックのコインベースターゲット（8 バイト）       |
+|         `proof_target`         | u64  |        ブロックの証明ターゲット（8 バイト）         |
+|     `last_coinbase_target`     | u64  |   直近のコインベースのターゲット（8 バイト）    |
+|   `last_coinbase_timestamp`    | u64  | 直近のコインベースの Unix タイムスタンプ（UTC, 8 バイト） |
+|          `timestamp`           | i64  |    このブロックの Unix タイムスタンプ（UTC, 8 バイト）     |
 
 
 [//]: # (## Advanced Topics)

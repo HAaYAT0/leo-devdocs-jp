@@ -1,12 +1,12 @@
 ---
 id: getting_started
-title: Getting Started
-sidebar_label: Getting Started
+title: はじめに
+sidebar_label: はじめに
 ---
 
 import FeatureCard from '@site/src/components/FeatureCard/FeatureCard';
 
-### Start Developing on Aleo
+### Aleo で開発を始める
 
 <div style={{
   display: 'grid',
@@ -17,22 +17,22 @@ import FeatureCard from '@site/src/components/FeatureCard/FeatureCard';
 }}>
 
 <FeatureCard
-  title="🚀 Quick Start"
-  description="Build a Leo program and deploy it to Aleo."
+  title="🚀 クイックスタート"
+  description="Leo プログラムを作成し、Aleo へデプロイしましょう。"
   link="/guides/introduction/quick_start"
 />
 
 <FeatureCard
-  title="🦁 Local Setup"
-  description="Setup a local development environment."
+  title="🦁 ローカル環境の構築"
+  description="ローカル開発環境をセットアップします。"
   link="/guides/introduction/installation"
 />
 
 </div>
 
-### Create a Private Web App
+### プライベート Web アプリを作成する
 
-Follow hands-on tutorials to build and deploy private web apps directly in the browser.
+ブラウザだけでプライベート Web アプリを開発・デプロイできるハンズオンチュートリアルを体験しましょう。
 
 <div style={{
   display: 'grid',
@@ -43,14 +43,14 @@ Follow hands-on tutorials to build and deploy private web apps directly in the b
 }}>
 
 <FeatureCard
-  title="Make a Private Web App"
-  description="Build a private full stack app."
+  title="プライベート Web アプリを作ろう"
+  description="プライベートなフルスタックアプリを構築します。"
   link="https://github.com/ProvableHQ/zk-auction-example?tab=readme-ov-file#private-auctions-with-aleo"
 />
 
 <FeatureCard
-  title="Try Privacy on the Web"
-  description="Try a live privacy preserving web app."
+  title="Web でプライバシーを体験"
+  description="プライバシー保護機能を備えた Web アプリを実際に試せます。"
   link="https://stackblitz.com/github/ProvableHQ/zk-auction-example"
 />
 
@@ -74,7 +74,7 @@ Follow hands-on tutorials to build and deploy private web apps directly in the b
       listStyle: 'none',
       cursor: 'pointer',
     }}>
-      Private Application Demo
+      プライベートアプリのデモ
     </summary>
 
     <div style={{ padding: '1.25rem', background: '#151922' }}>
@@ -91,7 +91,7 @@ Follow hands-on tutorials to build and deploy private web apps directly in the b
           frameBorder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
-          title="Zero Knowledge Auctions"
+          title="ゼロ知識オークション"
         />
       </div>
     </div>
@@ -99,9 +99,9 @@ Follow hands-on tutorials to build and deploy private web apps directly in the b
 </div>
 
 
-## Learn Aleo
+## Aleo を学ぶ
 
-Learn the key concepts behind privacy preserving development with Aleo.
+Aleo でプライバシーを守る開発に必要な主要概念を学びましょう。
 
 <div style={{
   display: 'grid',
@@ -113,64 +113,62 @@ Learn the key concepts behind privacy preserving development with Aleo.
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
   <FeatureCard
-    title="Accounts"
-    description="Learn about Aleo accounts and how they work."
+    title="アカウント"
+    description="Aleo のアカウントとその仕組みを学びます。"
     link="/concepts/fundamentals/accounts"
   />
   <FeatureCard
-    title="Transfers"
-    description="Understand how private transfers work in Aleo."
+    title="送金"
+    description="Aleo におけるプライベート送金の動作を理解します。"
     link="/concepts/fundamentals/credits"
   />
   <FeatureCard
-    title="Fees"
-    description="Learn about transaction fees and how they're calculated."
+    title="手数料"
+    description="取引手数料の仕組みと計算方法を学びます。"
     link="/concepts/fundamentals/transaction_fees"
   />
 </div>
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
   <FeatureCard
-    title="Programs"
-    description="Explore how to write and deploy Aleo programs."
+    title="プログラム"
+    description="Aleo プログラムの作成とデプロイ方法を探究しましょう。"
     link="/concepts/fundamentals/programs"
   />
   <FeatureCard
-    title="Transactions"
-    description="Understand the structure and lifecycle of Aleo transactions."
+    title="トランザクション"
+    description="Aleo トランザクションの構造とライフサイクルを理解します。"
     link="/concepts/fundamentals/transactions"
   />
   <FeatureCard
-    title="Program State"
-    description="Learn about managing program state in Aleo."
+    title="プログラム状態"
+    description="Aleo でのプログラム状態の管理方法を学びます。"
     link="/concepts/fundamentals/public_private"
   />
 </div>
 
 </div>
 
-## Development Tools
+## 開発ツール
 
-### Authoring Aleo Programs
+### Aleo プログラムを記述する
 
-The tools below allow developers to author private programs for the Aleo Network.
+以下のツールを利用すると、Aleo ネットワーク向けのプライベートプログラムを作成できます。
 
 <!-- markdown-link-check-disable -->
-| Name                                         | Description                                                                                |
-|----------------------------------------------|--------------------------------------------------------------------------------------------|
-| [Aleo Instructions](/guides/aleo/aleo)     | Low-level assembly language supported by by the Aleo protocol for authoring Aleo programs. |
-| [Leo](https://docs.leo-lang.org/leo)         | Developer friendly programming language for writing private programs on Aleo.              |
-| [Leo Playground](https://play.leo-lang.org/) | A web-based IDE for writing and testing Leo programs.                                      |
+| 名称                                         | 説明                                                                                       |
+|----------------------------------------------|:-------------------------------------------------------------------------------------------|
+| [Aleo Instructions](/guides/aleo/aleo)        | Aleo プロトコルがサポートする低レベルのアセンブリ言語で、Aleo プログラムを記述できます。     |
+| [Leo](https://docs.leo-lang.org/leo)          | Aleo 上でプライベートプログラムを記述するための開発者向け言語です。                         |
+| [Leo Playground](https://play.leo-lang.org/)  | Leo プログラムを記述・テストできる Web ベースの IDE です。                                 |
 <!-- markdown-link-check-enable -->
 
-### SDKs for Creating Private Applications
+### プライベートアプリケーションを構築するための SDK
 
-The following SDKs exist for building private web and full stack applications on Aleo.
+以下の SDK を使うと、Aleo 上でプライベートな Web アプリやフルスタックアプリを構築できます。
 
-| Language        | SDK                                                                            | Use-Cases                                   |
-|-----------------|--------------------------------------------------------------------------------|---------------------------------------------|
-| Rust            | [snarkVM](https://github.com/ProvableHQ/snarkVM)                               | Rust-Based Aleo Apps
-| TypeScript/Wasm | [Provable SDK](https://docs.explorer.provable.com/docs/sdk/92sd7hgph3ggt-overview) | Node.JS Aleo Apps & Aleo Browser Extensions |                      |  
-| TypeScript      | [Puzzle SDK](https://docs.puzzle.online/)                                      | Aleo Browser Dapps                          |
-
-
+| 言語            | SDK                                                                            | ユースケース                                   |
+|-----------------|--------------------------------------------------------------------------------|-----------------------------------------------|
+| Rust            | [snarkVM](https://github.com/ProvableHQ/snarkVM)                               | Rust 製の Aleo アプリ                          |
+| TypeScript/Wasm | [Provable SDK](https://docs.explorer.provable.com/docs/sdk/92sd7hgph3ggt-overview) | Node.js 向け Aleo アプリとブラウザ拡張         |
+| TypeScript      | [Puzzle SDK](https://docs.puzzle.online/)                                      | Aleo 向けブラウザ Dapp                         |

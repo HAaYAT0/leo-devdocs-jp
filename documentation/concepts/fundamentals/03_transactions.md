@@ -1,129 +1,128 @@
 ---
 id: transactions
-title: Transactions
-sidebar_label: Transactions
+title: トランザクション
+sidebar_label: トランザクション
 ---
 
-A **transaction** is a fundamental data structure for publishing a new program or a set of state transitions on the ledger.
-On Aleo, a transaction is issued locally by a user using their Aleo private key, which corresponds to an on-chain Aleo account.
-Using tools like [Leo CLI](https://github.com/ProvableHQ/leo), [Provable SDK](https://docs.explorer.provable.com/docs/sdk/92sd7hgph3ggt-overview) 
-or ecosystem wallet adapters such as [Puzzle Wallet SDK](https://docs.puzzle.online/).
+**トランザクション**は、新しいプログラムまたは一連の状態遷移を台帳へ公開するための基本的なデータ構造です。
+Aleo では、ユーザーが自分の Aleo 秘密鍵（オンチェーンアカウントに対応）を用いてローカルからトランザクションを発行します。
+発行には [Leo CLI](https://github.com/ProvableHQ/leo)、[Provable SDK](https://docs.explorer.provable.com/docs/sdk/92sd7hgph3ggt-overview)、[Puzzle Wallet SDK](https://docs.puzzle.online/) などのツールを利用できます。
 
-## Types of Transactions
+## トランザクションの種類
 
-### Execute Transaction
-The execution transaction represents a call to an Aleo program function. Below is the structure of an execution transaction response:
+### 実行トランザクション
+実行トランザクションは、Aleo プログラムの関数呼び出しを表します。以下は実行トランザクションのレスポンス構造です。
 
-|    Parameter     |  Type  |                                   Description                                    |
+|    パラメーター     |  型  |                                   説明                                    |
 |:----------------:|:------:|:--------------------------------------------------------------------------------:|
-|      `type`      | string |                        The type of transaction (execute)                         |
-|       `id`       | string | The ID of transaction, computed via the Merkle Tree Digest of the transition IDs |
-|   `execution`    | object |                          The execution transaction info                          |
-|       `fee`      | object |                          The execution transaction fee                           |
+|      `type`      | string |                        トランザクション種別（`execute`）                         |
+|       `id`       | string | トランジション ID のマークル木ダイジェストから計算されるトランザクション ID |
+|   `execution`    | object |                          実行トランザクション情報                          |
+|       `fee`      | object |                          実行トランザクションの手数料                           |
 
-#### Execution Object Info
+#### execution オブジェクトの内容
 
-|      Parameter      | Type  |                            Description                            |
+|      パラメーター      | 型  |                            説明                            |
 |:-------------------:|:-----:|:-----------------------------------------------------------------:|
-| `global_state_root` |  u16  |             The global state root of the merkle tree              |
-|    `transitions`    | array |              The [transitions](./04_transitions.md)               |
-|       `proof`       | string|                   ZK proof of the execution                       |
+| `global_state_root` |  u16  |             マークル木のグローバルステートルート              |
+|    `transitions`    | array |              [トランジション](./04_transitions.md) の配列               |
+|       `proof`       | string|                   実行のゼロ知識証明                       |
 
-#### Relationship of Transaction and Transition
+#### トランザクションとトランジションの関係
 
-- A **Transaction** is the top-level unit that represents a complete operation. A **Transition** is a lower-level component that represents an individual state change within a **Transaction**.
-- A **Transaction** can contain multiple **Transition** objects. An Execution, which is part of a **Transaction**, includes a collection of **Transitions**.
-- A **Transaction** may contain multiple **Transitions**, especially in cases involving multiple cross-program calls.
+- **トランザクション**は、1 つの操作全体を表すトップレベルの単位です。**トランジション**は、トランザクション内の個々の状態変化を表す下位の要素です。
+- **トランザクション**には複数の**トランジション**が含まれる場合があります。トランザクションの一部である Execution には、複数のトランジションがまとめて含まれます。
+- **トランザクション**はクロスプログラム呼び出しが複数発生するケースでは複数の**トランジション**を保持します。
 
-For more information of a **Transition**, please refer to [Transitions](./04_transitions.md).
+**トランジション**の詳細は [Transitions](./04_transitions.md) を参照してください。
 
-#### Building an execution transaction using Leo CLI
+#### Leo CLI を用いた実行トランザクションの作成
 
-**Required Details:**
-- Program ID (name of deployed program)
-- Function name to execute
-- Arguments to the function
-- Network ID (`testnet` or `mainnet`)
-- Private key of the caller (or specify in .env from project directory)
+**必須情報:**
+- プログラム ID（デプロイ済みプログラム名）
+- 実行する関数名
+- 関数への引数
+- ネットワーク ID（`testnet` または `mainnet`）
+- 呼び出し元の秘密鍵（またはプロジェクトディレクトリの .env に記載）
 
-**Optional Parameters:**
-- Broadcast flag (to send to the network or not)
-- Private fees
-- Priority fees
+**任意パラメータ:**
+- ブロードキャストフラグ（ネットワークへ送信するかどうか）
+- プライベート手数料
+- 優先手数料
 
-### Deploy Transaction
-The deployment transaction publishes an Aleo program to the network.
+### デプロイトランザクション
+デプロイトランザクションは、Aleo プログラムをネットワークへ公開します。
 
-|  Parameter   |  Type  |                                   Description                                    |
+|  パラメーター   |  型  |                                   説明                                    |
 |:------------:|:------:|:--------------------------------------------------------------------------------:|
-|    `type`    | string |                         The type of transaction (deploy)                         |
-|     `id`     | string | The ID of transaction, computed via the Merkle Tree Digest of the transition IDs |
-|   `owner`    | object |                         The owner address and signature                          |
-| `deployment` | object |                         The deployment transaction info                          |
-|    `fee`     | object |                          The deployment transaction fee                          |
+|    `type`    | string |                         トランザクション種別（`deploy`）                         |
+|     `id`     | string | トランジション ID のマークル木ダイジェストから計算されるトランザクション ID |
+|   `owner`    | object |                         所有者アドレスと署名                          |
+| `deployment` | object |                         デプロイトランザクション情報                          |
+|    `fee`     | object |                          デプロイトランザクションの手数料                          |
 
-#### Deployment Object Info
+#### deployment オブジェクトの内容
 
-|      Parameter      | Type  |                            Description                            |
+|      パラメーター      | 型  |                            説明                            |
 |:-------------------:|:-----:|:-----------------------------------------------------------------:|
-| `global_state_root` |  u16  |             The global state root of the merkle tree              |
-|    `transitions`    | array |              The [transitions](./04_transitions.md)               |
+| `global_state_root` |  u16  |             マークル木のグローバルステートルート              |
+|    `transitions`    | array |              [トランジション](./04_transitions.md) の配列               |
 
-#### Building a deployment transaction
+#### デプロイトランザクションの作成
 
-**Required Details:**
-- Compiled Leo program in Aleo Instructions
-- Network ID (`testnet` or `mainnet`)
-- Private key of the deployer (or specify in .env from project directory)
+**必須情報:**
+- Aleo instructions へコンパイル済みの Leo プログラム
+- ネットワーク ID（`testnet` または `mainnet`）
+- デプロイ実行者の秘密鍵（またはプロジェクトディレクトリの .env に記載）
 
-**Optional Parameters:**
-- Private fees
-- Priority fees
+**任意パラメータ:**
+- プライベート手数料
+- 優先手数料
 
-### Fee Transaction
-A fee transaction represents the network fee paid for processing. Rejected transactions are included in blocks as confirmed "rejected" transactions. In those cases, a new transaction ID is generated alongside a valid fee transaction to ensure the fee is charged. In normal successful execution case, the fee is recorded as a transition object within the execution or deployment transaction. 
+### 手数料トランザクション
+手数料トランザクションは、処理に対して支払われるネットワーク手数料を表します。拒否されたトランザクションは、ブロック内で「rejected」として確定扱いで記録されます。その際、手数料を確実に徴収するために、新しいトランザクション ID を持つ正当な手数料トランザクションが生成されます。通常の成功ケースでは、手数料は実行またはデプロイトランザクション内のトランジションオブジェクトとして記録されます。 
 
-| Parameter |  Type  |                                   Description                                    |
+| パラメーター |  型  |                                   説明                                    |
 |:---------:|:------:|:--------------------------------------------------------------------------------:|
-|  `type`   | string |                          The type of transaction (fee)                           |
-|   `id`    | string | The ID of transaction, computed via the Merkle Tree Digest of the transition IDs |
-|   `fee`   | object |                           The rejected transaction fee                           |
+|  `type`   | string |                          トランザクション種別（`fee`）                           |
+|   `id`    | string | トランジション ID のマークル木ダイジェストから計算されるトランザクション ID |
+|   `fee`   | object |                           拒否されたトランザクションに紐づく手数料                           |
 
-Transaction fees are calculated based on the size of the transaction and how complicated operations the validators need to do. Fees can be paid in public or private with Aleo Credits records.
-For more detailed information about transaction fees, please refer to [Transaction Fees](./03A_transaction_fees.md). 
+トランザクション手数料は、トランザクションのサイズと、バリデータが実行する処理の複雑さに基づいて算出されます。手数料は Aleo クレジットのレコードを用いて公開または秘匿で支払えます。
+詳細は [トランザクション手数料](./03A_transaction_fees.md) を参照してください。 
 
-## Transaction Lifecycle
+## トランザクションライフサイクル
 
 <div align="center">
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'fontSize': '12px'}, 'flowchart': {'nodeSpacing': 25, 'rankSpacing': 40}}}%%
 flowchart TD
-    subgraph LOCAL ["🖥️ LOCAL CLIENT"]
+    subgraph LOCAL ["🖥️ ローカルクライアント"]
         direction TB
         SPACER1[" "]
-        A["🔑 User Initiates<br/>Private Key + Inputs"] 
-        A --> TYPE{"📋 Transaction Type"}
+        A["🔑 ユーザーが開始<br/>秘密鍵 + 入力データ"] 
+        A --> TYPE{"📋 トランザクション種別"}
         
         %% Execution Path
-        TYPE -->|Execute| B1["📥 Download Programs<br/>& SRS (or use cached)"]
-        B1 --> C1["🔍 Add Program<br/>to VM Process"]
-        C1 --> D1["✍️ Authorization<br/>Sign Function Call"]
-        D1 --> |Delegate| D1b
-        subgraph EXTERNAL ["🔐 External Prover"]
-            D1b["Delegate Transaction<br/>to Prover"]
+        TYPE -->|実行| B1["📥 プログラムと SRS を取得<br/>(またはキャッシュを使用)"]
+        B1 --> C1["🔍 プログラムを<br/>VM プロセスへ追加"]
+        C1 --> D1["✍️ 認証処理<br/>関数呼び出しへ署名"]
+        D1 --> |委任| D1b
+        subgraph EXTERNAL ["🔐 外部プローバー"]
+            D1b["トランザクションを<br/>プローバーへ委任"]
         end
-        D1 --> |Run Locally| E1["⚙️ Local Execution<br/>Run VM & Generate Proofs"]
+        D1 --> |ローカル実行| E1["⚙️ ローカル実行<br/>VM を動かし証明生成"]
         D1b --> F1
-        E1 --> F1["💰 Fee Calculation<br/>Based on Execution Cost"]
-        F1 --> G1["📦 Transaction Assembly<br/>Execution + Fee + Proofs"]
+        E1 --> F1["💰 手数料計算<br/>実行コストに基づく"]
+        F1 --> G1["📦 トランザクション組み立て<br/>実行 + 手数料 + 証明"]
         
         %% Deployment Path
-        TYPE -->|Deploy| B2["📝 Leo Compilation<br/>Source → Aleo Bytecode"]
-        B2 --> C2["🔧 Key Synthesis<br/>Generate Verifying Keys"]
-        C2 --> D2["✍️ Authorization<br/>Sign Deployment"]
-        D2 --> F2["💰 Fee Calculation<br/>Based on Program Size"]
-        F2 --> G2["📦 Transaction Assembly<br/>Deployment + Fee + Keys"]
+        TYPE -->|デプロイ| B2["📝 Leo コンパイル<br/>ソース → Aleo バイトコード"]
+        B2 --> C2["🔧 鍵合成<br/>検証鍵を生成"]
+        C2 --> D2["✍️ 認証処理<br/>デプロイへ署名"]
+        D2 --> F2["💰 手数料計算<br/>プログラムサイズに基づく"]
+        F2 --> G2["📦 トランザクション組み立て<br/>デプロイ + 手数料 + 鍵"]
         
         SPACER2[" "]
     end
@@ -131,23 +130,23 @@ flowchart TD
     G1 --> H
     G2 --> H
     
-    subgraph NETWORK ["🌐 ALEO NETWORK"]
+    subgraph NETWORK ["🌐 ALEO ネットワーク"]
         direction TB
         SPACER3[" "]
-        H["📡 Broadcast<br/>to Validators"] 
-        H --> I["⏳ Mempool<br/>Unconfirmed Transaction"]
-        I --> J["🤝 Consensus<br/>AleoBFT"]
-        J --> K{"✅❌🚫<br/>Decision"}
-        K -->|Accepted| L["✅ Add to proposed Block<br/>as ConfirmedTransaction::Accepted"]
-        K -->|Rejected| M["💸 Add Fees to proposed Block<br/>and reject original Transaction<br/>as ConfirmedTransaction::Rejected"]
-        K -->|Aborted| P["🚫 Transaction Aborted<br/>No Block Inclusion"]
-        L --> N["🔄 Finalization<br/>State Updates"]
+        H["📡 ブロードキャスト<br/>バリデータへ送信"] 
+        H --> I["⏳ メモリプール<br/>未確定トランザクション"]
+        I --> J["🤝 コンセンサス<br/>AleoBFT"]
+        J --> K{"✅❌🚫<br/>判定"}
+        K -->|承認| L["✅ 提案ブロックへ追加<br/>ConfirmedTransaction::Accepted"]
+        K -->|拒否| M["💸 手数料を提案ブロックへ追加<br/>元のトランザクションを Rejected として記録"]
+        K -->|中断| P["🚫 トランザクション中断<br/>ブロックへ含まれない"]
+        L --> N["🔄 ファイナライズ<br/>ステート更新"]
         M --> N
-        N --> O["🌐 Sync<br/>Network Update"]
+        N --> O["🌐 同期<br/>ネットワーク更新"]
         SPACER4[" "]
     end
     
-    O -.->|"📊 Query Status"| A
+    O -.->|"📊 ステータス照会"| A
     
     style LOCAL fill:#1a202c,stroke:#2d3748,stroke-width:2px,color:#ffffff
     style NETWORK fill:#1a202c,stroke:#2d3748,stroke-width:2px,color:#ffffff
@@ -183,120 +182,44 @@ flowchart TD
 
 </div>
 
-[//]: # ()
-[//]: # (#### Deploy Transaction)
+## トランザクションステータスの判定
 
-[//]: # ()
-[//]: # (|    Parameter     |  Type  |              Description               |)
+Aleo のバリデータによって処理されたトランザクションは、次のいずれかの状態になります。
 
-[//]: # (|:----------------:|:------:|:--------------------------------------:|)
-
-[//]: # (|      `type`      | string |        The type of transaction         |)
-
-[//]: # (|       `id`       | string |         The ID of transaction          |)
-
-[//]: # (|   `deployment`   | object |    The deployment transaction info     |)
-
-[//]: # (| `additional_fee` | object | The additional fee for the transaction |)
-
-[//]: # ()
-[//]: # (#### Deployment Info)
-
-[//]: # ()
-[//]: # (|    Parameter     |  Type   |                             Description                              |)
-
-[//]: # (|:----------------:|:-------:|:--------------------------------------------------------------------:|)
-
-[//]: # (|    `edition`     |   u16   |                             The edition                              |)
-
-[//]: # (|    `program`     | object  |                             The program                              |)
-
-[//]: # (| `verifying_keys` | mapping | The mapping of function names to their verifying key and certificate |)
-
-[//]: # ()
-[//]: # (## Advanced Topics)
-
-[//]: # ()
-[//]: # (### Creating Transactions)
-
-[//]: # ()
-[//]: # (The steps to create a transaction are as follows:)
-
-[//]: # ()
-[//]: # (1. Generate the serial numbers of the records being spent)
-
-[//]: # (2. Generate the new records)
-
-[//]: # (3. Generate the program commitment)
-
-[//]: # (4. Generate the local data commitment)
-
-[//]: # (5. Generate the transaction signatures)
-
-[//]: # (6. Generate the ledger digest and [ledger membership witnesses]&#40;06_glossary.md#ledger-membership-witness&#41; for the input record commitments )
-
-[//]: # (7. Generate the inner SNARK proof)
-
-[//]: # (8. Generate the program SNARK proofs)
-
-[//]: # (9. Generate the transaction proof)
-
-[//]: # (10. Compose the transaction with the attributes above)
-
-[//]: # ()
-[//]: # ()
-[//]: # (### Verifying Transactions)
-
-[//]: # ()
-[//]: # (The steps to verify a transaction are as follows:)
-
-[//]: # ()
-[//]: # (1. Verify that each serial number in `old_serial_numbers` does not already exist in the ledger.)
-
-[//]: # (2. Verify that each commitment in `new_commitments` does not already exist in the ledger.)
-
-[//]: # (3. Verify that the memo `memorandum` does not already exist in the ledger.)
-
-[//]: # (4. Verify that the transaction proof `transaction_proof` verifies.)
-
-## Determining Transaction Status
-
-Transactions processed by Aleo validators achieve one of the following states:
-
-| Status | Description |
+| ステータス | 説明 |
 |:------:|:------------|
-| `accepted` | The underlying deployment or execution was successful, and the associated fee was consumed. The transaction has a confirmed ID. |
-| `rejected` | The deployment or execution logic failed. Validators process the fee as an independent fee transaction. The original transaction has an unconfirmed ID, while the fee transaction has a confirmed ID. |
-| `aborted` | Both the deployment/execution logic and fee processing failed. The transaction is aborted. |
+| `accepted` | デプロイまたは実行が成功し、対応する手数料が消費されました。トランザクションには確定済み ID が付きます。 |
+| `rejected` | デプロイまたは実行ロジックが失敗しました。バリデータは手数料を独立した手数料トランザクションとして処理します。元のトランザクションは未確定 ID のままですが、手数料トランザクションには確定 ID が付きます。 |
+| `aborted` | デプロイ/実行ロジックと手数料処理の両方が失敗しました。トランザクションは中断されます。 |
 
 :::note
-Transactions may not be included in any block when not selected from the mempool by validators during high network load conditions.
+ネットワークが混雑している場合、バリデータがメモリプールから選択しなかったトランザクションはブロックへ含まれない場合があります。
 :::
 
-### Method 1: Parsing Transactions from Blocks
+### 方法 1: ブロックからトランザクションを解析する
 
-Transaction status can be determined by processing blocks retrieved via:  
+次の API で取得したブロックを処理することで、トランザクションステータスを判別できます。  
 
-- `GET /<network>/block/{height}` - snarkOS node endpoint
-- [Get block by height or hash](https://docs.explorer.provable.com/docs/api-reference/8sqnes7uvwe05-get-block-by-height-or-hash) on the Provable explorer
+- `GET /<network>/block/{height}` — snarkOS ノードのエンドポイント
+- Provable Explorer の [Get block by height or hash](https://docs.explorer.provable.com/docs/api-reference/8sqnes7uvwe05-get-block-by-height-or-hash)
 
-Transaction status can be determined from a block response as follows:
+ブロックレスポンスからトランザクションステータスを判定する手順は以下のとおりです。
 
-#### Accepted Transactions
-- Get the list of transactions using `echo response | jq .transactions`
-- The transaction JSON contains `"status": "accepted"`
-- The transaction id is present in `echo transaction | jq .transaction.id`
+#### 承認 (`accepted`) トランザクション
+- `echo response | jq .transactions` でトランザクション一覧を取得する
+- トランザクション JSON に `"status": "accepted"` が含まれている
+- トランザクション ID は `echo transaction | jq .transaction.id` で確認できる
 
-#### Rejected Transactions
-- Get the list of transactions using `echo response | jq .transactions`
-- The transaction JSON contains `"status": "rejected"`
-- The confirmed transaction id is present in `echo transaction | jq .transaction.id`
-- The associated unconfirmed transaction id can be acquired by:
-  - Calling `GET /<network>/unconfirmed/{confirmed id}` and calling `echo transaction | jq .transaction.id`
-  - You can also hit `https://api.explorer.provable.com/v1/mainnet/transaction/unconfirmed/{ID}`
+#### 拒否 (`rejected`) トランザクション
+- `echo response | jq .transactions` でトランザクション一覧を取得する
+- トランザクション JSON に `"status": "rejected"` が含まれている
+- 確定済みトランザクション ID は `echo transaction | jq .transaction.id` で確認できる
+- 連動する未確定トランザクション ID は以下のいずれかで取得する
+  - `GET /<network>/unconfirmed/{confirmed id}` を呼び、`echo transaction | jq .transaction.id` を実行
+  - `https://api.explorer.provable.com/v1/mainnet/transaction/unconfirmed/{ID}` を利用する
 
-#### Aborted Transactions
-- Get the list of aborted ids using `echo response | jq .aborted_transaction_ids`
+#### 中断 (`aborted`) トランザクション
+- `echo response | jq .aborted_transaction_ids` で中断されたトランザクション ID の一覧を取得する
 
 #### SDK - getConfirmedTransaction
 
@@ -310,25 +233,25 @@ const status = await net.getConfirmedTransaction(txId);
 console.log(status.status);
 ```
 
-### Method 2: Directly Querying Transaction Status
+### 方法 2: トランザクションステータスを直接問い合わせる
 
-An alternative way to get feedback on the status of transactions, is to call the following endpoint.
+トランザクションの状態を直接確認する場合は以下のエンドポイントを利用します。
 
-- `GET /<network>/transaction/confirmed/{transaction id}` on a fully synced snarkOS node REST endpoint
-- [Get transaction by ID](https://docs.explorer.provable.com/docs/api-reference/bqly6ukna97b6-get-transaction-by-id) on the Provable explorer
+- `GET /<network>/transaction/confirmed/{transaction id}` — 同期済み snarkOS ノードの REST エンドポイント
+- Provable Explorer の [Get transaction by ID](https://docs.explorer.provable.com/docs/api-reference/bqly6ukna97b6-get-transaction-by-id)
 
-If the transaction was accepted, `echo $transaction | jq .type` will say "execute"  
-If the transaction was rejected, `echo $transaction | jq .type` will say "fee"
+トランザクションが承認された場合、`echo $transaction | jq .type` は `"execute"` を返します。  
+拒否された場合は `"fee"` を返します。
 :::note
-Currently no API endpoint is available to quickly check whether a transaction was aborted.
+トランザクションが中断されたかどうかを即座に確認する API エンドポイントは現在提供されていません。
 :::
 
-Given a confirmed transaction id, you can find the block it was included in using:
+確定済みトランザクション ID が分かっている場合、以下で含まれるブロックを特定できます。
 
-- `GET /<network>/find/blockHash//{transaction id}` on a fully synced snarkOS node REST endpoint
-- [Get block hash for transaction ID](https://docs.explorer.provable.com/docs/api-reference/8ka85a1oq8iau-get-block-hash-for-transaction-id) on the Provable explorer
+- `GET /<network>/find/blockHash//{transaction id}` — 同期済み snarkOS ノードの REST エンドポイント
+- Provable Explorer の [Get block hash for transaction ID](https://docs.explorer.provable.com/docs/api-reference/8ka85a1oq8iau-get-block-hash-for-transaction-id)
 
-#### SDK - fetchData and getBlockByHash
+#### SDK - fetchData と getBlockByHash
 
 ```javascript
 import { AleoNetworkClient } from '@provablehq/sdk/mainnet.js';
@@ -343,30 +266,30 @@ const block = await net.getBlockByHash(res)
 console.log(block.header.metadata.height);
 ```
 
-### Parsing the Sender Address from transfer_public or transfer_public_as_signer Executions
+### transfer_public / transfer_public_as_signer 実行から送信者アドレスを抽出する
 
-Note that the sender address might be an externally owned account (EOA), i.e. owned by a user, or it might be the address of an Aleo program.
+送信者アドレスはユーザー所有の EOA（Externally Owned Account）の場合と、Aleo プログラムのアドレスの場合があります。
 
-The sender address of a Transaction is present as the first argument of the first output. The following will return a human readable string containing the public values of the first output.
+トランザクションの送信者アドレスは、最初の出力の第一引数に含まれます。以下のコマンドで、最初の出力に含まれる公開値を読みやすい文字列で取得できます。
 
 ```bash
 echo $transaction | jq '.execution.transitions[0].outputs[0].value'
 ```
 
-Unfortunately, the current snarkOS and explorer REST endpoints return execution outputs as a string which is not compatible with JSON. You'll still need to extract the first value from it. The sender address can be parsed for example using a regex or by parsing out the 5th line:
+残念ながら、現時点の snarkOS および Explorer の REST エンドポイントは実行結果を JSON と互換性のない文字列で返します。そのため、最初の値を抽出する必要があります。送信者アドレスは正規表現、もしくは次のように 5 行目を抜き出すことで取得できます。
 
 ```bash
 echo $(echo $transaction | jq '.execution.transitions[0].outputs[0].value') | sed -n '5p'
 ```
 
-### Summarized Block Contents
+### ブロック内容の概要
 
-A block contains confirmed transactions.
+ブロックには確定済みトランザクションが含まれます。
 
-A confirmed transaction can either have status "accepted" or "rejected", and type "deploy" or "execute", and it contains a "transaction" and optional "rejected" object.
+確定済みトランザクションは `accepted` または `rejected` のステータス、`deploy` または `execute` のタイプを持ち、`transaction` オブジェクトと任意の `rejected` オブジェクトを含みます。
 
-- A "transaction" can have type "fee", "execute" or "deploy".
-- A "rejected" can have type "execution" or "deployment".
+- `transaction` は `fee` / `execute` / `deploy` のいずれかのタイプを持ちます。
+- `rejected` は `execution` または `deployment` のタイプを持ちます。
 
 ```json
 {

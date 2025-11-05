@@ -1,99 +1,99 @@
 ---
 id: snarkos_contribute
-title: SnarkOS Contribution
-sidebar_label: SnarkOS Contribution
+title: SnarkOS への貢献
+sidebar_label: SnarkOS への貢献
 ---
-This checklist provides a step-by-step guide for restarting the Aleo network with new features merged. Follow these steps to ensure a smooth process.  
+このチェックリストは、新機能を取り込んだ状態で Aleo ネットワークを再始動する手順をまとめたものです。円滑に進めるために、以下のステップを順番に実施してください。
 
-## Branches Overview
-[**staging branch**](https://github.com/AleoNet/snarkOS)  
-- This branch serves as a staging area for the integration and initial testing of changes before they are promoted to the mainnet branch. 
+## ブランチの概要
+[**staging ブランチ**](https://github.com/AleoNet/snarkOS)  
+- 本番ブランチへ昇格させる前の統合および初期テストを行うステージング領域です。
 
-[**mainnet branch**](https://github.com/AleoNet/snarkOS/tree/mainnet)  
-- The production branch where only stable and thoroughly tested changes are merged. It is used for creating production releases. It is always a direct mirror of a staging commit.
+[**mainnet ブランチ**](https://github.com/AleoNet/snarkOS/tree/mainnet)  
+- 安定性が確認された変更のみをマージする本番ブランチです。プロダクションリリースの作成に使用され、常に staging のコミットを直接ミラーします。
 
-## Networks Overview
-### DevNet(s)
-- Initial proposed changes are implemented and tested on DevNets.
-- Snarkops - aims to provide guides and scripts for managing SnarkOS and participating in ANF's CanaryNet. 
+## ネットワークの概要
+### DevNet
+- 提案された変更はまず DevNet に実装され、テストされます。
+- Snarkops は SnarkOS の管理や ANF の CanaryNet 参加に関するガイド・スクリプトを提供することを目的としています。
 
-### CanaryNet (running staging branch)
-- Changes are merged into CanaryNet from DevNet for testing and validation.
-- CanaryNet is used to onboard additional validators before potentially bonding them to Testnet Beta/Mainnet.
-- Validators are bonded by the ANF.
-- snarkOS github tag standard: `canary-v*`. [Link to tags](https://github.com/AleoNet/snarkOS/tags).
-- [Explorer for canary](https://vision.snarkos.net/?blocks) 
+### CanaryNet（staging ブランチを運用）
+- DevNet での検証を経た変更が CanaryNet にマージされ、追加のテストと検証が行われます。
+- CanaryNet は、将来的に Testnet Beta や Mainnet に参加する可能性のあるバリデータをオンボーディングする場です。
+- バリデータのボンディングは ANF が行います。
+- snarkOS の GitHub タグ命名規則: `canary-v*`。 [タグ一覧はこちら](https://github.com/AleoNet/snarkOS/tags)。
+- [CanaryNet のエクスプローラー](https://vision.snarkos.net/?blocks)
 
-### Testnet Beta (running mainnet branch)
-- Open, public network for testing applications in a production-like environment without incurring costs.
-- Validators are bonded by the Aleo Network Foundation.
-- ANF and Provable initially run the validators.
-- Demox Labs and Puzzle run public faucets
-- snarkOS github tag standard: `testnet-beta-v*` [Link to tags](https://github.com/AleoNet/snarkOS/tags).
-- [Explorer for Testnet Beta](https://vision.snarkos.net/?blocks) 
+### Testnet Beta（mainnet ブランチを運用）
+- 本番に近い環境でアプリケーションをテストできるオープンなネットワークで、コストは発生しません。
+- バリデータのボンディングは Aleo Network Foundation が担当します。
+- 当初は ANF と Provable がバリデータを運用します。
+- Demox Labs と Puzzle が公開ファーセットを提供します。
+- snarkOS の GitHub タグ命名規則: `testnet-beta-v*`。 [タグ一覧はこちら](https://github.com/AleoNet/snarkOS/tags)。
+- [Testnet Beta のエクスプローラー](https://vision.snarkos.net/?blocks)
 
-### Mainnet (running mainnet branch)
-- The final testing stage before full production deployment.
-- Intended to be the “last stop” for new code and/or validator onboarding.
-- Will run concurrently with Testnet Beta before becoming the canonical Mainnet.
-- snarkOS github tag standard: `mainnet-v*` [Link to tags](https://github.com/AleoNet/snarkOS/tags).
-- [Explorer for Mainnet](https://vision.snarkos.net/?blocks)
+### Mainnet（mainnet ブランチを運用）
+- 本番稼働前の最終テスト段階です。
+- 新しいコードやバリデータのオンボーディングが行われる最終チェックポイントとして想定されています。
+- 本番の Mainnet になる前は Testnet Beta と並行して稼働します。
+- snarkOS の GitHub タグ命名規則: `mainnet-v*`。 [タグ一覧はこちら](https://github.com/AleoNet/snarkOS/tags)。
+- [Mainnet のエクスプローラー](https://vision.snarkos.net/?blocks)
 
-## Contribution Workflow [ snarkOS ]
+## SnarkOS への貢献ワークフロー
 
 <p align="center" width="100%">
-<img src={require("./images/snarkos_contribute_flow.png").default} alt="SnarkOS Contribution Diagram"></img>
+<img src={require("./images/snarkos_contribute_flow.png").default} alt="SnarkOS への貢献フロー図"></img>
 </p>
 
-**1. Fork the Repository**
-    - Fork the repository from the staging branch to your own GitHub account.
-    - Clone your fork locally.
+**1. リポジトリをフォークする**
+    - staging ブランチからリポジトリをフォークし、自分の GitHub アカウントにコピーします。
+    - フォークしたリポジトリをローカルにクローンします。
 
 ```sh
 git clone git@github.com:AleoNet/snarkOS.git
 git remote add upstream git@github.com:AleoNet/snarkOS.git
 ```
 
-**2. Switch to the base branch**
+**2. ベースブランチへ切り替える**
 ```sh
 git switch staging
 ```
 
-**3. Create a Feature Branch**
-- Create a feature branch from your fork's main branch.
+**3. 機能ブランチを作成する**
+- フォークしたリポジトリの main ブランチから機能ブランチを作成します。
 ```sh
 git checkout -b feat/my-branch
 ```
 
-**4.  Develop Your Feature/Fix and Test**
-- Develop your feature or fix in your forked repository.
-- Run `./snarkOS/devnet.sh` 
-- Make sure to approve the option to re-install the snarkOS binary so you test with your current local snarkOS code.
-- See that the network progresses blocks normally and send some transactions for further confirmation of network stability.
-- Run any specific tests to your feature/fix.
+**4. 機能改善・修正を開発しテストする**
+- フォークしたリポジトリで開発を進めます。
+- `./snarkOS/devnet.sh` を実行します。
+- 現在のローカルコードでテストするため、snarkOS バイナリの再インストールを許可してください。
+- ネットワークが通常どおりブロックを生成すること、トランザクションを送信して安定性を確認します。
+- 機能や修正に応じたテストを実行します。
 
-**5. Push your code to Fix branch**
-- Commit changes with meaningful commit messages that clearly describe the changes and their purpose.
-- Push changes to your fork.
+**5. 修正ブランチへコードをプッシュする**
+- 変更内容と目的がわかるコミットメッセージでコミットします。
+- 変更をフォークへプッシュします。
 ```sh
 git add .
 git commit -m "Add detailed description of the changes"
 git push
 ```
 
-**6. Submit a PR to Your Fork's Main Branch**
-- Submit a pull request (PR) from your feature branch to your fork's main branch.
-- This triggers the CI pipeline in your fork to run automated tests.
+**6. フォークの main ブランチへ PR を送る**
+- 機能ブランチからフォークの main ブランチに向けて Pull Request (PR) を作成します。
+- これによりフォーク側の CI パイプラインが起動し、自動テストが実行されます。
 
-**7. Internal Code Review**
-- Request an internal code review from your team within your forked repository.
-- Team members review the code, suggest changes, and approve the PR if it meets the quality standards.
-- The CI pipeline is run again to ensure no new issues have been introduced during the review process.
+**7. 社内コードレビュー**
+- チーム内のレビュアーに PR のレビューを依頼します。
+- チームメンバーがコードを確認し、必要に応じて修正を提案し、品質基準を満たせば承認します。
+- レビュー時に新しい問題が発生していないか確認するため、CI パイプラインを再実行します。
 
-**8. Submit a PR to the Main AleoNet/snarkOS Repository**
-- After internal approval, submit a PR from your fork's main branch to the main AleoNet/snarkOS repository's staging branch.
-- This triggers the main CI pipeline to run all relevant tests and checks again to ensure the code's stability and compatibility.
+**8. AleoNet/snarkOS リポジトリへ PR を送る**
+- 社内レビューを通過したら、フォークの main ブランチから AleoNet/snarkOS の staging ブランチに向けて PR を作成します。
+- これにより本家リポジトリの CI パイプラインが起動し、関連するテストやチェックがすべて実行されます。
 
-**9. Review by Core Team**
-- Core team members review the PR in the main AleoNet/snarkOS repository.
-- If the CI pipeline passes and the review is successful, the PR is approved.
+**9. コアチームによるレビュー**
+- AleoNet/snarkOS リポジトリでコアチームが PR をレビューします。
+- CI が成功し、レビューも問題なければ PR が承認されます。

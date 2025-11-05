@@ -1,7 +1,7 @@
 ---
 id: get_committee
-title: Get Committee
-sidebar_label: Get Committee
+title: 委員会を取得
+sidebar_label: 委員会を取得
 ---
 
 ```bash title=ENDPOINT
@@ -12,14 +12,14 @@ GET /{network}/committee/latest
 GET /{network}/latest/committee
 ```
 
-Returns the list of current committee members and their stake.
+現在の委員会メンバーとステークの一覧を返します。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
+### レスポンス
 
-| Parameter |                  Type                  |         Description          |
+| パラメーター |                  型                  |         説明          |
 |:---------:|:--------------------------------------:|:----------------------------:|
-| `result`  | [array](../concepts/fundamentals/00_accounts.md) | The latest committee members |
+| `result`  | [array](../concepts/fundamentals/00_accounts.md) | 最新の委員会メンバー |

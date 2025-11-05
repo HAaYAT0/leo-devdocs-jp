@@ -1,29 +1,29 @@
 ---
 id: aleo_account_keys
-title: Aleo Account Keys
-sidebar_label: Aleo Account Keys
+title: Aleo アカウントキー
+sidebar_label: Aleo アカウントキー
 ---
 
-An Aleo account is similar to accounts on other blockchain platforms but designed with a focus on privacy, leveraging cryptographic techniques unique to the platform. Here's a detailed breakdown of the components of an Aleo account and the processes involved in generating addresses, public keys, and private keys:
+Aleo アカウントは他のブロックチェーンプラットフォームにおけるアカウントと似ていますが、独自の暗号技術を活用してプライバシーを重視するよう設計されています。ここでは、Aleo アカウントを構成する要素と、アドレス・公開鍵・秘密鍵の生成に関わるプロセスを詳しく説明します。
 
-## **Account Structure**
+## **アカウント構造**
 
-- **Private Key**: This is the secret key that an account holder must protect. It is used to sign transactions and prove ownership of the account. In Aleo, the private key is typically a large random number.
-- **Public Key**: Derived from the private key using cryptographic algorithms, the public key is used to receive transactions. It is safe to share publicly as it does not expose the private key.
-- **Address**: The address is a user-friendly representation of the public key. It is what other users will use to send Aleo to your account. The address is usually derived from the public key through a series of cryptographic hash functions and encoding techniques, ensuring it is both unique and verifiable.
+- **秘密鍵**: アカウント保有者が厳重に保護しなければならない鍵です。トランザクションに署名し、アカウントの所有権を証明するために使用します。Aleo では、秘密鍵は通常大きなランダム数として生成されます。
+- **公開鍵**: 暗号アルゴリズムを用いて秘密鍵から導出される鍵です。トランザクションを受け取るために使用し、秘密鍵を明らかにすることなく公開してかまいません。
+- **アドレス**: 公開鍵をユーザーにとって扱いやすい形式へ変換したものです。他のユーザーはこのアドレスを指定して Aleo を送金します。アドレスは一連の暗号ハッシュ関数とエンコード手法を通じて公開鍵から生成され、固有性と検証可能性が確保されます。
 
-## **Key Generation**
+## **鍵の生成**
 
-Aleo generates private and public keys using elliptic curve cryptography (ECC) through a process that involves several key components and cryptographic principles. The core of this process is based on the properties of elliptic curves and the discrete logarithm problem, which provides the security foundation for the cryptographic operations. Here's a detailed explanation of how Aleo leverages elliptic curve cryptography for generating private and public keys:
+Aleo では、楕円曲線暗号（Elliptic Curve Cryptography, ECC）を用いて秘密鍵と公開鍵を生成します。このプロセスは、楕円曲線の性質と離散対数問題を基盤とする暗号的原理に支えられています。以下に、Aleo がどのように楕円曲線暗号を活用して秘密鍵と公開鍵を生成するのかを詳しく説明します。
 
-- **Private Key**: generated as a random scalar from a finite field defined by the elliptic curve. This key must remain secret and secure.
-- **View Key**: derived by multiplying the private key with the base point (a predefined point on the curve). This operation in ECC is non-invertible, which means you cannot derive the private key from the view key.
-- **Compute Key:** similarly to the view key, it’s derived from the private key. It can be used to delegate the execution of a transaction to a third party.
-- **Address:** derived from the compute key
+- **秘密鍵**: 楕円曲線で定義された有限体からランダムなスカラーとして生成されます。この鍵は秘密に保ち、漏洩を防ぐ必要があります。
+- **View キー**: 秘密鍵に基点（曲線上に定義された既知の点）を掛けることで導出されます。ECC におけるこの演算は不可逆であり、View キーから秘密鍵を求めることはできません。
+- **Compute キー**: View キーと同様に秘密鍵から導出され、トランザクションの実行を第三者に委任する用途に使えます。
+- **アドレス**: Compute キーから生成されます。
 
 ![Key Generation Flow](./images/aleo_key_generation.png)
-Source: trapdoortech.com
+出典: trapdoortech.com
 
-### **Integration with Wallets and Applications**
+### **ウォレットやアプリケーションとの統合**
 
-In practice, Aleo accounts are often managed through wallets, which automate many of the processes described above. Wallets provide user interfaces for generating keys, creating and signing transactions, and managing balances without needing deep technical knowledge of the underlying cryptographic processes.
+実際には、Aleo アカウントはウォレットを通じて管理されることが多く、上述した多くの処理を自動化します。ウォレットは鍵の生成、トランザクションの作成と署名、残高管理といった操作を、暗号の詳細な知識がなくても扱えるユーザーインターフェースとして提供します。

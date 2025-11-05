@@ -1,23 +1,23 @@
 ---
 id: get_transaction_unconfirmed
-title: Get Transaction Unconfirmed
-sidebar_label: Get Transaction Unconfirmed
+title: 未確定トランザクションを取得
+sidebar_label: 未確定トランザクションを取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/transaction/unconfirmed/{ID}
 ```
 
-Retrieves the unconfirmed transaction details for the given transaction ID.
+指定したトランザクション ID の未確定トランザクションの詳細を取得します。
 
-### Arguments
+### 引数
 
-| Parameter |  Type  | Required | Description                                         |
+| パラメーター |  型  | 必須 | 説明                                         |
 |:----------|:------:|:--------:|:----------------------------------------------------|
-| `ID`      | string |   Yes    | The transaction id of the requested transaction hex |
+| `ID`      | string |   Yes    | 取得したいトランザクションのトランザクション ID（16 進表現） |
 
-### Response
+### レスポンス
 
-| Parameter |                    Type                     |        Description        |
+| パラメーター |                    型                     |        説明        |
 |:---------:|:-------------------------------------------:|:-------------------------:|
-| `result`  | object | The requested unconfirmed transaction |
+| `result`  | object | 要求された未確定トランザクション |

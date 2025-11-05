@@ -1,23 +1,23 @@
 ---
 id: get_mapping_names
-title: Get Mapping Names
-sidebar_label: Get Mapping Names
+title: マッピング名を取得
+sidebar_label: マッピング名を取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/program/{programID}/mappings
 ```
 
-Returns the names of the mappings in a program for the given program ID.
+指定したプログラム ID のプログラムに含まれるマッピングの名前を返します。
 
-### Arguments
+### 引数
 
-| Parameter   |  Type  | Required | Description                                     |
+| パラメーター   |  型  | 必須 | 説明                                     |
 |:------------|:------:|:--------:|:------------------------------------------------|
-| `programID` | string |   Yes    | The program id of the requested mappings        |
+| `programID` | string |   Yes    | 取得したいマッピングが属する program ID        |
 
-### Response
+### レスポンス
 
-| Parameter |                  Type                   |         Description         |
+| パラメーター |                  型                   |         説明         |
 |:---------:|:---------------------------------------:|:---------------------------:|
-|  `array`  | [object](../concepts/fundamentals/01_programs.md) | The requested mapping names |
+|  `array`  | [object](../concepts/fundamentals/01_programs.md) | 要求されたマッピング名 |

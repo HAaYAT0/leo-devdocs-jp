@@ -1,434 +1,436 @@
 ---
 id: token_registry
-title: Token Registry Program
-sidebar_label: Token Registry
+title: トークンレジストリプログラム
+sidebar_label: トークンレジストリ
 ---
 
-## Overview
+## 概要
 
-The Token Registry Program is a standard program designed for issuing and managing new tokens on the Aleo blockchain. It operates as a singleton program because on Aleo, all imported programs must be known and deployed before the importing program, and dynamic cross-program calls are not currently supported which makes composability difficult to implement. This means that a DeFi program must be compiled with support for all token programs that it will ever interact with. If a new token program is subsequently deployed on-chain, the DeFi program will need to be re-compiled and redeployed on chain in order to interact with that token.
+トークンレジストリプログラムは、Aleo ブロックチェーン上で新しいトークンを発行・管理するための標準プログラムです。Aleo では、import するプログラムを事前に把握してデプロイしておく必要があり、また現状では動的なクロスプログラム呼び出しがサポートされていないため、1 つのプログラムが複数トークンを扱う構成になっています。つまり、ある DeFi プログラムが任意のトークンと連携するには、そのトークンをあらかじめ組み込んでコンパイルしておく必要があります。デプロイ後に新しいトークンプログラムが追加された場合、DeFi プログラム側も再コンパイル・再デプロイしないとそのトークンとやり取りできません。
 
-In the near-term, support for dynamic dispatch will resolve this but currently, the issue is circumvented by means of the [token registry](https://explorer.provable.com/program/token_registry.aleo) which can manage balances for many different ARC-20 tokens. This program would be the standard "hub" that all tokens and DeFi programs interface with. Individual ARC-20 tokens can register with the registry and mint new tokens via this program. Transfers of token value will occur by direct call to the registry rather than the ARC-20 program itself. The benefit of this approach is that DeFi programs do not need to be compiled with any special knowledge of individual ARC-20 tokens: their sole dependency will be the registry. Hence the deployment of new tokens does not require re-deployment of DeFi programs. Similarly, individual ARC-20 tokens can also be compiled with dependence on the registry, but no dependence on the DeFi programs. The registry thus allows interoperability between new tokens and DeFi programs, with no need for program re-deployment. As a secondary benefit, the registry will provide privacy benefits (via an improved anonymity set) because all private transfers within the registry will conceal the identity of the specific token being transferred.
+近い将来に動的ディスパッチが実装されればこの制約は解消される予定ですが、現時点では [token registry](https://explorer.provable.com/program/token_registry.aleo) を利用することで回避しています。レジストリは複数の ARC-20 トークン残高を一元管理できる「ハブ」として機能します。各 ARC-20 トークンはレジストリに登録し、このプログラム経由でミントや転送を行います。トークンの価値移転は ARC-20 プログラム自身ではなくレジストリを直接呼び出す形で行われます。
 
-This standard is emerged from extensive discussions and the approval of the [ARC-21 proposal](https://vote.aleo.org/p/21) to enable token interoperability across different applications.
+この仕組みにより、DeFi プログラムは個別トークンについて特別な知識を持たなくてもレジストリさえ参照していれば動作します。つまり、新しいトークンをデプロイしても DeFi プログラム側の再デプロイは不要です。逆に ARC-20 トークンもレジストリに依存するだけで済み、個別の DeFi プログラムへの依存は不要です。レジストリがあることで新しいトークンと DeFi プログラムの相互運用性が確保され、プログラムを再デプロイする必要がありません。さらに副次的なメリットとして、レジストリ上での秘匿転送では転送対象のトークン種類が第三者からは分からなくなるため、匿名性セットが広がりプライバシーが向上します。
+
+この標準は、さまざまな議論と [ARC-21 提案](https://vote.aleo.org/p/21) の承認を経て策定されました。複数アプリケーション間でトークンをシームレスに扱うことを目指しています。
 
 <!-- markdown-link-check-disable -->
-This documentation outlines the functions of the Token Registry Program and provides guidance on how to use it. The original source code can be found [here](https://github.com/demox-labs/aleo-standard-programs/blob/main/token_registry/src/main.leo).
+本ドキュメントではトークンレジストリプログラムの各機能と利用方法を説明します。原典のソースコードは [こちら](https://github.com/demox-labs/aleo-standard-programs/blob/main/token_registry/src/main.leo) を参照してください。
 <!-- markdown-link-check-enable -->
 
-## How to use the Token Registry Program
+## トークンレジストリプログラムの利用方法
 
-Anyone can create a new token on Aleo using the `token_registry.aleo` program by calling the `register_token` transition with a unique token ID and specifying any name, symbol, decimals, and maximum supply. An optional `external_authorization_required` boolean grants extra control over token available to spend by requiring extra approval from an `external_authorization_party`, the `external_authorization_party` can unlocks certain amount of balances for spending with expiration over a specific owner's token using `prehook_public` or `prehook_private`. The admin can also set `external_authorization_party` to another address with `update_token_management` later if needed.
+誰でも `register_token` トランジションを呼び出し、ユニークなトークン ID と名前・シンボル・小数点桁数・最大供給量を指定することで `token_registry.aleo` プログラム上にトークンを作成できます。オプションの `external_authorization_required` ブール値を有効にすると、`external_authorization_party` が追加承認を与えた分だけ残高を使える仕組みを導入できます。`external_authorization_party` は `prehook_public` または `prehook_private` を使って特定アカウントの残高を期限付きでアンロックできます。必要に応じて `update_token_management` で後から別アドレスを承認主体に設定することも可能です。
 
-Once a token is registered, the tokens can be minted either publicly using `mint_public` or privately to a specific recipient using `mint_private` with roles `MINTER_ROLE` or `SUPPLY_MANAGER_ROLE` if not admin. The tokens can also be burned either publicly with `burn_public` or privately with `burn_private` with roles `BURNER_ROLE` or `SUPPLY_MANAGER_ROLE` if not admin.
+トークン登録後は、管理者または `MINTER_ROLE` / `SUPPLY_MANAGER_ROLE` を付与されたアドレスが `mint_public`（公開）もしくは `mint_private`（秘匿）でミントできます。削除（バーン）は `burn_public` もしくは `burn_private` を利用し、こちらも管理者または `BURNER_ROLE` / `SUPPLY_MANAGER_ROLE` を持つアドレスが実行します。
 
-The token owner then can transfer the token either publicly using `transfer_public` or privately to a specific recipient using `transfer_private`. The token can also be converted from public to private using `transfer_public_to_private` or from private to public using `transfer_private_to_public`.
+トークン保有者は `transfer_public` を使って公開で転送したり、`transfer_private` を使って秘匿のまま別アドレスへ送信できます。`transfer_public_to_private` で公開残高からレコードへ変換したり、`transfer_private_to_public` でレコードから公開残高へ変換することも可能です。
 
-## Token Registry Program Data Structures
+## トークンレジストリプログラムのデータ構造
 
-### Token Record
+### Token レコード
 
 ```leo
-  record Token {
-    owner: address,
-    amount: u128,
-    token_id: field,
-    external_authorization_required: bool,
-    authorized_until: u32
-  }
+record Token {
+  owner: address,
+  amount: u128,
+  token_id: field,
+  external_authorization_required: bool,
+  authorized_until: u32
+}
 ```
 
-#### Token Record Fields
+#### Token レコードのフィールド
 
-- `owner`: The address of the token owner.
-- `amount`: The amount of tokens in the account.
-- `token_id`: The unique identifier for the token.
-- `external_authorization_required`: Whether or not the token requires external authorization.
-- `authorized_until`: The block height until which the token is authorized.
+- `owner`: トークン所有者のアドレス
+- `amount`: 保有量
+- `token_id`: トークン固有の識別子
+- `external_authorization_required`: 外部承認が必要かどうか
+- `authorized_until`: 承認が有効なブロック高
 
-### Token Metadata Struct
+### TokenMetadata 構造体
 
 ```leo
-  struct TokenMetadata {
-    token_id: field,
-    name: u128, // ASCII text represented in bits, and the u128 value of the bitstring
-    symbol: u128, // ASCII text represented in bits, and the u128 value of the bitstring
-    decimals: u8,
-    supply: u128,
-    max_supply: u128,
-    admin: address,
-    external_authorization_required: bool, // whether or not this token requires authorization from an external program before transferring
-    external_authorization_party: address
-  }
+struct TokenMetadata {
+  token_id: field,
+  name: u128, // ASCII をビット列で表現し、それを u128 に変換した値
+  symbol: u128, // 同上
+  decimals: u8,
+  supply: u128,
+  max_supply: u128,
+  admin: address,
+  external_authorization_required: bool, // 転送前に外部プログラムの承認が必要かどうか
+  external_authorization_party: address
+}
 ```
 
-#### Token Metadata Struct Fields
+#### TokenMetadata 構造体のフィールド
 
-- `token_id`: The unique identifier for the token.
-- `name`: The name of the token.
-- `symbol`: The symbol of the token.
-- `decimals`: The number of decimals for the token.
-- `supply`: The total supply of the token.
-- `max_supply`: The maximum supply of the token.
-- `admin`: The address of the token admin.
-- `external_authorization_required`: Whether or not the token requires external authorization.
-- `external_authorization_party`: The address of the external authorization party.
+- `token_id`: トークン固有の識別子
+- `name`: トークン名
+- `symbol`: シンボル
+- `decimals`: 小数点桁数
+- `supply`: 現在の総供給量
+- `max_supply`: 最大供給量
+- `admin`: 管理者のアドレス
+- `external_authorization_required`: 外部承認の要否
+- `external_authorization_party`: 外部承認を行うアドレス
 
-### Token Owner Struct
+### TokenOwner 構造体
 
 ```leo
-  struct TokenOwner {
-    account: address,
-    token_id: field
-  }
+struct TokenOwner {
+  account: address,
+  token_id: field
+}
 ```
 
-#### Token Owner Struct Fields
+#### TokenOwner 構造体のフィールド
 
-- `account`: The address of the token owner.
-- `token_id`: The unique identifier for the token.
+- `account`: トークン所有者のアドレス
+- `token_id`: トークン固有の識別子
 
-### Balance Struct
-
-```leo
-  struct Balance {
-    token_id: field,
-    account: address,
-    balance: u128,
-    authorized_until: u32
-  }
-``` 
-
-#### Balance Struct Fields
-
-- `token_id`: The unique identifier for the token.
-- `account`: The address of the token owner.
-- `balance`: The balance of the token.
-- `authorized_until`: The block height until which the token is authorized.
-
-### Allowance Struct
+### Balance 構造体
 
 ```leo
-  struct Allowance {
-    account: address,
-    spender: address,
-    token_id: field
-  }
+struct Balance {
+  token_id: field,
+  account: address,
+  balance: u128,
+  authorized_until: u32
+}
 ```
 
-#### Allowance Struct Fields
+#### Balance 構造体のフィールド
 
-- `account`: The address of the token owner.
-- `spender`: The address of the spender.
-- `token_id`: The unique identifier for the token.
+- `token_id`: トークン固有の識別子
+- `account`: アカウントアドレス
+- `balance`: 残高
+- `authorized_until`: 承認が有効なブロック高
 
-## Token Registry Program Mappings
+### Allowance 構造体
+
+```leo
+struct Allowance {
+  account: address,
+  spender: address,
+  token_id: field
+}
+```
+
+#### Allowance 構造体のフィールド
+
+- `account`: トークン所有者のアドレス
+- `spender`: 使用許可を受けたアドレス
+- `token_id`: トークン固有の識別子
+
+## トークンレジストリプログラムのマッピング
 
 `mapping registered_tokens: field => TokenMetadata;`  
-Mapping of token IDs to token metadata structs.
+トークン ID と TokenMetadata の対応表です。
 
 `mapping balances: field => Balance;`  
-Mapping of the hash of the token ID and the account address to the balance struct.
+トークン ID とアカウントアドレスのハッシュをキーに、Balance 構造体を保存します。
 
 `mapping allowances: field => Allowance;`  
-Mapping of the hash of the token ID, the account address, and the spender address to the allowance struct.
+トークン ID・アカウントアドレス・使用者アドレスのハッシュをキーに、Allowance 構造体を保存します。
 
 `mapping roles: field => u8;`  
-Mapping of the hash of the token ID and the account address to the role.
+トークン ID とアカウントアドレスのハッシュをキーに、ロール種別を保存します。
 
-## Token Registry Program Constants
+## トークンレジストリプログラムの定数
 
 `const CREDITS_RESERVED_TOKEN_ID: field = 3443843282313283355522573239085696902919850365217539366784739393210722344986field;`  
-Token ID reserved for the ALEO credits token.
+ALEO Credits 用に予約されているトークン ID です。
 
 `const MINTER_ROLE: u8 = 1u8;`  
-Role for the minter.
+ミンター用ロール。
 
 `const BURNER_ROLE: u8 = 2u8;`  
-Role for the burner.
+バーン用ロール。
 
 `const SUPPLY_MANAGER_ROLE: u8 = 3u8;`  
-Role for the supply manager.
+供給管理者用ロール。
 
-## Token Registry Program Functions
+## トークンレジストリプログラムの関数一覧
 
-The Token Registry Program includes the following functions:
+以下に主なトランジションおよび関数を紹介します。
 
 ### `initialize()`
-#### Description
-Initializes the Token Registry Program by registering the ALEO credits token with predefined metadata. The token is initialized with a specific token ID, name "credits", symbol "credits", 6 decimals, and a max supply of 10 quadrillion. The program sets itself (wrapped_credits.aleo) as the admin and disables external authorization requirements to ensure the token metadata cannot be modified after initialization.
+#### 説明
+トークンレジストリプログラムを初期化し、ALEO Credits を既定のメタデータで登録します。トークン ID・名前「credits」・シンボル「credits」・小数点 6 桁・最大供給量 10,000 兆を設定し、管理者は `wrapped_credits.aleo` に固定、外部承認は無効化します。これにより初期化後にメタデータが変更されないようにします。
 
-#### Parameters
-Parameters are hardcoded in program to safeguard against frontrunning.
+#### パラメータ
+すべてプログラム内でハードコードされており、フロントランニング対策になっています。
 
-#### Returns
-None.
+#### 戻り値
+なし。
 
 ### `register_token()`
-#### Description
-Registers a new token with the Token Registry Program.
+#### 説明
+新しいトークンをレジストリに登録します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public name: u128`: The name of the token.
-- `public symbol: u128`: The symbol of the token.
-- `public decimals: u8`: The number of decimals for the token.
-- `public max_supply: u128`: The maximum supply of the token.
-- `public external_authorization_required: bool`: Whether or not the token requires external authorization.
-- `public external_authorization_party: address`: The address of the external authorization party.
+#### パラメータ
+- `public token_id: field`（トークン ID）
+- `public name: u128`（トークン名）
+- `public symbol: u128`（シンボル）
+- `public decimals: u8`（小数点桁数）
+- `public max_supply: u128`（最大供給量）
+- `public external_authorization_required: bool`（外部承認の要否）
+- `public external_authorization_party: address`（外部承認主体のアドレス）
 
-#### Returns
-- `Future`: A Future to finalize the token registration.
+#### 戻り値
+- `Future`: 登録完了を finalize するための Future
 
 ### `update_token_management()`
-#### Description
-Updates the token management settings.
+#### 説明
+トークンの管理設定を更新します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public admin: address`: The address of the admin.
-- `public external_authorization_party: address`: The address of the external authorization party.
+#### パラメータ
+- `public token_id: field`
+- `public admin: address`
+- `public external_authorization_party: address`
 
-#### Returns
-- `Future`: A Future to finalize the token management update.
+#### 戻り値
+- `Future`
 
 ### `set_role()`
-#### Description
-Sets the role for a specific token ID.
+#### 説明
+特定トークンのアカウントにロールを割り当てます。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public account: address`: The address of the account.
-- `public role: u8`: The role to set.
+#### パラメータ
+- `public token_id: field`
+- `public account: address`
+- `public role: u8`
 
-#### Returns
-- `Future`: A Future to finalize the role set.
+#### 戻り値
+- `Future`
 
 ### `remove_role()`
-#### Description
-Removes the role for a specific token ID.
+#### 説明
+特定トークンのアカウントからロールを削除します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public account: address`: The address of the account.
+#### パラメータ
+- `public token_id: field`
+- `public account: address`
 
-#### Returns
-- `Future`: A Future to finalize the role removal.
+#### 戻り値
+- `Future`
 
 ### `mint_public()`
-#### Description
-Mints a new token publicly by the specific token ID's admin.
+#### 説明
+管理者が公開でトークンをミントします。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public recipient: address`: The address of the recipient.
-- `public amount: u128`: The amount of tokens to mint.
-- `public authorized_until: u32`: The block height until which the token is authorized.
+#### パラメータ
+- `public token_id: field`
+- `public recipient: address`
+- `public amount: u128`
+- `public authorized_until: u32`
 
-#### Returns
-- `Future`: A Future to finalize the mint.
+#### 戻り値
+- `Future`
 
 ### `mint_private()`
-#### Description
-Mints a new token privately by the specific token ID's admin.
+#### 説明
+管理者が秘匿でトークンをミントします。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `recipient: address`: The address of the recipient that is not visible to the public.
-- `public amount: u128`: The amount of tokens to mint.
-- `public external_authorization_required: bool`: Whether or not the token requires external authorization.
-- `public authorized_until: u32`: The block height until which the token is authorized.
+#### パラメータ
+- `public token_id: field`
+- `recipient: address`（非公開の受取アドレス）
+- `public amount: u128`
+- `public external_authorization_required: bool`
+- `public authorized_until: u32`
 
-#### Returns
-- `Token`: The token record.
-- `Future`: A Future to finalize the mint.
+#### 戻り値
+- `Token`: 新規レコード
+- `Future`
 
 ### `burn_public()`
-#### Description
-Burns a token publicly by the specific token ID's admin.
+#### 説明
+管理者が公開でトークンをバーンします。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public owner: address`: The address of the owner.
-- `public amount: u128`: The amount of tokens to burn.
+#### パラメータ
+- `public token_id: field`
+- `public owner: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the burn.
+#### 戻り値
+- `Future`
 
 ### `burn_private()`
-#### Description
-Burns a token privately by the specific token ID's admin.
+#### 説明
+管理者が秘匿でトークンをバーンします。
 
-#### Parameters
-- `input_record: Token`: The token record.
-- `public amount: u128`: The amount of tokens to burn.
+#### パラメータ
+- `input_record: Token`
+- `public amount: u128`
 
-#### Returns
-- `Token`: The token record with remaining balance.
-- `Future`: A Future to finalize the burn.
+#### 戻り値
+- `Token`: 残高を減らしたレコード
+- `Future`
 
 ### `prehook_public()`
-#### Description
-A function for the authorized party to modify authorized amount and new expiration publicly.
+#### 説明
+外部承認主体が公開で承認残高と期限を更新します。
 
-#### Parameters
-- `public owner: address`: The address of the owner.
-- `public amount: u128`: The amount of tokens to prehook.
-- `public authorized_until: u32`: The block height until which the token is authorized.
+#### パラメータ
+- `public owner: address`
+- `public amount: u128`
+- `public authorized_until: u32`
 
-#### Returns
-- `Future`: A Future to finalize the prehook.
+#### 戻り値
+- `Future`
 
 ### `prehook_private()`
-#### Description
-A function for the authorized party to modify authorized amount and new expiration privately.
+#### 説明
+外部承認主体が秘匿で承認残高と期限を更新します。
 
-#### Parameters
-- `input_record: Token`: The token record.
-- `amount: u128`: The amount of tokens to prehook.
-- `authorized_until: u32`: The block height until which the token is authorized.
+#### パラメータ
+- `input_record: Token`
+- `amount: u128`
+- `authorized_until: u32`
 
-#### Returns
-- `Token`: The unauthorized token record.
-- `Token`: The authorized token record.
-- `Future`: A Future to finalize the prehook.
+#### 戻り値
+- `Token`: 承認前レコード
+- `Token`: 承認後レコード
+- `Future`
 
 ### `transfer_public()`
-#### Description
-Transfers a token publicly by the token owner.
+#### 説明
+所有者が公開でトークンを転送します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public recipient: address`: The address of the recipient.
-- `public amount: u128`: The amount of tokens to transfer.
+#### パラメータ
+- `public token_id: field`
+- `public recipient: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Future`
 
 ### `transfer_public_as_signer()`
-#### Description
-Transfers a token publicly by the token owner as the transaction signer in any arbitrary program calls.
+#### 説明
+トランザクション署名者として任意のプログラム呼び出し内で公開転送を行います。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public recipient: address`: The address of the recipient.
-- `public amount: u128`: The amount of tokens to transfer.
+#### パラメータ
+- `public token_id: field`
+- `public recipient: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Future`
 
 ### `approve_public()`
-#### Description
-Approves a token for a spender to be able to transfer the token on behalf of the owner.
+#### 説明
+第三者が所有者の代わりに転送できるよう承認します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public spender: address`: The address of the spender.
-- `public amount: u128`: The amount of tokens to approve.
+#### パラメータ
+- `public token_id: field`
+- `public spender: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the approval.
+#### 戻り値
+- `Future`
 
 ### `unapprove_public()`
-#### Description
-Revokes or reduces the approval for a spender to transfer the token on behalf of the owner.
+#### 説明
+承認済みの使用量を減らす、または承認自体を取り消します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public spender: address`: The address of the spender.
-- `public amount: u128`: The amount of tokens to unapprove.
+#### パラメータ
+- `public token_id: field`
+- `public spender: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the unapproval.
+#### 戻り値
+- `Future`
 
 ### `transfer_from_public()`
-#### Description
-Transfers a token from the owner to the recipient after getting approval from the owner.
+#### 説明
+承認済みの第三者が所有者の残高を公開で転送します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public owner: address`: The address of the owner.
-- `public recipient: address`: The address of the recipient.
-- `public amount: u128`: The amount of tokens to transfer.
+#### パラメータ
+- `public token_id: field`
+- `public owner: address`
+- `public recipient: address`
+- `public amount: u128`
 
-#### Returns
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Future`
 
 ### `transfer_public_to_private()`
-#### Description
-Convert public token to private token by its owner.
+#### 説明
+公開残高を秘匿トークンに変換します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `recipient: address`: The address of the recipient that is not visible to the public.
-- `public amount: u128`: The amount of tokens to transfer.
-- `public external_authorization_required: bool`: Whether or not the token requires external authorization.
+#### パラメータ
+- `public token_id: field`
+- `recipient: address`（非公開の受取アドレス）
+- `public amount: u128`
+- `public external_authorization_required: bool`
 
-#### Returns
-- `Token`: The token record.
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Token`
+- `Future`
 
 ### `transfer_from_public_to_private()`
-#### Description
-Convert public token to private token on behalf of the token owner after getting approval from the owner.
+#### 説明
+承認済みの第三者が公開残高を秘匿トークンへ変換します。
 
-#### Parameters
-- `public token_id: field`: The unique identifier for the token.
-- `public owner: address`: The address of the owner.
-- `recipient: address`: The address of the recipient that is not visible to the public.
-- `public amount: u128`: The amount of tokens to transfer.
-- `public external_authorization_required: bool`: Whether or not the token requires external authorization.
+#### パラメータ
+- `public token_id: field`
+- `public owner: address`
+- `recipient: address`（非公開の受取アドレス）
+- `public amount: u128`
+- `public external_authorization_required: bool`
 
-#### Returns
-- `Token`: The token record.
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Token`
+- `Future`
 
 ### `transfer_private()`
-#### Description
-Transfers a token privately by the token owner.
+#### 説明
+所有者が秘匿トークンを転送します。
 
-#### Parameters
-- `recipient: address`: The address of the recipient that is not visible to the public.
-- `amount: u128`: The amount of tokens to transfer.
-- `input_record: Token`: The token record.
+#### パラメータ
+- `recipient: address`
+- `amount: u128`
+- `input_record: Token`
 
-#### Returns
-- `Token`: The remaining token record.
-- `Token`: The receiving token record.
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Token`: 送信後のレコード
+- `Token`: 受取り側のレコード
+- `Future`
 
 ### `transfer_private_to_public()`
-#### Description
-Convert private token to public token by the token owner.
+#### 説明
+秘匿トークンを公開残高へ変換します。
 
-#### Parameters
-- `public recipient: address`: The address of the recipient that is visible to the public.
-- `public amount: u128`: The amount of tokens to transfer.
-- `input_record: Token`: The token record.
+#### パラメータ
+- `public recipient: address`
+- `public amount: u128`
+- `input_record: Token`
 
-#### Returns
-- `Token`: The remaining token record.
-- `Future`: A Future to finalize the transfer.
+#### 戻り値
+- `Token`: 残高を減らしたレコード
+- `Future`
 
 ### `join()`
-#### Description
-Joins two private token records and become one single record. Does not change the total amount of the tokens.
+#### 説明
+2 つの秘匿トークンレコードを 1 つにまとめます。合計量は変わりません。
 
-#### Parameters
-- `private token_1: Token`: The first token record.
-- `private token_2: Token`: The second token record.
+#### パラメータ
+- `private token_1: Token`
+- `private token_2: Token`
 
-#### Returns
-- `Token`: The joined token record.
+#### 戻り値
+- `Token`: 結合後のレコード
 
 ### `split()`
-#### Description
-Splits a private token record into two new token records. Does not change the total amount of the tokens.
+#### 説明
+秘匿トークンレコードを 2 つに分割します。合計量は変わりません。
 
-#### Parameters
-- `private token: Token`: The token record.
-- `private amount: u128`: The amount of tokens to split.
+#### パラメータ
+- `private token: Token`
+- `private amount: u128`
 
-#### Returns
-- `Token`: The splitted token record.
-- `Token`: The remaining token record.
+#### 戻り値
+- `Token`: 分割して取り出したレコード
+- `Token`: 残りのレコード

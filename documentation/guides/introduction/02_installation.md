@@ -1,105 +1,102 @@
 ---
 id: installation
-title: Installation
-sidebar_label: Installation
+title: インストール
+sidebar_label: インストール
 ---
-Install the following tools in order to develop and test programs locally:
 
-## 1. Installing Leo 🦁
+ローカルでプログラムを開発・テストするために、以下のツールをインストールしてください。
 
-### 1.1 Install Git
+## 1. Leo をインストールする 🦁
+
+### 1.1 Git をインストールする
 
 **[bit.ly/start-git](https://bit.ly/start-git)**
 
-### 1.2 Install Rust
+### 1.2 Rust をインストールする
 
 **[bit.ly/start-rust](https://bit.ly/start-rust)**
 
-### 1.3 Install Leo
+### 1.3 Leo をインストールする
 
-Installing Leo by building from the source code as follows:
+次の手順でソースコードから Leo をビルドしてインストールします。
 ```bash
-# Download the source code and initialize the submodules
+# ソースコードをダウンロードし、サブモジュールを初期化します
 git clone --recurse-submodules https://github.com/ProvableHQ/leo
 cd leo
 
-# Install 'leo'
+# 'leo' をインストールします
 cargo install --path .
 ```
 
-### 1.4 Verify Installation
+### 1.4 インストールを確認する
 
-To verify if you have Leo, open your terminal and type `leo`. You should be able to see the following:
+Leo がインストールされているか確認するには、ターミナルで `leo` と入力します。次のような出力が表示されるはずです。
 
-![Leo](images/leo-cli.png)
+![Leo CLI の出力例](images/leo-cli.png)
 
-### 1.5 Check Version and Update Leo
+### 1.5 バージョン確認と更新
 
-To check the version of leo, in your terminal, run:
+Leo のバージョンを確認するには、ターミナルで次を実行します。
 ```bash
 leo --version
 ```
 
-You can update Leo to the latest version using the following command:
+最新バージョンに更新するには、次のコマンドを使用します。
 ```bash
 leo update
 ```
 
-The [Leo CLI guide](https://docs.leo-lang.org/cli/overview) provides descriptions for all of the CLI commands.
+[Leo CLI ガイド](https://docs.leo-lang.org/cli/overview) では CLI コマンドの説明を確認できます。  
+[Leo 言語ガイド](https://docs.leo-lang.org/language/overview) では Leo プログラミング言語の構文とセマンティクスを概観できます。
 
-The [Leo Language guide](https://docs.leo-lang.org/language/overview) provides an overview of the syntax and semantics of the Leo programming language.
+### 1.6 任意: IDE のシンタックスハイライト
 
-### 1.6 Optional: IDE Syntax Highlighting
-
-Aleo maintains syntax highlighting implementations for various popular code editors. This can significantly enhance your development experience by providing visual cues and making your Leo code more readable. Here's a brief overview of the supported editors:
+Aleo では、主要なコードエディタ向けのシンタックスハイライトを提供しています。視覚的な補助が得られるため、Leo のコードが読みやすくなります。サポートされている代表的なエディタは次のとおりです。
 
 1. Visual Studio Code
 2. Sublime Text
-3. Intellij
+3. IntelliJ
 
-For detailed instructions on how to set up syntax highlighting for these editors, please refer to the [Tooling for Leo](https://docs.leo-lang.org/getting_started/ide#plugins) guide.
+各エディタでシンタックスハイライトを設定する手順は、[Tooling for Leo](https://docs.leo-lang.org/getting_started/ide#plugins) を参照してください。
 
-## 2. Installing snarkOS
+## 2. snarkOS をインストールする
 
-### 2.1 Prerequisites
+### 2.1 前提条件
 
-Before beginning, please ensure your machine has Rust v1.79+ installed. Instructions to install Rust can be found [here](https://www.rust-lang.org/tools/install).
+はじめに、マシンに Rust v1.79 以上がインストールされていることを確認してください。Rust のインストール手順は [こちら](https://www.rust-lang.org/tools/install) です。
 
-**[For Windows users]** Additional dependencies if usual installation path does not works:
-1. Install C++ Clang tools for Windows via the Visual Studio Installer
-2. Set the `LIBCLANG_PATH` environment variable to the location of the installed `libclang.dll` file, typically found at:
-   ```
-   Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin
-   ```
+**【Windows ユーザー向け】** 通常の手順でうまくいかない場合は、次の依存関係を追加してください。
+1. Visual Studio Installer で C++ Clang tools for Windows をインストールします。
+2. `libclang.dll` が置かれているディレクトリ（例:  
+   `Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin`）を `LIBCLANG_PATH` 環境変数に設定します。
 
-### 2.2 Clone the snarkOS repository
+### 2.2 snarkOS リポジトリをクローンする
 
 ```bash
 git clone --branch mainnet --single-branch https://github.com/ProvableHQ/snarkOS.git
 ```
 
-**[For Ubuntu users]** A helper script to install dependencies is available. From the snarkOS directory, run:
+**【Ubuntu ユーザー向け】** 依存関係をインストールする補助スクリプトがあります。snarkOS ディレクトリで次を実行してください。
 ```bash
 ./build_ubuntu.sh
 ```
 
-### 2.3 Install snarkOS
+### 2.3 snarkOS をインストールする
 
 ```bash
 cd snarkOS
 cargo install --locked --path .
 ```
 
-### 2.4 Verify Installation
+### 2.4 インストールを確認する
 
-To verify if you have snarkOS, open your terminal and type `snarkos`. You should be able to see the following:
-![snarkOS](images/snarkos-cli.png)
+snarkOS がインストールされているかを確認するには、ターミナルで `snarkos` と入力します。次のような出力が表示されるはずです。
+![snarkOS CLI の出力例](images/snarkos-cli.png)
 
-## 3. Next Steps
+## 3. 次のステップ
 
 :::tip
-We recommend starting with the [Quick Start Guide](01_quick_start.md). This guide will walk you through creating your first Aleo application, deploying it to the network, and executing program functions. This hands-on experience will give you a practical understanding of the Aleo platform's core features and workflow.
+まずは [クイックスタートガイド](01_quick_start.md) から始めることをおすすめします。Aleo アプリケーションを作成し、ネットワークにデプロイして、プログラムの関数を実行する流れを通して、Aleo プラットフォームのコア機能とワークフローを実際に体験できます。
 :::
 
-You now have all of the tools to build and test Leo programs locally.  Before deploying to the Testnet, we recommend testing your program using a local network.  The following [guide](https://docs.leo-lang.org/testing/devnet) explains how to initialize and deploy programs to a local network.
-
+これで Leo プログラムをローカルで構築・テストするためのツールが揃いました。テストネットにデプロイする前に、ローカルネットワークでプログラムを検証することをおすすめします。ローカルネットワークの初期化とデプロイ手順は、[こちらのガイド](https://docs.leo-lang.org/testing/devnet) を参照してください。

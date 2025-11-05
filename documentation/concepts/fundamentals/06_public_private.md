@@ -1,64 +1,64 @@
 ---
 id: public_private 
-title: Public vs. Private State
-sidebar_label: Public vs. Private State
+title: 公開ステートと秘匿ステート
+sidebar_label: 公開ステートと秘匿ステート
 ---
 
-## Introduction
+## はじめに
 <!-- markdown-link-check-disable -->
-The concept of Zero Knowledge proofs was first introduced in 1985 in the paper [The Knowledge Complexity of Interactive Proof Systems](https://epubs.siam.org/doi/10.1137/0218012?utm_source=the+new+stack&utm_medium=referral&utm_content=inline-mention&utm_campaign=tns+platform). However, it is only in recent years that the groundbreaking technology has been feasible to be applicable to blockchains. 
+ゼロ知識証明の概念は 1985 年、論文 [The Knowledge Complexity of Interactive Proof Systems](https://epubs.siam.org/doi/10.1137/0218012?utm_source=the+new+stack&utm_medium=referral&utm_content=inline-mention&utm_campaign=tns+platform) で初めて提案されました。とはいえ、この画期的な技術がブロックチェーンに応用できる現実的な姿になったのは、ここ数年のことです。 
 <!-- markdown-link-check-enable -->
 
 
-Zcash was one of the earliest chains to utilize the power of zero knowledge proofs to provide privacy to an account's balance. Unlike traditional cryptocurrencies like Bitcoin, where transaction details are publicly visible on the blockchain, Zcash enables users to shield their transactions, rendering them completely opaque to outside observers. It utilizes zk-SNARKs (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge), a type of zero-knowledge proof system that allows parties to verify the validity of a computation without revealing the underlying data. 
+Zcash はゼロ知識証明によってアカウント残高のプライバシーを提供した最初期のチェーンのひとつです。トランザクションの詳細がブロックチェーン上で公開される Bitcoin などの従来型暗号資産と異なり、Zcash ではトランザクションを外部から完全に見えない状態にできます。これを支えるのが zk-SNARK（Zero-Knowledge Succinct Non-Interactive Argument of Knowledge）と呼ばれるゼロ知識証明の一種で、基となるデータを公開することなく計算の正当性を検証できます。 
 
-In even more recent times, we have seen several Ethereum virtual machine-compatible Layer-2 chains that have employed zero-knowledge cryptography techniques to solve Ethereum's scalability issues. They use zk-rollups, which compute multiple state changes off-chain, followed by posting the summary of those transactions and proofs on-chain. This helps to reduce transaction fees significantly. However, all of them utilize zero-knowledge technology mainly for scalability reasons.
+近年では、Ethereum のスケーラビリティ問題を解決するため、ゼロ知識暗号技術を採用した EVM 互換のレイヤー 2 チェーンが複数登場しています。これらは zk-rollup を用い、複数の状態遷移をオフチェーンでまとめて計算し、その要約と証明をオンチェーンに投稿します。この仕組みにより、トランザクション手数料を大幅に削減できますが、ゼロ知識技術の主目的はあくまでスケーラビリティである場合がほとんどです。
 
-Aleo is a new layer-1 blockchain that combines general-purpose programmability with privacy by default. Unlike the other chains, Aleo is one of the first blockchains to utilize zero-knowledge for both privacy and scalability. 
-
-
-## Privacy
-There are generally four different types of privacy that relate to blockchains, of which Aleo fulfils three:
-- [x] Private inputs (messages)
-- [x] Private outputs (state changes)
-- [x] Private user
-- [ ] Private function 
-
-The core belief at Aleo is that privacy is necessary in order for blockchains to have mainstream adoption. For instance, how many of us would be comfortable revealing our bank account numbers if anyone in public were able to trace all the transactions we have ever made? 
-
-## Aleo State Storage 
-In order to have privacy native to a chain, Aleo uses a record model for application state storage, which is similar to the UTXO model in Bitcoin. However, Aleo provides developers the option to make application states public should they choose to do so. Public states are stored using the account model as done in Ethereum. 
-
-### Storing Private States via Record
-Records are a fundamental data structure that can contain any arbitrary payload and are used for encoding user assets or application states. A record represents a certain state of a program in the global state, for example, the balance of an account or your identity document. 
+Aleo は、汎用プログラマビリティとデフォルトのプライバシーを兼ね備えた新しいレイヤー 1 ブロックチェーンです。他のチェーンと異なり、Aleo はプライバシーとスケーラビリティの両方でゼロ知識を活用する、初期の取り組みのひとつです。 
 
 
-An Aleo record is serialized in the following format:
+## プライバシー
+ブロックチェーンにおけるプライバシーは一般的に 4 つの側面に分類され、Aleo はそのうち 3 つを満たします。
+- [x] 秘匿入力（メッセージ）
+- [x] 秘匿出力（状態遷移）
+- [x] 秘匿ユーザー
+- [ ] 秘匿関数 
 
-| Parameter  |             Type             | Description                                                                                         |
+Aleo の根本的な考え方は、ブロックチェーンが社会に広く受け入れられるにはプライバシーが不可欠だということです。例えば、誰でも自分の銀行口座番号と取引履歴を追跡できるとしたら、どれほどの人が安心して利用できるでしょうか。
+
+## Aleo のステートストレージ 
+チェーンにプライバシーを組み込むため、Aleo は Bitcoin の UTXO モデルに似たレコードモデルでアプリケーションステートを保存します。ただし、必要に応じてステートを公開できるよう、開発者に選択肢を提供しています。公開ステートは Ethereum と同様にアカウントモデルで管理されます。 
+
+### レコードによる秘匿ステートの保存
+レコードは任意のペイロードを保持できる基本データ構造で、ユーザー資産やアプリケーションステートをエンコードします。例えば、アカウントの残高や身分証明書など、プログラムの特定の状態をグローバルステート上に表現します。 
+
+
+Aleo レコードは次の形式でシリアライズされます。
+
+| パラメーター  |             型             | 説明                                                                                         |
 |------------|:----------------------------:|-----------------------------------------------------------------------------------------------------|
-|     owner    |            address           |                      The address public key of the owner of the program record                      |
-|    data    |    `map`   | A data payload containing arbitrary application-dependent information                               |
-|    nonce   |             group            |                            The serial number nonce of the program record                            |
+|     owner    |            address           |                      プログラムレコード所有者のアドレス公開鍵                      |
+|    data    |    `map`   | 任意のアプリケーション依存情報を含むデータペイロード                               |
+|    nonce   |             group            |                            プログラムレコードのシリアルナンセ                            |
 
-Records are tied to programs deployed on Aleo, and only the owner has permissions to alter the state of the record.
+レコードは Aleo 上にデプロイされたプログラムに紐づき、ステートを変更できるのは所有者だけです。
 
-Records are private by default and are stored as ciphertext on-chain. For more information on how Records are encrypted, please refer to the [Output Record](./04_transitions.md#output-record).
+レコードはデフォルトで秘匿され、暗号文としてオンチェーンに保存されます。暗号化の詳細は [出力レコード](./04_transitions.md#output-record) を参照してください。
 
-### Storing Public State via Mapping
+### マッピングによる公開ステートの保存
 
-A public state in Aleo is stored in the form of a mapping, which are key-value pairs. Anyone is able to query the state of the mapping by querying the Aleo blockchain explorer.
+Aleo における公開ステートはキーと値のペアで構成されるマッピングとして保存されます。Aleo ブロックチェーンエクスプローラを通じて誰でもマッピングの状態を照会できます。
 
-### Switching Between Privacy States
-By supporting both private and public storage states, an interesting feature emerges in Aleo where states can be converted from private to public and vice versa.
+### プライバシーステートの切り替え
+Aleo は秘匿と公開の両方のストレージをサポートしているため、ステートを秘匿から公開へ、またはその逆に変換できる柔軟性があります。
 
-An example of such a use case would be in a poker game. The state of the shuffled deck after dealing the cards to players should be kept private initially. Proceeding, as the "flop" reveals the top 3 cards, the state of those cards should be revealed to the public.
+例えばポーカーゲームでは、プレイヤーにカードを配った直後のシャッフル済みデッキの状態は秘匿に保つべきですが、進行に応じて「フロップ」で公開する 3 枚のカードの状態は段階的に公開に切り替える必要があります。
 
-### View Key
-Aleo has a unique feature known as a view key for each account. The view key allows one to decrypt all transactions of it's account. It is different from the private key in that it does not provide the permission to spend the records.
+### ビューキー
+Aleo では各アカウントにビューキーというユニークな鍵が存在します。ビューキーを使うと、そのアカウントで行われたすべてのトランザクションを復号できます。秘密鍵と異なり、ビューキーにはレコードを消費する権限はありません。
 
-## Private Inputs and Outputs of Programs
-Apart from stored program states being private, the program function inputs and outputs can also be made private or public. The following shows an example of an Aleo program which adds two input numbers and stores the result into a record known as 'sum'. The developer has the choice to specify if the input of a program transition function should be public or private. The individual record fields can also be made public or private via the 'public' modifier. As Aleo is private by default, the fields are considered as private if the modifier is not specified.
+## プログラムの秘匿入力と秘匿出力
+保存されているプログラムステートだけでなく、関数の入力・出力も秘匿または公開を選択できます。以下は、2 つの入力値を加算し、その結果を `sum` というレコードに格納する Aleo プログラムの例です。開発者はトランジション関数の入力を公開にするか秘匿にするか指定でき、レコード内の各フィールドも `public` 修飾子で公開するかどうかを決められます。Aleo ではデフォルトが秘匿なので、修飾子を付けなければ秘匿となります。
 
 <!-- ```
 function foo:
@@ -85,16 +85,16 @@ program sum.aleo {
 }
 ```
 
-More information on how private inputs and outputs are encrypted, please refer to [here](./04_transitions.md#non-record-ciphertext).
+秘匿入力と秘匿出力の暗号化方法については[こちら](./04_transitions.md#non-record-ciphertext)を参照してください。
 
-## Public vs. Private States
+## 公開ステートと秘匿ステートの使い分け
 
-The choice to store an application state as public or private should depend on the particular use case of the program. Instead of being a chain that is completely private or completely public, Aleo believes in a hybrid approach that offers developers a choice. 
+アプリケーションステートを公開するか秘匿にするかは、プログラムのユースケースに応じて選択するべきです。完全に秘匿または完全に公開という極端なモデルではなく、開発者に選択肢を提供するハイブリッドアプローチを採用している点が Aleo の特徴です。
 
-Aleo's model is more suitable for real-world applications, which often rely on a combination of public and private information.
+Aleo のモデルは、公開情報と秘匿情報を組み合わせて扱う実世界のアプリケーションに適しています。
 
-A practical example for this is voting. As stated by the Aleo founder, Howard Wu, "In elections, people want to vote, but they don’t want to show other people how they voted. The tally of the votes needs to be public to understand the outcome. Having private votes and public tallies ends up being a capable functionality in applications here."
+具体的な例として投票があります。Aleo の創業者 Howard Wu が述べているように、「選挙では人々は投票したいが、どの候補に投票したかは他人に知られたくない。一方で、投票結果を理解するには開票結果が公開される必要がある」。個々の投票を秘匿しつつ集計結果を公開できる機能は、ここで述べたようなアプリケーションにおいて強力です。
 
 
-## Conclusion
-Aleo is one of the very first few layer-1 blockchains that emphasizes programmable privacy. Developers are able to choose if they wish to make certain states of their program public or private. This opens up a whole new set of interesting applications that cannot be built easily with other blockchains. This is certainly an exciting chain to keep an eye out for.
+## まとめ
+Aleo はプログラマブルなプライバシーを重視するレイヤー 1 ブロックチェーンの草分けの一つです。開発者はプログラムの特定のステートを公開にするか秘匿にするかを自由に選択でき、他のブロックチェーンでは実現が難しい新しいタイプのアプリケーションを可能にします。今後の展開が非常に楽しみなチェーンと言えるでしょう。

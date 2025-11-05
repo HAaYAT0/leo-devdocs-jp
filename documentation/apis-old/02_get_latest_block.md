@@ -1,7 +1,7 @@
 ---
 id: get_latest_block
-title: Get Latest Block
-sidebar_label: Get Latest Block
+title: 最新のブロックを取得
+sidebar_label: 最新のブロックを取得
 ---
 
 ```bash title=ENDPOINT
@@ -12,14 +12,13 @@ GET /{network}/block/latest
 GET /{network}/latest/block
 ```
 
-Returns the latest block.
+最新のブロックを返します。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
-| Parameter |                 Type                  |   Description    |
+### レスポンス
+| パラメーター |                 型                  |   説明    |
 |:---------:|:-------------------------------------:|:----------------:|
-| `result`  | [object](../concepts/fundamentals/05_blocks.md) | The latest block |
-
+| `result`  | [object](../concepts/fundamentals/05_blocks.md) | 最新のブロック |

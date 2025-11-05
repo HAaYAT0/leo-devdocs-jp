@@ -1,43 +1,42 @@
 ---
 id: client 
-title: Client
-sidebar_label: Client
+title: クライアント
+sidebar_label: クライアント
 ---
 
-A client in the Aleo network is a node that serves blockchain data and interacts with the network without participating in consensus or block production. Clients play a crucial role in the ecosystem by providing access to blockchain data and facilitating user interactions with the network.
+Aleo ネットワークにおけるクライアントとは、コンセンサスやブロック生成には参加せずにブロックチェーンデータを提供し、ネットワークとやり取りするノードを指します。クライアントはブロックチェーンデータへのアクセスを提供し、ユーザーがネットワークとやり取りするための窓口となることでエコシステムを支えます。
 
-Key features of an Aleo client:
+Aleo クライアントの主な特徴:
 
-1. **Data Retrieval**: Clients can fetch and serve blockchain data, including blocks, transactions, and state information, to users and applications.
+1. **データ取得**: ブロック、トランザクション、ステート情報などのブロックチェーンデータを取得し、ユーザーやアプリケーションに提供します。
 
-2. **Transaction Submission**: Users can submit new transactions to the network through client nodes.
+2. **トランザクション送信**: ユーザーはクライアントノードを通じて新しいトランザクションをネットワークへ送信できます。
 
-3. **Network Interaction**: Clients maintain connections with other nodes to stay updated with the latest blockchain state.
+3. **ネットワーク連携**: 他のノードと接続を維持し、最新のブロックチェーン状態を把握します。
 
-4. **Lightweight Operation**: Compared to validators and provers, clients have lower hardware requirements, making them more accessible to run.
+4. **軽量な運用**: バリデータやプローバーと比較してハードウェア要件が低く、稼働させやすい点が特長です。
 
-5. **API Access**: Many clients expose REST APIs, allowing developers to build applications that interact with the Aleo network.
+5. **API 提供**: 多くのクライアントは REST API を公開しており、開発者は Aleo ネットワークと連携するアプリケーションを構築できます。
 
-To run an Aleo client node:
+Aleo クライアントノードを稼働させるには:
 
-1. Ensure your system meets the minimum requirements:
-   - **OS**: Ubuntu 22.04 (LTS), macOS Sonoma or later, Windows 11 or later
-   - **CPU**: 32-cores
-   - **RAM**: 32GB of memory
-   - **Storage**: 300GB of disk space (PCIe Gen 3 x4 NVME SSD or better)
-   - **Network**: 100Mbps of upload and download bandwidth
+1. システムが次の最低要件を満たしていることを確認します。
+   - **OS**: Ubuntu 22.04 (LTS)、macOS Sonoma 以降、Windows 11 以降
+   - **CPU**: 32 コア
+   - **RAM**: 32GB メモリ
+   - **ストレージ**: 300GB（PCIe Gen 3 x4 NVMe SSD 以上）
+   - **ネットワーク**: 上下 100Mbps の帯域
 
-2. Install [snarkOS](../../guides/introduction/02_installation.md) following the instructions in the Build Guide.
+2. ビルドガイドの手順に従い [snarkOS](../../guides/introduction/02_installation.md) をインストールします。
 
-3. Start the client node by running:
+3. 次のコマンドでクライアントノードを起動します。
    ```
    ./run-client.sh
    ```
 
-   Or use the following command for more control:
+   あるいは、制御を細かく行いたい場合は次のコマンドを使用します。
    ```
    snarkos start --client
    ```
 
-By running a client node, you contribute to the decentralization and robustness of the Aleo network while gaining direct access to its data and functionality.
-
+クライアントノードを稼働させることで、Aleo ネットワークの分散性と堅牢性に貢献しながら、そのデータや機能へ直接アクセスできるようになります。

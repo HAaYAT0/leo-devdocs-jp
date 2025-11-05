@@ -1,23 +1,23 @@
 ---
 id: get_block_transactions
-title: Get Block Transactions
-sidebar_label: Get Block Transactions
+title: ブロック内トランザクションを取得
+sidebar_label: ブロック内トランザクションを取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/block/{height_or_hash}/transactions
 ```
 
-Returns the transactions for the given block height.
+指定したブロック高またはブロックハッシュのブロックに含まれるトランザクションを返します。
 
-### Arguments
+### 引数
 
-| Parameter | Type | Required | Description                                     |
+| パラメーター | 型 | 必須 | 説明                                     |
 |:----------|:----:|:--------:|:------------------------------------------------|
-| `height` or `hash` | u32 or string |   Yes    | The block height or hash of the requested block |
+| `height` or `hash` | u32 or string |   Yes    | 取得したいブロックのブロック高またはブロックハッシュ |
 
-### Response
+### レスポンス
 
-| Parameter |                    Type                    |              Description               |
+| パラメーター |                    型                    |              説明               |
 |:---------:|:------------------------------------------:|:--------------------------------------:|
-| `result`  | [array](../concepts/fundamentals/03_transactions.md) | The array of transactions in the block |
+| `result`  | [array](../concepts/fundamentals/03_transactions.md) | ブロック内のトランザクション配列 |

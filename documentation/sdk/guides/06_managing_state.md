@@ -1,13 +1,12 @@
 ---
 id: managing_state
-title: Managing Public and Private State
-sidebar_label: Managing State
+title: 公開状態と秘匿状態の管理
+sidebar_label: 状態の管理
 ---
-## Public State: Mappings
-Mappings are simple key-value stores defined in a program. They are represented by a key and a value each of a specified
-type. They are stored directly within the Aleo blockchain and can be publicly read by any participant in the Aleo network.
+## 公開状態: マッピング
+マッピングはプログラム内で定義されたシンプルなキーと値のストアです。キーと値はそれぞれ指定された型で表現され、Aleo ブロックチェーンに直接保存されます。Aleo ネットワークの参加者であれば誰でも公開状態として参照できます。
 
-An example of a mapping usage is `account` mapping in the `credits.aleo` program.  This mapping stores all public Aleo Credits balances onchain.
+マッピングの利用例として、`credits.aleo` プログラムの `account` マッピングがあります。このマッピングは、オンチェーン上の公開 Aleo クレジット残高をすべて保持します。
 
 ```leo
 mapping account:
@@ -16,19 +15,17 @@ mapping account:
 ```
 
 
-### Initializing & Updating Mappings
-Updating mappings is done by executing a program function on the Aleo network which has a finalize block that updates the
-program's mapping. For instance the `transfer_public` function in the `credits.aleo` program updates the `account`
-mapping (and thus a user's balance) when called.
+### マッピングの初期化と更新
+マッピングを更新するには、Aleo ネットワーク上でファイナライズブロックを持つプログラム関数を実行し、そのファイナライズブロックがマッピングを更新します。たとえば `credits.aleo` プログラムの `transfer_public` 関数は、呼び出されると `account` マッピング（つまりユーザーの残高）を更新します。
 
 ```leo
-// The public interface called by users
+// ユーザーが呼び出す公開インターフェース
 function transfer_public:
     input r0 as address.public;
     input r1 as u64.public;
     finalize self.signer r0 r1;
 
-// The finalize block run by nodes on the Aleo network which update a user's public balance
+// Aleo ネットワーク上のノードが実行し、ユーザーの公開残高を更新するファイナライズブロック
 finalize transfer_public:
     input r0 as address.public;
     input r1 as address.public;
@@ -41,17 +38,13 @@ finalize transfer_public:
     set r6 into account[r1];
 ```
 
-From the perspective of the caller of the API, this is as simple as executing a normal Aleo function. For more information on how to do this with the SDK, check out the [Executing Programs](./04_execute_programs.md) guide or the [Transferring Credits](./05_transfer_credits.md) guide.
+API の呼び出し側から見ると、通常の Aleo 関数を実行するのと同じように簡単です。SDK での実行方法については、[プログラムの実行](./04_execute_programs.md) ガイドや [クレジットの送金](./05_transfer_credits.md) ガイドを参照してください。
 
-Given the inputs to a function with a finalize scope that updates a mapping are valid, the mapping will either be intialized or updated
-by the Aleo network.  If function inputs are invalid, the network will return an error, but the fee paid for the transaction will still be
-consumed. So it is important to ensure that the inputs to a function are valid before executing it.
+マッピングを更新するファイナライズスコープを持つ関数に対し、入力が有効であれば、Aleo ネットワークによってマッピングが初期化または更新されます。入力が無効な場合はネットワークがエラーを返しますが、支払ったトランザクション手数料は消費されます。そのため、関数を実行する前に入力が有効であることを確認することが重要です。
 
 
-### Reading Mappings
-Any state within a program mapping is public and can be read by any participant in the Aleo network. The `AleoNetworkClient`
-class provides the `getProgramMappingNames()` method to read the public mappings within a program and the `getProgramMappingValue()` method to
-read the value of a specific key within a mapping.
+### マッピングの読み取り
+プログラムのマッピングに含まれる状態はすべて公開されており、Aleo ネットワークの参加者なら誰でも読み取れます。`AleoNetworkClient` クラスには、プログラム内の公開マッピングを取得する `getProgramMappingNames()` メソッドと、マッピング内の特定のキーに対応する値を取得する `getProgramMappingValue()` メソッドが用意されています。
 
 ```typescript
 import { AleoNetworkClient } from '@provable/sdk';
@@ -60,39 +53,35 @@ const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v
 const creditsMappings = networkClient.getProgramMappingNames("credits.aleo");
 assert(creditsMappings === ["committee", "delegated", "metadata", "bonded", "unbonding", "account", "withdraw"]);
 
-//<ADDRESS> = A valid Aleo account with zero balance
+//<ADDRESS> = 残高が 0 の有効な Aleo アカウント
 const publicCredits = networkClient.getProgramMappingValue("credits.aleo", "<ADDRESS>");
 assert(publicCredits === "0u64");
 ```
 
 
 
-## Private State: Records
-Records in are analogous to concept of [UTXOs](https://en.wikipedia.org/wiki/Unspent_transaction_output). When a record is
-created by a program, it can then be consumed later by the same program as an input to a function. Once a record is used
-as input, it is considered consumed and cannot be used again. In many cases a new record will be created from the output
-of the function. Records are private by default and are associated with a single Aleo program and a single private key
-representing a user.  Check out the [Records](../../concepts/fundamentals/02_records.md) section in Fundamentals for more information.
+## 秘匿状態: レコード
+レコードは [UTXO](https://en.wikipedia.org/wiki/Unspent_transaction_output) の概念に似ています。プログラムでレコードが生成されると、同じプログラムが後で関数の入力として消費できます。一度入力として使われたレコードは消費済みとみなされ、再利用できません。多くの場合、関数の出力から新しいレコードが生成されます。レコードは既定で秘匿であり、特定の Aleo プログラムとユーザーを表す 1 つの秘密鍵に結び付けられます。詳細は基本概念の [レコード](../../concepts/fundamentals/02_records.md) セクションを参照してください。
 
-### Finding Records
-Finding records is similar to finding UTXOs in Bitcoin. Records are stored as outputs of transitions contained within execution transactions. To find records, implementors of web apps must:
+### レコードの探索
+レコードの探索は、Bitcoin における UTXO の探索と似ています。レコードは実行トランザクションに含まれるトランジションの出力として保存されます。レコードを見つけるために、Web アプリの実装者は次の手順を踏む必要があります。
 
-1. Scan the Aleo network for transactions that include transitions that contain records.
-2. Check any found records to see if the desired user is the owner of the record.
-3. Check to see if the record is "spent" or "unspent" by checking if the record has appeared in any function inputs.
-4. Optionally decrypt the record if the data within it is desired.
+1. レコードを含むトランジションを持つトランザクションを Aleo ネットワーク上でスキャンします。
+2. 見つかったレコードが目的のユーザーに属しているか確認します。
+3. レコードがどこかの関数入力に登場しているかを確認し、「消費済み」か「未使用」かを判別します。
+4. 必要に応じてレコードを復号し、内部のデータを取得します。
 
-The `AleoNetworkClient` provides the `findRecords()` method for finding records. This method allows records to be searched for between specified block heights.
+`AleoNetworkClient` はレコード探索用に `findRecords()` メソッドを提供します。このメソッドでは、指定したブロック高の範囲でレコードを検索できます。
 
-It also optionally allows users to specify:
+さらに必要に応じて、次のような条件を指定できます。
 
-- Whether to search exclusively for unspent records.
-- One or more programs to find records for.
-- A list of nonces (i.e. the unique ID of a record) to exclude from the search.
+- 未使用レコードのみを対象にするかどうか。
+- レコードを検索したいプログラムを 1 つ以上指定する。
+- 検索対象から除外したいノンス（レコードの一意な ID）のリスト。
 
-If `credits.aleo` records are being searched for, users can also optionally specify:
-- A list of amounts to find.
-- A maximum cumulative amount to find between all records.
+`credits.aleo` のレコードを検索する場合は、以下も指定できます。
+- 探したい金額のリスト。
+- レコード全体で探す合計金額の上限。
 
 ```typescript
 import { Account, AleoNetworkClient } from '@provablehq/sdk';
@@ -118,21 +107,21 @@ const unspentRecords = networkClient.findRecords(
 )
 
 ```
-This method provides a linear search through the block range specified. It is most useful for finding records in smaller block ranges where the app invoking the method can expect to find desired records. For larger ranges of blocks this method may be infeasible to use.
+このメソッドは指定されたブロック範囲を線形に検索します。比較的小さなブロック範囲で目的のレコードが見つかる見込みがある場合に最も有効です。大きなブロック範囲では、この方法は現実的でない場合があります。
 <!-- 
-### Implementing the `RecordProvider` interface.
-In order to conveniently find records during execution, the implementations of `RecordProvider` can be used. This interface allows developers to implement an efficient search strategy for finding new records. A default implementation of the `RecordProvider` interface is provided by the `NetworkRecordProvider` class, but developers can use the `RecordProvider` interface to implement their own search strategies.
+### `RecordProvider` インターフェースの実装
+実行時にレコードを効率よく見つけるには、`RecordProvider` の実装が利用できます。このインターフェースによって、開発者は新しいレコードを探す効率的な戦略を実装できます。`RecordProvider` インターフェースのデフォルト実装は `NetworkRecordProvider` クラスですが、開発者は独自の検索戦略を実装することも可能です。
 
-When a `RecordProvider` is provided within the constructor of a `ProgramManager` object and `RecordSearchParameters` are provided to a function that executes a function, and a private fee is specified, the `ProgramManager` will automatically search for an appropriate record to pay the fee.
+`ProgramManager` オブジェクトのコンストラクターに `RecordProvider` が渡され、関数実行時に `RecordSearchParameters` と秘匿手数料が指定されている場合、`ProgramManager` は手数料の支払いに適したレコードを自動的に検索します。
 
-A usage example of the `RecordProvider` is shown below using the `NetworkRecordProvider` implementation of the `RecordProvider` interface.
+以下は、`RecordProvider` インターフェースの `NetworkRecordProvider` 実装を使用した例です。
 
 ```typescript
 import { Account, AleoNetworkClient, AleoKeyProvider, NetworkRecordProvider, ProgramManager } from '@provablehq/sdk';
 
 const account = new Account({ privateKey: 'APrivateKey1...'});
 
-// Create a new NetworkClient, KeyProvider, and RecordProvider using official Aleo implementations
+// 公式の Aleo 実装を使って NetworkClient、KeyProvider、RecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 networkClient.setAccount(account);
 
@@ -141,11 +130,11 @@ keyProvider.useCache = true;
 
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Initialize a program manager with the key provider to automatically fetch keys for executions
+// 実行時に鍵を自動取得するよう、ProgramManager をキープロバイダー付きで初期化します
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.setAccount(account);
 
-// Find a record for the amount to be transferred
+// 送金に利用するレコードを見つけます
 let recordSearchParameters = {
     programs: ["credits.aleo"], // Find records for the credits.aleo program.
     amounts: [10_000_000], // Find the amount desired to be transferred.
@@ -157,10 +146,10 @@ const record = await programManager.recordProvider.findRecords(
     undefined, // No nonces need to be excluded because only one record is being searched for.
     recordSearchParameters,
 );
-// Record the nonce of the found record so it's not selected again.
+// 見つかったレコードのノンスを記録し、再度選択されないようにします
 const nonce = record.nonce();
 
-// Find a record to pay the fee for the transaction
+// トランザクション手数料の支払いに使うレコードを探します
 const feeRecordSearchParameters = {
     programs: ["credits.aleo"], // Find records for the credits.aleo program.
     amounts: [40_000], // Find the amount desired to be transferred.
@@ -181,49 +170,49 @@ const transaction = await programManager.buildExecutionTransaction({
 const result = await programManager.networkClient.submitTransaction(transaction);
 ```
  -->
-#### Optimizing Record Search
-Using naive approaches such as scanning the entire Blockchain history can be a time-consuming process and degrade the experience of a web app. Fortunately, strategies can be used to optimize the process.
+#### レコード探索の最適化
+ブロックチェーン全体の履歴を走査するといった単純な手法は時間がかかり、Web アプリのユーザー体験を損なう可能性があります。幸い、より効率的にするための戦略があります。
 
-#### Searching for Records After the User Account Creation
-If the user a web app has created an Aleo account after a known block, the search can be optimized to search for records by only scanning the records from the block height after which the account was created.
+#### ユーザーのアカウント作成後のみを検索する
+ユーザーが既知のブロック以降に Aleo アカウントを作成した場合、そのブロック高以降のレコードのみをスキャンすることで検索を最適化できます。
 
-#### Searching for A Specific Program's Records
-If the records you are searching for are from a specific program, you can optimize the search by only scanning the records for a specific program.
+#### 特定プログラムのレコードに絞って検索する
+探しているレコードが特定のプログラムに属しているのであれば、そのプログラムのレコードだけをスキャンすることで検索を効率化できます。
 
-#### Storing Records Created by Your Web App
-If your web app has created a transaction, you have access to the records produced by that transaction and can store them in a database for easy retrieval later.
+#### Web アプリで作成したレコードを保存する
+Web アプリがトランザクションを生成した場合、そのトランザクションから生成されたレコードへアクセスできます。後で簡単に取り出せるようにデータベースへ保存しておきましょう。
 
-### Decrypting Records
-If a user receives a private record from a program execution, they can use the SDK to decrypt encrypted records with their view keys and view their contents. Only records that are owned by the user can be decrypted. Decryption of records that are not owned by the user will fail.
+### レコードの復号
+ユーザーがプログラム実行から秘匿レコードを受け取った場合、SDK を使ってビュ―キーで暗号化されたレコードを復号し、その内容を確認できます。復号できるのはユーザー自身が所有するレコードのみです。ユーザーが所有していないレコードを復号しようとすると失敗します。
 
-Record decryption and ownership verification can be done in the SDK using the following code:
+レコードの復号と所有者の確認は、次のコードで行えます。
 ```typescript
 import { Account, RecordCiphertext, RecordPlaintext } from '@provablehq/sdk';
 
-// Create an account from an existing private key
+// 既存の秘密鍵からアカウントを作成します
 const account = Account.from_string({privateKey: "existingPrivateKey"});
 
-// Record value received as a string from program output or found on the Aleo network
+// プログラムの出力または Aleo ネットワークから取得したレコード文字列
 const record = "record1qyqsq4r7mcd3ystjvjqda0v2a6dxnyzg9mk2daqjh0wwh359h396k7c9qyxx66trwfhkxun9v35hguerqqpqzqzshsw8dphxlzn5frh8pknsm5zlvhhee79xnhfesu68nkw75dt2qgrye03xqm4zf5xg5n6nscmmzh7ztgptlrzxq95syrzeaqaqu3vpzqf03s6";
 
 const recordCiphertext = RecordCiphertext.fromString(record);
 
-// Check ownership of the record. If the account is the owner, decrypt the record
+// レコードの所有者を確認します。アカウントが所有者であればレコードを復号します
 if (RecordCiphertext.is_owner(account.viewKey())) {
-   // Decrypt the record with the account's view key
+   // アカウントのビューキーでレコードを復号します
    const recordPlaintext = recordCiphertext.decrypt(account.viewKey());
 
-   // View the record data
+   // レコードのデータを表示します
    console.log(recordPlaintext.toString());
 }
 ```
 
 
-### Using Records
+### レコードの利用
 
-Using the SDK, users can specify the exact record they would like to use as input to an function or to pay private fees with by using the `RecordPlaintext` type mentioned above.  Let's look at the `transfer_private` function from the `credits.aleo` function as a specific example of using records.
+SDK を使えば、先ほどの `RecordPlaintext` 型を利用して関数の入力や秘匿手数料の支払いに使いたいレコードを明示的に指定できます。ここでは具体例として、`credits.aleo` の `transfer_private` 関数を見ていきましょう。
 
-The `transfer_private` function can be graphically represented by the following graph:
+`transfer_private` 関数は次のグラフのように表現できます。
 
 ```mermaid
 graph LR
@@ -234,15 +223,15 @@ graph LR
     p1--Credits Record 2-->User1
     p1--Credits Record 3-->R1[Recipient Address]
 ```
-This function consumes a private `credits` record as input and outputs two new private `credits` records as output (one that sends the credits to the recipient and one that sends the remaining credits to the sender).  Below you'll find what this flow would look like in the SDK:
+この関数は秘匿の `credits` レコードを入力として消費し、出力として 2 つの新しい秘匿 `credits` レコードを生成します（一方は受取人へクレジットを送り、もう一方は残額を送信者へ返します）。以下は、この流れを SDK で実装した例です。
 
-#### User 1 Sends a Private Value Transfer to User 2
-If you've read the [Transferring Credits](./05_transfer_credits.md) guide, the following should look familiar to you:
+#### ユーザー 1 がユーザー 2 へ秘匿送金する
+[クレジットの送金](./05_transfer_credits.md) ガイドを読んでいれば、次の例は見覚えがあるはずです。
 ```typescript
 // USER 1
 import { Account, ProgramManager, AleoKeyProvider, NetworkRecordProvider, AleoNetworkClient } from '@provablehq/sdk';
 
-// Create a new NetworkClient, KeyProvider, RecordProvider, and ProgramManager
+// NetworkClient、KeyProvider、RecordProvider、ProgramManager を作成します
 const USER1 = new Account({privateKey: "APrivateKey1..."});
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
@@ -250,23 +239,22 @@ const recordProvider = new NetworkRecordProvider(USER1, networkClient);
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.setAccount(USER1);
 
-/// Send private transfer to user 2.  When the input record is not specified, the NetworkRecordProvider will automatically find a credits.aleo record with enough enough balance
+/// ユーザー 2 へ秘匿送金します。入力レコードを指定しない場合、NetworkRecordProvider が残高の十分な credits.aleo レコードを自動的に見つけます
 const USER2_ADDRESS = "aleo1...";
 const tx_id = await programManager.transfer(1, USER2_ADDRESS, "transfer_private", 0.2);
 ```
 
-#### User 2 Sends a Private Value Transfer Back to User 1
+#### ユーザー 2 がユーザー 1 へ秘匿送金を返す
 
-When an execution such as `transfer_private` consumes or generates a record, the transaction is posted onchain showing an encrypted version of the record output.  Because the records are encrypted when they're posted on the network, they do not reveal any information about the party
-who executed the program, nor the contents of the record. The only information that is revealed is the program ID, function name, encrypted function inputs, and the transaction ID of the program execution. No user except for the recipient of the record can see the contents of the record.
+`transfer_private` のような実行がレコードを消費または生成すると、トランザクションは暗号化されたレコード出力としてオンチェーンに投稿されます。投稿時にレコードは暗号化されているため、プログラムを実行した当事者やレコードの内容は明らかになりません。公開されるのはプログラム ID、関数名、暗号化された関数入力、トランザクション ID だけです。レコードの受取人以外のユーザーはレコード内容を確認できません。
 
-Consequently, if users would like to fetch their records from the network and use them as input to a function, they must first decrypt them into plaintext form using their private key or view key.  The code below demonstrates this:
+したがって、ユーザーがネットワークからレコードを取得して関数の入力として使用したい場合は、まず秘密鍵またはビュ―キーを用いて復号し、平文に変換する必要があります。次のコードがその手順を示します。
 
 ```typescript
 // USER 2
 import { Account, ProgramManager, AleoKeyProvider, NetworkRecordProvider, AleoNetworkClient, RecordCiphertext } from '@provablehq/sdk';
 
-// Create a new NetworkClient, KeyProvider, RecordProvider, and ProgramManager for User 2
+// ユーザー 2 用に NetworkClient、KeyProvider、RecordProvider、ProgramManager を作成します
 const USER2 = new Account({privateKey: "APrivateKey1..."});
 const networkClient2 = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider2 = new AleoKeyProvider();
@@ -274,18 +262,17 @@ const recordProvider2 = new NetworkRecordProvider(USER2, networkClient2);
 const programManager2 = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider2, recordProvider2);
 programManager2.setAccount(USER2);
 
-// Fetch the transaction from the network that User 1 sent
+// ユーザー 1 が送信したトランザクションをネットワークから取得します
 const transaction = await programManager2.networkClient.getTransaction(tx_id);
 const record = transaction.execution.transitions[0].outputs[0].value;
 
-// Decrypt the record with User 2's view key
+// ユーザー 2 のビューキーでレコードを復号します
 const recordCiphertext = RecordCiphertext.fromString(record);
 const recordPlaintext = recordCiphertext.decrypt(USER2.viewKey());
 
-// Send a transfer to User 1 above using the record found
+// 復号したレコードを使ってユーザー 1 へ秘匿送金を行います
 const USER1_ADDRESS = "aleo1...";
 const tx_id2 = await programManager2.transfer(1, USER1_ADDRESS, "transfer_private", 0.2, undefined, recordPlaintext);
 ```
-
 
 

@@ -1,23 +1,23 @@
 ---
 id: find_transaction_id_from_program_id
-title: Find Transaction ID From Program ID
-sidebar_label: Find Transaction ID from Program ID
+title: プログラム ID からトランザクション ID を検索
+sidebar_label: プログラム ID からトランザクション ID を検索
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/find/transactionID/deployment/{programID}
 ```
 
-Returns the transaction ID of the transaction containing the given program ID.
+指定したプログラム ID を含むトランザクションのトランザクション ID を返します。
 
-### Arguments
+### 引数
 
-|  Parameter  |  Type  |  Description   |
+|  パラメーター  |  型  |  説明   |
 |:-----------:|:------:|:--------------:|
-| `programID` | String | The program ID |
+| `programID` | String | プログラム ID |
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |    Description     |
+| パラメーター |  型  |    説明     |
 |:---------:|:------:|:------------------:|
-| `result`  | String | The transaction ID |
+| `result`  | String | トランザクション ID |

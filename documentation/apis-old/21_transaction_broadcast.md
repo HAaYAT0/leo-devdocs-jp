@@ -1,23 +1,23 @@
 ---
 id: transaction_broadcast
-title: Transaction Broadcast
-sidebar_label: Transaction Broadcast
+title: トランザクションをブロードキャスト
+sidebar_label: トランザクションをブロードキャスト
 ---
 
 ```bash title=ENDPOINT
 POST /{network}/transaction/broadcast
 ```
 
-Broadcasts the transaction to the ledger.
+トランザクションを台帳にブロードキャストします。
 
-### Body
+### ボディ
 
-|  Type  |               Description               |
+|  型  |               説明               |
 |:------:|:---------------------------------------:|
-| string | The serialized transaction to broadcast |
+| string | ブロードキャストするシリアライズ済みトランザクション |
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |                   Description                   |
+| パラメーター |  型  |                   説明                   |
 |:---------:|:------:|:-----------------------------------------------:|
-| `result`  | string | The status of the transaction broadcast attempt |
+| `result`  | string | トランザクションのブロードキャスト試行のステータス |

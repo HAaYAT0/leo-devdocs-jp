@@ -1,28 +1,26 @@
 ---
 id: records
-title: Records
-sidebar_label: Records
+title: レコード
+sidebar_label: レコード
 ---
 
 
-A **record** is a fundamental data structure for encoding user assets and application state.
+**レコード**は、ユーザー資産やアプリケーションステートをエンコードするための基本的なデータ構造です。
 
-Each account record contains information that specifies the record owner, its stored value, and its application state.
-Records in Aleo are consumed and newly created from a [transition](04_transitions.md) function. A [transaction](03_transactions.md) will store multiple transitions, each of which is responsible for the consumption and creation of its individual records.
-Optionally, if the `visibility` of an entry in the record is `private`, it is be encrypted using the owner's address secret key.
+アカウントレコードには、レコードの所有者、保持している値、アプリケーションステートを特定する情報が含まれます。Aleo では、レコードは[トランジション](04_transitions.md)関数によって消費され、新たに生成されます。[トランザクション](03_transactions.md)には複数のトランジションが含まれ、それぞれが個別のレコードを消費および生成します。また、レコード内のエントリの `visibility` が `private` に設定されている場合、そのエントリは所有者のアドレス秘密鍵で暗号化されます。
 
-## Components of a Record
+## レコードの構成要素
 
-An Aleo record is serialized in the following format:
+Aleo レコードは次の形式でシリアライズされます。
 
-| Parameter |          Type          |                                                      Description                                                       |
+| パラメーター |          型          |                                                      説明                                                       |
 |:---------:|:----------------------:|:----------------------------------------------------------------------------------------------------------------------:|
-|  `owner`  |        address         |                               The address public key of the owner of the program record                                |
-|  `data`   | Map\<Identifier, Entry\> | A data payload containing arbitrary application-dependent information. Each entry can either be `public` or `private`. |
-|  `nonce`  |         group          |                                     The serial number nonce of the program record                                      |
-|  `version`|         u8             |                                     The version of the program record                                                  |
+|  `owner`  |        address         |                               プログラムレコードの所有者に対応するアドレス公開鍵                                |
+|  `data`   | Map\<Identifier, Entry\> | 任意のアプリケーション依存情報を含むデータペイロード。各エントリは `public` または `private` を指定できます。 |
+|  `nonce`  |         group          |                                     プログラムレコードのシリアルナンセ                                     |
+|  `version`|         u8             |                                     プログラムレコードのバージョン                                                  |
 
-An example record:
+レコードの例:
 ```bash
 {
   owner: aleo13ssze66adjjkt795z9u5wpq8h6kn0y2657726h4h3e3wfnez4vqsm3008q.private,
@@ -32,87 +30,87 @@ An example record:
 }
 ```
 
-### Owner
+### 所有者
 `aleo13ssze66adjjkt795z9u5wpq8h6kn0y2657726h4h3e3wfnez4vqsm3008q`
 
-The record owner is an account address, and specifies the party who is authorized to spend the record.
+レコードの所有者はアカウントアドレスであり、レコードを消費する権限を持つ主体を示します。
 
 
-### Data
+### データ
 `100u64.private`
 
-The record can encode arbitrary application information. The "amount" key is the data payload that the record carries.
-An entry which has a `visibility` of `private` is encrypted and stored on the ledger.
-This enables users to securely and privately transfer record data and values between one another over the public network.
-Only the sender and receiver with their corresponding account view keys are able to decrypt the private entries.
+レコードは任意のアプリケーション情報をエンコードできます。`amount` キーはレコードが保持するデータペイロードです。
+`visibility` が `private` に設定されたエントリは暗号化され、台帳上に保存されます。
+これにより、ユーザーはパブリックネットワーク上でレコードデータや値を安全かつ秘匿的にやり取りできます。
+対応するアカウントビューキーを持つ送信者と受信者のみが、プライベートエントリを復号できます。
 
-### Nonce
+### ノンス
 `5861592911433819692697358191094794940442348980903696700646555355124091569429group`
 
-The serial number nonce is used to create a unique identifier for each record, and is computed via a PRF evaluation of the address secret key ask of the owner and the record's serial number.
+シリアルナンセは各レコードの一意な識別子を生成するために使用され、所有者のアドレス秘密鍵 ask とレコードのシリアルナンバーに対して PRF（疑似乱数関数）を評価することで算出されます。
 
-### Version  
+### バージョン  
 `1u8.public`  
 
-The `version` field specifies the version of the program record, which determines how the record commitment is derived and what privacy features are available.
+`version` フィールドはプログラムレコードのバージョンを指定し、レコードコミットメントの導出方法や利用可能なプライバシー機能を決定します。
 
-#### Record v0
-- Uses the BHP hash to derive the record commitment  
-- No sender ciphertext is included  
-- Can only be decrypted with an account’s view key
-- Allowed before Consensus V8, but disallowed after
+#### レコード v0
+- BHP ハッシュを用いてレコードコミットメントを導出  
+- 送信者暗号文を含まない  
+- アカウントのビューキーでのみ復号可能
+- コンセンサス V8 以前は許可されるが、それ以降は不許可
 
-#### Record v1
-- Uses a BHP commitment with a nonce to derive the record commitment, where the nonce is generated from the record view key
-- Enhanced privacy with hiding properties
-- Includes encrypted sender ciphertext, allowing users to determine which address sent them a record
-- Can be decrypted with the record view key without sharing an account’s view key
-- Required after Consensus V8
+#### レコード v1
+- ノンス付き BHP コミットメントを用いてレコードコミットメントを導出。ノンスはレコードビューキーから生成される
+- ハイディング特性を備え、プライバシーが強化される
+- 暗号化された送信者暗号文を含み、ユーザーはどのアドレスからレコードが送られたかを確認できる
+- アカウントビューキーを共有せず、レコードビューキーのみで復号可能
+- コンセンサス V8 以降で必須
 
-For a practical demonstration of a record in Aleo, watch the video [here](https://youtu.be/JIgrKv_Q6Jo?feature=shared) (Version 0). More record details can be found in [transitions](./04_transitions.md#record). 
+Aleo のレコードに関する実演動画は[こちら](https://youtu.be/JIgrKv_Q6Jo?feature=shared)（バージョン 0）をご覧ください。レコードの詳細は[トランジション](./04_transitions.md#record)にも記載されています。 
 
-## Diving into the Concepts
-To understand how to use records, we must understand the design principles behind Aleo.
-Autonomous Ledger Execution Offchain (Aleo) is a layer-1 blockchain that combines general-purpose programmability with privacy by default.
-The core idea behind Aleo is ZEXE or zero-knowledge execution initially written in this [research paper](https://eprint.iacr.org/2018/962.pdf) in 2018. It first introduced the record model which extends the UTXO model from Zcash and enables storing and encrypting arbitrary data (user assets and application states), rather than just values of specific assets or tokens.
+## コンセプトを掘り下げる
+レコードの使い方を理解するには、Aleo の設計原則を把握する必要があります。
+Autonomous Ledger Execution Offchain（Aleo）は、汎用的なプログラマビリティとデフォルトのプライバシーを組み合わせたレイヤー 1 ブロックチェーンです。
+Aleo の中核となるアイデアは ZEXE（Zero-Knowledge EXEcution）であり、2018 年の[研究論文](https://eprint.iacr.org/2018/962.pdf)で初めて提案されました。この論文では、Zcash の UTXO モデルを拡張し、特定の資産やトークンの値だけでなく任意のデータ（ユーザー資産やアプリケーションステート）を保存・暗号化できるレコードモデルが導入されました。
 
-### Privacy
-There are generally four different types of privacy that relate to blockchains.
+### プライバシー
+ブロックチェーンにおけるプライバシーは一般に 4 種類に分類されます。
 
-Aleo fulfils three of them:
-- [x] Private inputs (messages)
-- [x] Private outputs (state changes)
-- [x] Private user
-- [ ] Private function
+Aleo はそのうち 3 つを満たしています。
+- [x] 秘匿入力（メッセージ）
+- [x] 秘匿出力（状態遷移）
+- [x] 秘匿ユーザー
+- [ ] 秘匿関数
 
-Initially, Aleo was aiming for function privacy as well (as detailed in the original ZEXE paper) but decided against it as it would have led to worse performance and longer proving times.
+当初、Aleo は関数の秘匿性も目指していました（ZEXE 論文で詳述）が、その場合は性能低下と証明時間の延長を招くため採用を見送りました。
 
 
-### Comparing state storage in blockchains
-There are two main state models used in blockchains - UTXO (unspent transaction output) and the account model (introduced by Ethereum).
+### ブロックチェーンにおけるステートストレージの比較
+ブロックチェーンで用いられるステートモデルには、UTXO（未使用トランザクション出力）モデルと、Ethereum が導入したアカウントモデルの 2 種類があります。
 
-Aleo uses a variation of the UTXO model - the record model.
+Aleo は UTXO モデルを発展させたレコードモデルを採用しています。
 
 <p align="center" width="100%">
 <img src={require("./images/account_vs_utxo.png").default} alt="Account vs UTXO"></img>
 </p>
 
 <p align="center" width="100%">
-Source: <a href="https://www.galaxy.com/insights/research/mev-how-flashboys-became-flashbots/">galaxy.com</a>
+出典: <a href="https://www.galaxy.com/insights/research/mev-how-flashboys-became-flashbots/">galaxy.com</a>
 </p>
 <br></br>
 
-### Account Model
-In the account model as used in Ethereum, the application state can be found by referencing a particular address.
+### アカウントモデル
+Ethereum で採用されているアカウントモデルでは、特定のアドレスを参照することでアプリケーションステートを取得できます。
 
-As such, anyone would be able to view the activities of any account, simply with the knowledge of the address.
+そのため、アドレスさえ知っていれば誰でもそのアカウントの活動を閲覧できてしまいます。
 
 <p align="center" width="100%">
 <img src={require("./images/ethereum_storage.png").default} alt="Ethereum Storage Diagram"></img>
 </p>
 
 <p align="center" width="100%">
-Source: <a href="https://ethereum.org/en/develope.rs/docs/accounts/"> ethereum.org</a>
+出典: <a href="https://ethereum.org/en/develope.rs/docs/accounts/"> ethereum.org</a>
 </p>
 <br></br>
 
@@ -122,22 +120,22 @@ Source: <a href="https://ethereum.org/en/develope.rs/docs/accounts/"> ethereum.o
 </p>
 
 <p align="center" width="100%">
-Source: <a href="https://www.lucassaldanha.com/ethereum-yellow-paper-walkthrough-2/">Article by Lucas Saldanha</a>
+出典: <a href="https://www.lucassaldanha.com/ethereum-yellow-paper-walkthrough-2/">Article by Lucas Saldanha</a>
 </p>
 
 <br></br>
 
 
 
-### Record Model
-In the record model, the application state, along with its owner are encrypted and stored on the blockchain.
+### レコードモデル
+レコードモデルでは、アプリケーションステートおよびその所有者が暗号化された状態でブロックチェーンに保存されます。
 
 <p align="center" width="300">
 <img src={require("./images/record.png").default} alt="Aleo Records Diagram"></img>
 </p>
 
 <p align="center" width="100%">
-Source: <a href="https://eprint.iacr.org/2018/962.pdf"> Zexe: Enabling Decentralized Private Computation</a>
+出典: <a href="https://eprint.iacr.org/2018/962.pdf"> Zexe: Enabling Decentralized Private Computation</a>
 </p>
 
 <br></br>
@@ -149,38 +147,37 @@ Source: <a href="https://eprint.iacr.org/2018/962.pdf"> Zexe: Enabling Decentral
 
 
 <p align="center" width="100%">
-Source: <a href="https://eprint.iacr.org/2018/962.pdf"> Zexe: Enabling Decentralized Private Computation</a>
+出典: <a href="https://eprint.iacr.org/2018/962.pdf"> Zexe: Enabling Decentralized Private Computation</a>
 </p>
 <br></br>
 
 
 
-### Updating State
-In the record model, applications update their state by consuming records containing the old state, and producing new records that contain the updated state. Records that have been used will be marked as spent and cannot be used again.
+### ステートの更新
+レコードモデルでは、アプリケーションは古いステートを含むレコードを消費し、更新後のステートを含む新しいレコードを生成することで状態を更新します。使用済みのレコードは「spent」とマークされ、再利用できません。
 
 <p align="center" width="500">
 <img src={require("./images/utxo.png").default} alt="UTXO diagram"></img>
 </p>
 
 <p align="center" width="100%">
-Source: <a href="https://adapulse.io/the-extensive-guide-on-eutxo-utxo-and-the-accounts-based-model/"> adapulse.io</a>
+出典: <a href="https://adapulse.io/the-extensive-guide-on-eutxo-utxo-and-the-accounts-based-model/"> adapulse.io</a>
 </p>
 <br></br>
 
-The consumption and production of records is typically done in a transition function. A transaction in Aleo can contain up to 32 transitions, one of which is reserved for the transaction fee.
+レコードの消費と生成は通常トランジション関数で行われます。Aleo のトランザクションには最大 32 個のトランジションを含めることができ、そのうち 1 つはトランザクション手数料に使用されます。
 
 
 <p align="center" width="100%">
 <img src={require("./images/transaction_in_aleo.png").default}  alt="Transaction in Aleo"></img>
 </p>
 
-### Why is the Record Model Useful?
+### なぜレコードモデルが有用なのか
 
-In the account-based model, an application's data is stored in a persistent location tied to the application's account, and updates are made directly to this stored data. For a typical token transfer transaction using this model, user balances would be stored in a table mapping user account addresses to their respective balances. When User A transfers money to User B, A's balance in the table is reduced, and B's balance is increased by the same amount.
-If we were to try making the transactions private (hiding the amount transferred and the identities of A and B), instead of storing actual balances, the application can store commitments to these balances. Transactions would then update these commitments rather than the actual balances. However, while this approach hides transaction values, it does not hide user identities. To also hide user identities, every transaction would need to update all commitments in the table, which becomes increasingly inefficient as the number of users grows.
-Although the account model is more intuitive for developers, it uses account addresses to index global state. This means that while a private account model can achieve privacy for inputs and outputs, it still compromises user privacy since account addresses cannot be encrypted. Another issue with the private account model is the lack of concurrency, as only one user can access and update the entire program state at a time.
-Aleo's record model uses program IDs to uniquely identify programs instead of account addresses. This improves privacy and enables programs to have internal states. This approach is more efficient and solves the concurrency issue.
-
+アカウントベースモデルでは、アプリケーションのデータはそのアプリケーションのアカウントに紐づいた永続的な場所に保管され、更新はそのデータを直接書き換える形で行われます。このモデルで一般的なトークン送金トランザクションを実装する場合、ユーザー残高は「アカウントアドレス → 残高」のテーブルに保存されます。ユーザー A がユーザー B に送金すると、テーブル内の A の残高が減少し、B の残高が同額だけ増加します。
+トランザクションを秘匿化（送金額や A/B の正体を隠す）しようとすると、実際の残高の代わりに残高コミットメントを保存する手法が考えられます。トランザクションは実残高ではなくコミットメントを更新しますが、この方法では送金額こそ隠せてもユーザーの正体までは隠せません。ユーザーの身元まで隠すには、取引のたびにテーブル内のすべてのコミットメントを更新する必要があり、ユーザー数が増えるほど非効率になります。
+アカウントモデルは開発者にとって直感的ですが、グローバルステートを参照するためにアカウントアドレスを利用するため、入力と出力を秘匿化できてもアカウントアドレス自体は暗号化できず、ユーザーのプライバシーを損ないます。また、プライベートなアカウントモデルでは同時実行性の問題もあり、ある時点でプログラムステートを更新できるのは 1 ユーザーに限られます。
+Aleo のレコードモデルでは、アカウントアドレスではなくプログラム ID を使って各プログラムを一意に識別します。これによりプライバシーが向上し、プログラムに内部ステートを持たせることができます。このアプローチは効率的であり、同時実行性の問題も解決します。
 
 
 

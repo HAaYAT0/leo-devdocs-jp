@@ -1,37 +1,37 @@
 ---
-title: Boolean
-sidebar_label: Boolean
+title: ブール値
+sidebar_label: ブール値
 ---
 
 <a name="Boolean"></a>
 
-## Overview
+## 概要
 
-<p>Boolean element class for performing logical operations in Aleo. This class provides methods for creating boolean values, converting between different formats, and performing logical operations like AND, OR, XOR, NAND, NOR, and NOT.</p>
+<p>Boolean クラスは Aleo で論理演算を行うためのブール値を表します。ブール値の生成、さまざまな形式への変換、AND／OR／XOR／NAND／NOR／NOT といった論理演算を実行するためのメソッドを提供します。</p>
 
 
 
-## Constructors
+## コンストラクター
 
 ### Boolean
 
-<p>Creates a Boolean from a native JS bool</p>
+<p>ネイティブの JS ブール値から Boolean を生成します。</p>
 
 ```javascript
 Boolean(value)
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | value | <code>boolean</code> |
 
-## Methods
+## メソッド
 
 <a name="Boolean.fromString"></a>
 
 ### fromString
 
-<p>Creates a boolean object from a string representation ("true"/"false")</p>
+<p>文字列表現（"true" / "false"）から Boolean オブジェクトを生成します。</p>
 
 ```javascript
 fromString(boolean) ► Boolean
@@ -39,7 +39,7 @@ fromString(boolean) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | boolean | <code>string</code> |
 | *return* | <code>Boolean</code> |
@@ -50,7 +50,7 @@ fromString(boolean) ► Boolean
 
 ### toString
 
-<p>Returns the string representation of the boolean element</p>
+<p>Boolean 要素の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
@@ -58,7 +58,7 @@ toString() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>string</code> |
 
@@ -68,7 +68,7 @@ toString() ► string
 
 ### fromBytesLe
 
-<p>Create a boolean element from a Uint8Array of left endian bytes</p>
+<p>リトルエンディアンの Uint8Array から Boolean 要素を生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Boolean
@@ -76,7 +76,7 @@ fromBytesLe(bytes) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | bytes | <code>Uint8Array</code> |
 | *return* | <code>Boolean</code> |
@@ -87,7 +87,7 @@ fromBytesLe(bytes) ► Boolean
 
 ### toBytesLe
 
-<p>Encode the boolean element as a Uint8Array of left endian bytes</p>
+<p>Boolean 要素をリトルエンディアンの Uint8Array としてエンコードします。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
@@ -95,7 +95,7 @@ toBytesLe() ► Uint8Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -105,7 +105,7 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Reconstruct a boolean element from a boolean array representation</p>
+<p>真偽値配列による表現から Boolean 要素を再構築します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Boolean
@@ -113,7 +113,7 @@ fromBitsLe(bits) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | bits | <code>Array.&lt;any&gt;</code> |
 | *return* | <code>Boolean</code> |
@@ -124,7 +124,7 @@ fromBitsLe(bits) ► Boolean
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the boolean element</p>
+<p>Boolean 要素をリトルエンディアンの真偽値配列として取得します。</p>
 
 ```javascript
 toBitsLe() ► Array.<any>
@@ -132,7 +132,7 @@ toBitsLe() ► Array.<any>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -142,7 +142,7 @@ toBitsLe() ► Array.<any>
 
 ### toPlaintext
 
-<p>Create a plaintext from the boolean element</p>
+<p>Boolean 要素から Plaintext を生成します。</p>
 
 ```javascript
 toPlaintext() ► Plaintext
@@ -150,7 +150,7 @@ toPlaintext() ► Plaintext
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Plaintext</code> |
 
@@ -160,7 +160,7 @@ toPlaintext() ► Plaintext
 
 ### clone
 
-<p>Clone the boolean element</p>
+<p>Boolean 要素を複製します。</p>
 
 ```javascript
 clone() ► Boolean
@@ -168,7 +168,7 @@ clone() ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Boolean</code> |
 
@@ -178,7 +178,7 @@ clone() ► Boolean
 
 ### random
 
-<p>Generate a random boolean element</p>
+<p>ランダムな Boolean 要素を生成します。</p>
 
 ```javascript
 random() ► Boolean
@@ -186,7 +186,7 @@ random() ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Boolean</code> |
 
@@ -196,7 +196,7 @@ random() ► Boolean
 
 ### not
 
-<p>Logical NOT</p>
+<p>論理 NOT を実行します。</p>
 
 ```javascript
 not() ► Boolean
@@ -204,7 +204,7 @@ not() ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Boolean</code> |
 
@@ -214,7 +214,7 @@ not() ► Boolean
 
 ### and
 
-<p>Logical AND</p>
+<p>論理 AND を実行します。</p>
 
 ```javascript
 and(other) ► Boolean
@@ -222,7 +222,7 @@ and(other) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>Boolean</code> |
@@ -233,7 +233,7 @@ and(other) ► Boolean
 
 ### or
 
-<p>Logical OR</p>
+<p>論理 OR を実行します。</p>
 
 ```javascript
 or(other) ► Boolean
@@ -241,7 +241,7 @@ or(other) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>Boolean</code> |
@@ -252,7 +252,7 @@ or(other) ► Boolean
 
 ### xor
 
-<p>Logical XOR</p>
+<p>論理 XOR を実行します。</p>
 
 ```javascript
 xor(other) ► Boolean
@@ -260,7 +260,7 @@ xor(other) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>Boolean</code> |
@@ -271,7 +271,7 @@ xor(other) ► Boolean
 
 ### nand
 
-<p>Logical NAND</p>
+<p>論理 NAND を実行します。</p>
 
 ```javascript
 nand(other) ► Boolean
@@ -279,7 +279,7 @@ nand(other) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>Boolean</code> |
@@ -290,7 +290,7 @@ nand(other) ► Boolean
 
 ### nor
 
-<p>Logical NOR</p>
+<p>論理 NOR を実行します。</p>
 
 ```javascript
 nor(other) ► Boolean
@@ -298,7 +298,7 @@ nor(other) ► Boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>Boolean</code> |
@@ -309,7 +309,7 @@ nor(other) ► Boolean
 
 ### equals
 
-<p>Check if one boolean element equals another</p>
+<p>2 つの Boolean 要素が等しいかどうかを判定します。</p>
 
 ```javascript
 equals(other) ► boolean
@@ -317,7 +317,7 @@ equals(other) ► boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | other | <code>Boolean</code> |
 | *return* | <code>boolean</code> |

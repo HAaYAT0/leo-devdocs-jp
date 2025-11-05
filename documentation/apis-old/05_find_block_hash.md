@@ -1,23 +1,23 @@
 ---
 id: find_block_hash
-title: Find Block Hash
-sidebar_label: Find Block Hash
+title: ブロックハッシュを検索
+sidebar_label: ブロックハッシュを検索
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/find/blockHash/{transactionID}
 ```
 
-Returns the block hash of the block containing the given transaction ID.
+指定したトランザクション ID を含むブロックのブロックハッシュを返します。
 
-### Arguments
+### 引数
 
-|    Parameter    |  Type  |    Description     |
+|    パラメーター    |  型  |    説明     |
 |:---------------:|:------:|:------------------:|
-| `transactionID` | String | The transaction ID |
+| `transactionID` | String | トランザクション ID |
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |                 Description                  |
+| パラメーター |  型  |                 説明                  |
 |:---------:|:------:|:--------------------------------------------:|
-| `result`  | String | The block hash containing the transaction ID |
+| `result`  | String | トランザクション ID を含むブロックのブロックハッシュ |

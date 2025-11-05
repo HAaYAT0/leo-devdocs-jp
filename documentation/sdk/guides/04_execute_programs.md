@@ -1,29 +1,25 @@
 ---
 id: execute_programs
-title: Executing Programs
-sidebar_label: Executing Programs
+title: プログラムの実行
+sidebar_label: プログラムの実行
 ---
 
 
-## Program Execution Model
+## プログラム実行モデル
 
-The SDK provides the ability to execute Aleo Instructions programs entirely client-side within the browser.
+SDK を使うと、Aleo Instructions のプログラムをブラウザ内で完結するクライアントサイド処理として実行できます。
 
-The `ProgramManager` object encapsulates the functionality for executing programs and making zero knowledge proofs about
-them. Under the hood it uses cryptographic code compiled from [snarkVM](../../guides/aleo/00_aleo_overview.md) into WebAssembly.
-JavaScript bindings to this WebAssembly code allows execution of programs in zero knowledge fully within the browser
-without requiring any external communication with the internet. Users interested in lower level details on how this is
-achieved can visit the [aleo-wasm](https://github.com/ProvableHQ/sdk/tree/mainnet/wasm) crate.
+`ProgramManager` オブジェクトはプログラムの実行およびゼロ知識証明の生成をひとまとめに提供します。内部的には、[snarkVM](../../guides/aleo/00_aleo_overview.md) を WebAssembly へコンパイルした暗号ライブラリを利用しています。WebAssembly への JavaScript バインディングを通じて、ブラウザだけでゼロ知識の実行が完結し、インターネットとの追加通信は必要ありません。より低レベルな仕組みに興味がある場合は、[aleo-wasm](https://github.com/ProvableHQ/sdk/tree/mainnet/wasm) クレートを参照してください。
 
-The basic execution flow of a program is as follows:
-1. A web app is loaded with an instance of the `ProgramManager` object
-2. An Aleo program in `Aleo Instructions` format is loaded into the `ProgramManager` as a wasm object
-3. The web app provides a user input form for the program
-4. The user submits the inputs and the zero knowledge execution is performed client-side within WebAssembly
-5. The result is returned to the user
-6. (Optional) A fully encrypted zero knowledge transcript of the execution is optionally sent to the Aleo network
+基本的な実行フローは次のとおりです。
+1. Web アプリが `ProgramManager` オブジェクトのインスタンスを読み込みます。
+2. `Aleo Instructions` 形式の Aleo プログラムを wasm オブジェクトとして `ProgramManager` に読み込みます。
+3. Web アプリがプログラムに入力するフォームをユーザーへ提供します。
+4. ユーザーが入力を送信すると、ゼロ知識実行が WebAssembly 内でクライアントサイド実行されます。
+5. 結果がユーザーへ返されます。
+6. （任意）実行の完全に暗号化されたゼロ知識トランスクリプトを Aleo ネットワークへ送信します。
 
-A diagrammatic representation of the program execution flow is shown below.
+プログラム実行の流れは次の図でも表せます。
 ```mermaid
 graph LR
     p1[Leo Program]
@@ -42,20 +38,20 @@ graph LR
     in-memory-program-."ZK result (Optional)".->Aleo-Network
 ```
 
-## Executing Programs
+## プログラムの実行
 
-There are two main methods for building general execution transactions: `execute()` and `buildExecutionTransaction()`. Calling `execute()` will build and submit the transaction to the Aleo network, while `buildExecutionTransaction()` will only build the transaction and return it to the caller within Javascript.
+一般的な実行トランザクションを構築する主なメソッドは `execute()` と `buildExecutionTransaction()` の 2 つです。`execute()` はトランザクションを構築すると同時に Aleo ネットワークへ送信し、`buildExecutionTransaction()` はトランザクションを構築して JavaScript へ返すだけです。
 
-Let's walk through an example:  
+それでは具体例を見ながら進めましょう。  
 
-### Setup
+### セットアップ
 
-Similar to the [Deploying Programs](./03_deploy_programs.md) guide, you'll need to initialize some fundamental objects if you haven't already done so:
+[プログラムのデプロイ](./03_deploy_programs.md) ガイドと同様に、まだであれば基本となるオブジェクトを初期化します。
 
 ```typescript
 import { Account, AleoNetworkClient, initThreadPool, ProgramManager, AleoKeyProvider } from '@provablehq/sdk';
 
-// If the threadpool has not been initialized, do so (this step can be skipped if it's been initialized elsewhere). 
+// スレッドプールが未初期化の場合はここで初期化します（別の場所で初期化済みなら省略可能）。
 await initThreadPool();
 
 const account = new Account({ privateKey: 'APrivateKey1...'});
@@ -67,17 +63,17 @@ keyProvider.useCache = true;
 const programManager = new ProgramManager(networkClient, keyProvider);
 programManager.setAccount(account);
 ```
-If you're confused on any of the above code, head back to the previous guide for a more detailed explanation.
+上記のコードについて不明点があれば、前章を参照して詳細を確認してください。
 
-### Build the Transaction
-In addition to the above setup, you'll likely want define a key search parameter to find the correct proving and verifying keys for the program if they are stored in a memory cache:
+### トランザクションの構築
+上記セットアップに加えて、メモリキャッシュに格納されている証明鍵・検証鍵を見つけるために、キー検索パラメーターを定義しておくと便利です。
 ```typescript
 const keySearchParams = { cacheKey: "betastaking.aleo:stake_public" };
 ```
 
-Once everything's been intialized, we can build and submit the transaction, and await the results:
+すべての初期化が完了したら、トランザクションを構築して送信し、結果を待ちます。
 ```typescript
-// Execute the program using the options provided inline and get the transaction.
+// プログラムをインラインで指定したオプションを使って実行し、トランザクションを取得します。
 const tx = await programManager.buildExecutionTransaction({
     programName: "betastaking.aleo",
     functionName: "stake_public",
@@ -87,15 +83,15 @@ const tx = await programManager.buildExecutionTransaction({
     keySearchParams: keySearchParams,
 });
 
-// Submit the program to the network.
+// プログラムをネットワークへ送信します。
 const transaction_id = await programManager.networkClient.submitTransaction(tx);
 
-// Generally the transaction will need 1-3 blocks (3-9 seconds) to be confirmed on the network. When that time has 
-// elapsed the following function can be used to get the transaction details.
+// 通常、トランザクションがネットワークで確定するまでに 1〜3 ブロック（3〜9 秒）かかります。
+// その頃合いになったら、次の関数でトランザクションの詳細を取得します。
 const transaction = await programManager.networkClient.getTransaction(transaction_id);
 ```
 
-Alternatively, we can just call the `execute()` method to build and broadcast the transaction in one call:
+別の方法として、`execute()` を呼び出してトランザクションの構築とブロードキャストを 1 回で実行させることもできます。
 
 ```typescript
 const transaction_id = await programManager.execute(
@@ -111,64 +107,64 @@ const transaction = await programManager.networkClient.getTransaction(transactio
 ```
 
 
-## Local Program Execution
+## ローカルでのプログラム実行
 
-It is also possible to simply execute a program locally without sending a transaction to the Aleo network. This can be useful if a developer wants to use the SDK to use Aleo's zkSNARKs outside of the blockchain network or run a test execution of a program while developing. For this purpose the `ProgramManager` class has a method called `run()` that can be used to execute a program locally.
+トランザクションを Aleo ネットワークへ送信せず、ローカルでプログラムを実行することも可能です。これは、ブロックチェーン外で Aleo の zkSNARK を利用したい場合や、開発中にプログラムのテスト実行を行いたい場合に役立ちます。この用途のために、`ProgramManager` クラスにはローカル実行用の `run()` メソッドが用意されています。
 
-### Running Locally WITHOUT A Proof
-When the developer simply wants see the output of a function without the computationally expensive operation of generating a proof, the `run()` method of `ProgramManager` can be used. It simply needs the program, the function name, and the inputs to the function.
+### 証明を生成せずにローカル実行する場合
+証明の生成という計算コストの高い処理を省き、関数の出力だけ確認したいときは `ProgramManager` の `run()` メソッドを使用できます。引数としてプログラム、関数名、関数への入力を渡すだけです。
 
-When run in this fashion, the program will execute and return the outputs of the function without generating a proof. This can be useful for testing a function in development.
+この方法では証明を生成せずにプログラムを実行し、関数の出力を返します。開発中の関数をテストする場合に便利です。
 
 ```typescript
 import { Account, ProgramManager } from '@provablehq/sdk';
 
-/// Create the source for the "hello world" program
+/// "hello world" プログラムのソースを作成します
 const program = "program helloworld.aleo;\n\nfunction hello:\n    input r0 as u32.public;\n    input r1 as u32.private;\n    add r0 r1 into r2;\n    output r2 as u32.private;\n";
 const programManager = new ProgramManager();
 
-/// Create a temporary account for the execution of the program
+/// プログラム実行用の一時アカウントを作成します
 const account = new Account();
 programManager.setAccount(account);
 
-/// Get the response and ensure that the program executed correctly
+/// レスポンスを取得し、プログラムが正しく実行されたか確認します
 const executionResponse = await programManager.run(program, "hello", ["5u32", "5u32"]);
 const result = executionResponse.getOutputs();
 assert.deepStrictEqual(result, ['10u32']);
 ```
 
 
-### Running Locally WITH A Proof
-If the developer wants to generate a proof for a program execution without sending it to the Aleo network, the `run()` method can be used with the `proveExecution` parameter set to true. This will generate an `ExecutionResponse` object that includes the proof of the execution which can be verified offchain by the `verifyExecution()` method by anyone who has the function's proving and verifying keys.
+### 証明を生成しながらローカル実行する場合
+プログラム実行の証明を生成しつつ Aleo ネットワークには送信したくない場合は、`run()` メソッドの `proveExecution` パラメーターを true に設定します。これにより、実行時の証明を含む `ExecutionResponse` オブジェクトが作成され、関数の証明鍵・検証鍵を持つ任意の人が `verifyExecution()` メソッドでオフチェーン検証できます。
 
 :::note
-This approach is will not work for any function that has an async future defined within it.
+非同期 Future を定義している関数では、この方法は機能しません。
 :::
 
 ```typescript
 import { Account, AleoKeyProvider, ProgramManager, ProvingKey, VerifyingKey } from '@provablehq/sdk';
 
-/// Initialize the key provider and network client.
+/// キープロバイダーとネットワーククライアントを初期化します。
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
 keyProvider.useCache = true;
 
-/// Define the program.
+/// プログラムを定義します。
 const program = "program helloworld.aleo;\n\nfunction hello:\n    input r0 as u32.public;\n    input r1 as u32.private;\n    add r0 r1 into r2;\n    output r2 as u32.private;\n";
 
-/// Create the proving and verifying keys for the program and store them in the key provider.
+/// プログラムの証明鍵と検証鍵を作成してキープロバイダーに保存します。
 const provingKey = ProvingKey.fromString("...");
 const verifyingKey = VerifyingKey.fromString("...");
 keyProvider.cacheKeys("helloworld.aleo:main", [provingKey, verifyingKey]);
 
-/// Create a program manager with the key provider.
+/// キープロバイダーを使って ProgramManager を作成します。
 const programManager = new ProgramManager(networkProvider, KeyProvider);
 
-/// Create a temporary account for the execution of the program
+/// プログラム実行用の一時アカウントを作成します
 const account = new Account();
 programManager.setAccount(account);
 
-/// Get the response and ensure that the program executed correctly
+/// レスポンスを取得し、プログラムが正しく実行されたか確認します
 const executionResponse = await programManager.run(
   program: program, 
   function_name: "hello", 
@@ -178,9 +174,8 @@ const executionResponse = await programManager.run(
   
 );
 
-/// Verify the proof of the execution
+/// 実行証明を検証します
 const proofIsValid = await programManager.verifyExecution(executionResponse);
 ```
-
 
 

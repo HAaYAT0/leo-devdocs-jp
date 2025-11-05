@@ -1,74 +1,74 @@
 ---
 id: overview
-title: Aleo Virtual Machine (AVM)
-sidebar_label: Aleo Virtual Machine (AVM)
+title: Aleo 仮想マシン (AVM)
+sidebar_label: Aleo 仮想マシン (AVM)
 ---
 
-The Aleo Virtual Machine (AVM) is a computational platform integral to the Aleo blockchain, designed to run privacy-focused applications. It operates as a stack machine that executes queued instructions. Its primary function is to construct arithmetic circuits described as Rank-1 Constraint System (R1CS), from each instruction in a function.
+Aleo 仮想マシン（Aleo Virtual Machine, AVM）は、プライバシー重視のアプリケーションを実行するために Aleo ブロックチェーンへ組み込まれた計算プラットフォームです。キューに蓄えた命令を実行するスタックマシンとして動作し、主な役割は関数内の各命令からランク 1 制約システム（Rank-1 Constraint System, R1CS）と呼ばれる算術回路を構築することです。
 
-After constructing the **R1CS**, corresponding proofs are generated using a variation of **Marlin** algorithm called **Varuna**. This approach allows for succinct verification of arbitrary computations by leveraging a **universal** and **updatable** Structured Reference String (**SRS**).
+**R1CS** を構築した後、**Varuna** と呼ばれる **Marlin** アルゴリズムの改良版を用いて対応する証明を生成します。この方式は、**ユニバーサル**かつ**更新可能**な構造化参照文字列（Structured Reference String, **SRS**）を活用することで、任意の計算を簡潔に検証できるようにしています。
 
-It was formalised and implemented in the Aleo Network as [ARC-0002](https://github.com/AleoNet/ARCs/tree/master/arc-0002).
+これらは Aleo ネットワークにおいて [ARC-0002](https://github.com/AleoNet/ARCs/tree/master/arc-0002) として正式に定義され、実装されています。
 
-### **Key Features of the AVM**
+### **AVM の主な特徴**
 
-- **Privacy Preservation**: The AVM executes transactions and contracts while maintaining the confidentiality of the data involved. This is done using zk-SNARKs, which allow the verification of the correctness of computations without revealing the inputs or internal state.
-- **Deterministic Execution**: Like other blockchain virtual machines, the AVM ensures that contract execution is deterministic, meaning it produces the same output given the same initial state and inputs across all nodes.
-- **Scalability**: The use of zk-SNARKs also aids scalability. Since the computational load of verifying a zero-knowledge proof is less than repeatedly executing the computation, the AVM can handle more complex operations at a larger scale compared to traditional systems.
+- **プライバシー保護**: AVM はトランザクションやコントラクトを実行しながら、関与するデータの秘匿性を維持します。zk-SNARK を利用することで、入力値や内部状態を公開せずに計算の正しさを検証できます。
+- **決定的な実行**: 他のブロックチェーン向け仮想マシンと同様に、AVM はコントラクトの実行が決定的になるよう保証します。同じ初期状態と入力が与えられれば、ノード間で同一の結果を得られます。
+- **スケーラビリティ**: zk-SNARK を用いると検証の計算コストが繰り返しの再実行より小さくなるため、従来のシステムと比べてより大規模かつ複雑な処理へ対応できます。
 
-## **AVM’s Architecture and Design**
+## **AVM のアーキテクチャと設計**
 
-The AVM is virtual machine that operates on a last-in, first-out (LIFO) principle where data is stacked and the most recently added data is the first to be accessed or removed. This design is conducive to the execution of complex arithmetic circuits that are essential for the privacy-preserving features of Aleo. The AVM's architecture is designed to support the execution of private applications by leveraging zero-knowledge proofs. It uses Leo (high-level programming language), which compiles down into an intermediate representation known as AVM opcodes. These opcodes are then used to construct the R1CS, which are essential for generating zero-knowledge proofs. Check the full list [here](../../guides/aleo/04_opcodes.md)
+AVM は後入れ先出し（LIFO）方式で動作する仮想マシンであり、スタックに積んだデータのうち最後に追加されたものから順にアクセスまたは取り出します。この設計が、Aleo のプライバシー機能を支える複雑な算術回路の実行に適しています。AVM のアーキテクチャはゼロ知識証明を活用しながらプライベートアプリケーションを実行できるよう設計されています。高水準プログラミング言語の Leo を利用してコードを記述し、コンパイルすると AVM オペコードと呼ばれる中間表現になります。これらのオペコードが R1CS を構築するために使用され、ゼロ知識証明の生成に不可欠です。オペコードの一覧は [こちら](../../guides/aleo/04_opcodes.md) を参照してください。
 
-The AVM architecture can be broken down into several key components and characteristics:
+AVM のアーキテクチャは主に次の要素と特徴から成り立ちます。
 
 ### **Instruction Set Architecture (ISA)**
 
-The Instruction Set Architecture of the AVM is custom-designed to support operations required for zero-knowledge proofs, especially zk-SNARKs. This set of instructions is optimized to handle complex mathematical operations efficiently, such as those involving elliptic curves, which are crucial for creating and verifying zero-knowledge proofs.
+AVM の命令セットアーキテクチャは、ゼロ知識証明、特に zk-SNARK に必要な演算をサポートするように設計されています。この命令セットは、ゼロ知識証明の生成と検証に不可欠な楕円曲線演算をはじめとする複雑な数学的処理を効率的に扱えるよう最適化されています。
 
 ### **Execution Environment**
 
-The execution environment of the AVM provides the runtime in which smart contracts are executed. This environment is tightly controlled and deterministic, meaning that given the same initial state and inputs, the execution will always produce the same output. This determinism is essential for maintaining consensus across the blockchain network.
+AVM の実行環境は、スマートコントラクトが動作するランタイムを提供します。この環境は厳密に制御されており決定的に振る舞います。つまり、同じ初期状態と入力であれば常に同じ出力が得られます。この決定性が、ブロックチェーンネットワーク全体のコンセンサス維持に不可欠です。
 
 ### **Memory Management**
 
-AVM features a structured memory model to manage both transient and persistent data:
+AVM には一時的なデータと永続的なデータの両方を扱うための構造化されたメモリモデルがあります。
 
-- **Stack**: Used for temporary storage during the execution of instructions. This is typically where variables, temporary results, and stack frames (context for function calls) are stored.
-- **Heap**: For dynamic allocation of memory during execution, supporting more complex data structures necessary for advanced contract functionality.
-- **Storage**: This refers to the persistent state of contracts on the blockchain. Unlike stack and heap, storage data persists between transactions and is part of the blockchain's state.
+- **スタック**: 命令の実行中に使用される一時的な記憶領域です。変数や一時的な計算結果、関数呼び出しのコンテキスト（スタックフレーム）などが格納されます。
+- **ヒープ**: 実行時に動的にメモリを割り当てる領域で、高度なコントラクト機能に必要な複雑なデータ構造をサポートします。
+- **ストレージ**: ブロックチェーン上に永続化されるコントラクトの状態を指します。スタックやヒープと異なり、トランザクションをまたいで保持され、ブロックチェーンの状態の一部となります。
 
 ### **State Transition System**
 
-The state transition system in the AVM defines how the state of the blockchain changes in response to transactions:
+AVM の状態遷移システムは、トランザクションに応じてブロックチェーンの状態がどのように変化するかを定義します。
 
-- **Transactions**: These are submitted by users and can include smart contract interactions or simple transfers. They change the state of the blockchain.
-- **State Transitions**: Each transaction processed by the AVM results in a state transition, updating the blockchain's global state according to predefined rules.
-- **Privacy Enforcement**: During state transitions, the AVM ensures that all operations uphold the privacy guarantees promised by zero-knowledge proofs. This means sensitive data remains encrypted, and only the validity of transactions is verified.
+- **トランザクション**: ユーザーが送信する操作で、スマートコントラクトへのアクセスや単純な送金などを含みます。これらはブロックチェーンの状態を変化させます。
+- **状態遷移**: AVM がトランザクションを処理すると、あらかじめ定められたルールに従って状態遷移が発生し、ブロックチェーンのグローバルステートが更新されます。
+- **プライバシーの担保**: 状態遷移の過程でも、ゼロ知識証明によって保証されるプライバシーが常に維持されます。秘匿すべきデータは暗号化されたままで、トランザクションの正当性だけが検証されます。
 
-A Merkle tree is used to represent the global state. One of the biggest challenges is to also include encrypted information in this global state.
+グローバルステートの表現には Merkle 木が用いられます。大きな課題の 1 つは、暗号化された情報をこのグローバルステートに組み込むことです。
 
-The transaction data is not stored directly but through encrypted transitions.
+トランザクションデータは直接保存されず、暗号化されたトランジションを通じて保持されます。
 
 ![AVS Global State](./images/avs_global_state.png)
-Source: trapdoortech.com
+出典: trapdoortech.com
 
-### **Smart Contract Compilation and Deployment**
+### **スマートコントラクトのコンパイルとデプロイ**
 
-- **Leo Programming Language**: Smart contracts are written in Leo, a Domain Specific Language (DSL) designed for expressing the semantics of Aleo and zero-knowledge. Leo code is compiled into AVM bytecode.
-- **Bytecode Execution**: The compiled bytecode is what the AVM directly executes. This bytecode is optimized for the AVM's execution environment, ensuring efficient processing and privacy preservation.
+- **Leo プログラミング言語**: スマートコントラクトは、Aleo の意味論とゼロ知識を表現するために設計されたドメイン特化言語（DSL）である Leo で記述します。Leo のコードは AVM バイトコードへコンパイルされます。
+- **バイトコードの実行**: コンパイルされたバイトコードが AVM によって直接実行されます。このバイトコードは AVM の実行環境向けに最適化されており、高効率かつプライバシーを維持した処理が可能です。
 
-### **Networking and Consensus Layer Integration**
+### **ネットワーキングとコンセンサス層との統合**
 
-Although not a direct part of the AVM, the virtual machine operates within the broader context of Aleo's network architecture:
+AVM 自体は直接ネットワーク層に属しませんが、Aleo のネットワークアーキテクチャ全体の中で動作します。
 
-- **Block Propagation and Validation**: The AVM's execution outcomes influence block validation and propagation across the network.
-- **Consensus Mechanism**: The AVM interfaces with the blockchain's consensus mechanism by providing guarantees about the correctness of executed transactions through zero-knowledge proofs, thus facilitating a secure and verifiable agreement on the state of the ledger.
+- **ブロックの伝播と検証**: AVM の実行結果は、ネットワーク全体でのブロック検証と伝播に影響します。
+- **コンセンサスメカニズム**: AVM は、ゼロ知識証明によってトランザクションの正当性を保証することでブロックチェーンのコンセンサスメカニズムと連携し、台帳状態に関する安全で検証可能な合意形成を支援します。
 
 ![AVM Execution Flow](./images/avm_execution_flow_overview.png)
 
-### **Execution Flow**
+### **実行フロー**
 
-- **Compilation**: Developers write their contracts in Leo, which compiles into AVM bytecode.
-- **Deployment**: Bytecode is deployed to the Aleo network, where it is executed by the AVM.
-- **Execution**: When a contract is called, the AVM processes the bytecode, leveraging zk-SNARKs to maintain privacy. The outputs verify that the contract executed correctly without revealing any sensitive information.
+- **コンパイル**: 開発者は Leo でコントラクトを記述し、AVM バイトコードへコンパイルします。
+- **デプロイ**: バイトコードを Aleo ネットワークへデプロイすると、AVM が実行します。
+- **実行**: コントラクトが呼び出されると、AVM がバイトコードを処理し、zk-SNARK を活用してプライバシーを維持します。出力から、秘匿情報を公開することなくコントラクトが正しく実行されたと確認できます。

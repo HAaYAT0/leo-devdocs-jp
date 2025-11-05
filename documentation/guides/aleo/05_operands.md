@@ -1,56 +1,56 @@
 ---
 id: special_operands
-title: Aleo Special Operands
-sidebar_label: Special Operands
+title: Aleo 特殊オペランド
+sidebar_label: 特殊オペランド
 ---
 
-The following lists show the special operands supported by Aleo instructions.
+Aleo instructions でサポートされている特殊オペランドを以下にまとめます。
 
-## Table of Special Operands
-| Name                         | Description                                           |
-|------------------------------|:------------------------------------------------------|
-| [block.height](#blockheight) | Returns height of the block within the finalize scope |
-| [self.signer](#selfsigner)   | Returns the user address that originated the transition |
-| [self.caller](#selfcaller)   | Returns the address of the immediate caller of the program |
-| [network.id](#networkid)     | Returns the ID of the network on which the program is executed |
-| [edition](#edition)          | Returns the program's version number (u16) |
-| [checksum](#checksum)        | Returns the SHA3-256 hash of the program string |
-| [program_owner](#programowner) | Returns the address of the account that submitted the deployment transaction |
+## 特殊オペランド一覧 {#table-of-special-operands}
+| Name                         | 説明                                                     |
+|------------------------------|:---------------------------------------------------------|
+| [block.height](#blockheight) | finalize スコープ内のブロック高を返します               |
+| [self.signer](#selfsigner)   | トランジションを発行したユーザーアドレスを返します       |
+| [self.caller](#selfcaller)   | プログラムを直接呼び出した呼び出し元アドレスを返します   |
+| [network.id](#networkid)     | プログラムが実行されているネットワーク ID を返します     |
+| [edition](#edition)          | プログラムのバージョン番号 (`u16`) を返します            |
+| [checksum](#checksum)        | プログラム文字列の SHA3-256 ハッシュを返します           |
+| [program_owner](#programowner) | デプロイ取引を送信したアカウントのアドレスを返します  |
 
-## Specification
+## 仕様
 
-The following is the specification for each special operands in the Aleo Virtual Machine (AVM).
+以下では Aleo Virtual Machine (AVM) における各特殊オペランドの仕様を説明します。
 
 ### `network.id`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the ID of the network on which the program is executed. This can be useful for managing network-specific program behavior.
-The `network.id` command must be called within a finalize block.
+プログラムが実行されているネットワーク ID を返します。ネットワークごとの挙動を切り替える際に便利です。  
+`network.id` コマンドは finalize ブロック内でのみ呼び出せます。
 
-Currently supported network IDs are:
-- 0: Mainnet
-- 1: Testnet 
-- 2: Canarynet
+現在サポートされているネットワーク ID は次のとおりです。
+- 0: メインネット
+- 1: テストネット
+- 2: カナリアネット
 
-#### Example Usage
+#### 利用例
 
 ```aleo
-assert.eq network.id 0u64;  // For mainnet
+assert.eq network.id 0u64;  // Mainnet を想定
 ```
 
 ### `block.height`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the height of the block within the finalize scope.  
-The `block.height` command must be called within a finalize block.
+finalize スコープ内のブロック高を返します。  
+`block.height` コマンドは finalize ブロック内でのみ呼び出せます。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
 assert.eq block.height 100u64;
@@ -58,13 +58,13 @@ assert.eq block.height 100u64;
 
 ### `self.signer`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the user address that originated the transition.
+トランジションを発行したユーザーアドレスを返します。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
 assert.eq self.signer aleo1...;
@@ -72,13 +72,13 @@ assert.eq self.signer aleo1...;
 
 ### `self.caller`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the address of the immediate caller of the program.
+プログラムを直接呼び出した呼び出し元アドレスを返します。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
 assert.eq self.caller aleo1...;
@@ -86,68 +86,68 @@ assert.eq self.caller aleo1...;
 
 ### `edition`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the program's version number as an unsigned 16-bit integer (`u16`). The `edition` must be `0u16` for the initial deployment. For every valid upgrade, it must increment by exactly 1.
+プログラムのバージョン番号を符号なし 16 ビット整数 (`u16`) として返します。初回のデプロイでは `edition` を必ず `0u16` に設定し、以降の正当なアップグレードでは 1 ずつ増やす必要があります。
 
-This operand is exclusively available within the `finalize` scope and is used for program upgradability.
+このオペランドは `finalize` スコープでのみ利用でき、プログラムのアップグレード管理に用いられます。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
-assert.eq edition 0u16;  // Check if this is the initial deployment
+assert.eq edition 0u16;  // 初回デプロイであることを確認
 ```
 
 :::note
-You may also refer to other program's metadata by qualifying the operand with the program name, like `Program::edition(credits.aleo)`, `Program::edition(foo.aleo)`. You will need to import the program in your Leo file to use this syntax.
+別のプログラムのメタデータを参照する場合は、`Program::edition(credits.aleo)` や `Program::edition(foo.aleo)` のようにプログラム名を修飾して使用できます。この構文を利用するには、Leo ファイルで対象プログラムをインポートしておく必要があります。
 :::
 
 ### `checksum`
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns a 32-byte array (`[u8; 32u32]`) representing the SHA3-256 hash of the program string. It's a unique fingerprint of the program's code.
+プログラム文字列の SHA3-256 ハッシュを表す 32 バイト配列（`[u8; 32u32]`）を返します。これはプログラムコードのユニークなフィンガープリントです。
 
-The `checksum` is required in any deployment of an upgradable program and is used to verify that the deployed code is what was expected.
+アップグレード可能なプログラムをデプロイする際は `checksum` が必須で、デプロイされたコードが想定どおりであることを検証するために使用します。
 
-This operand is exclusively available within the `finalize` scope.
+このオペランドは `finalize` スコープでのみ利用できます。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
-assert.eq checksum <EXPECTED_CHECKSUM>;  // Verify program code matches expected hash
+assert.eq checksum <EXPECTED_CHECKSUM>;  // プログラムコードが想定どおりか確認
 ```
 
 :::note
-You may also refer to other program's metadata by qualifying the operand with the program name, like `Program::checksum(credits.aleo)`, `Program::checksum(foo.aleo)`. You will need to import the program in your Leo file to use this syntax.
+別のプログラムのメタデータを参照する場合は、`Program::checksum(credits.aleo)` や `Program::checksum(foo.aleo)` のようにプログラム名を修飾して使用できます。この構文を利用するには、Leo ファイルで対象プログラムをインポートしておく必要があります。
 :::
 
 ### `program_owner` {#programowner}
 
-[Back to Top](#table-of-special-operands)
+[トップに戻る](#table-of-special-operands)
 
-#### Description
+#### 説明
 
-Returns the `address` of the account that submitted the deployment transaction.
+デプロイ取引を送信したアカウントの `address` を返します。
 
-The `program_owner` is required in any deployment of an upgradable program and can be used to enforce access control for program upgrades.
+アップグレード可能なプログラムをデプロイする際は `program_owner` が必須で、プログラムのアップグレードに対するアクセス制御を実装する際に役立ちます。
 
-This operand is exclusively available within the `finalize` scope.
+このオペランドは `finalize` スコープでのみ利用できます。
 
-#### Example Usage
+#### 利用例
 
 ```aleo
-assert.eq program_owner <ADMIN_ADDRESS>;  // Restrict upgrades to specific admin
+assert.eq program_owner <ADMIN_ADDRESS>;  // 特定の管理者にアップグレードを制限
 ```
 
 :::note
-You may also refer to other program's metadata by qualifying the operand with the program name, like `Program::program_owner(credits.aleo)`, `Program::program_owner(foo.aleo)`. You will need to import the program in your Leo file to use this syntax.
+別のプログラムのメタデータを参照する場合は、`Program::program_owner(credits.aleo)` や `Program::program_owner(foo.aleo)` のようにプログラム名を修飾して使用できます。この構文を利用するには、Leo ファイルで対象プログラムをインポートしておく必要があります。
 :::
 
 :::warning
-Programs deployed before upgradability do not have a `program_owner`. Attempting to access it will result in a runtime error.
+アップグレード機能が導入される前にデプロイされたプログラムには `program_owner` が存在しません。その場合にアクセスしようとすると実行時エラーが発生します。
 :::

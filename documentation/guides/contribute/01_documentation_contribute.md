@@ -1,79 +1,76 @@
 ---
 id: documentation_contribute
-title: DevDocs Contribution
-sidebar_label: DevDocs Contribution
+title: DevDocs への貢献
+sidebar_label: DevDocs への貢献
 ---
 
-Welcome to the Aleo DevDocs contribution guide! We invite you to help improve our documentation, making it more comprehensive and up-to-date. Your contributions, big or small, are valuable in enhancing the Aleo ecosystem for developers. This guide will walk you through the process of contributing effectively to our documentation.
+Aleo DevDocs への貢献ガイドへようこそ。ドキュメントをより充実させ、最新の情報を提供できるよう、皆さんの協力をお待ちしています。小さな修正でも大きな追記でも、開発者向けエコシステムの改善に役立つ大切な貢献です。このガイドでは、効果的にドキュメントへ貢献する方法を紹介します。
 
-## Providing Feedback
+## フィードバックの提供
 
-If you've found an issue or have a suggestion for improvement but don't have time to make the changes yourself, you can still contribute by providing feedback through GitHub Issues:
+問題点を見つけたけれど修正する時間がない、あるいは改善案だけ共有したい場合は、GitHub Issues を通じてフィードバックを送ってください。
 
-1. Go to the [Issues](https://github.com/AleoNet/welcome/issues) page of the welcome repository.
-2. Click on "New Issue".
-3. Choose the appropriate issue template if available, or start with a blank issue.
-4. Provide a clear and concise title that summarizes the issue or suggestion.
-5. In the description:
-   - For bugs or errors: Describe what you expected to see and what you actually saw. Include steps to reproduce if applicable.
-   - For improvement suggestions: Explain your idea and how it would enhance the documentation.
-   - If relevant, include screenshots or code snippets to illustrate your point.
-6. Add appropriate labels to your issue (e.g., "documentation", "enhancement", "bug").
-7. Submit the issue.
+1. welcome リポジトリの [Issues](https://github.com/AleoNet/welcome/issues) ページを開きます。
+2. 「New Issue」をクリックします。
+3. 利用可能なテンプレートがあれば選択し、なければ空の Issue から始めます。
+4. 内容を簡潔に表すタイトルを入力します。
+5. 説明欄には次の情報を含めてください。
+   - バグや誤り: 想定した結果と実際の結果、再現手順があれば記載します。
+   - 改善提案: アイデアの概要と、ドキュメントがどのように良くなるかを説明します。
+   - 参考になるスクリーンショットやコードスニペットがあれば添付します。
+6. 「documentation」「enhancement」「bug」など適切なラベルを追加します。
+7. Issue を送信します。
 
-Your feedback helps us identify areas for improvement and ensures the documentation remains accurate and helpful for all users.
+フィードバックは改善すべき領域を把握する助けとなり、ドキュメントをあらゆる利用者にとって有用なものに保つことにつながります。
 
-## Getting Started
+## 作業を始める
 
-1. Fork the [welcome](https://github.com/AleoNet/welcome) repository on GitHub.
-
-2. Clone your forked repository locally:
+1. GitHub で [welcome](https://github.com/AleoNet/welcome) リポジトリをフォークします。
+2. フォークしたリポジトリをローカルにクローンします。
    ```
    git clone https://github.com/YOUR-USERNAME/welcome.git
    ```
-3. Navigate to the project directory:
+3. プロジェクトディレクトリに移動します。
    ```
    cd welcome
    ```
-
-4. Make changes in the documentation directory:
+4. ドキュメントを編集するため、documentation ディレクトリに移動します。
    ```
    cd documentation
    ```
-   This is where you'll find the content files to edit.
 
-## Making Changes
+## 変更を加える
 
-1. Create a new branch for your changes:
+1. 作業用の新しいブランチを作成します。
    ```
    git checkout -b your-feature-branch
    ```
-2. Make your changes to the documentation files. Most content is in Markdown format.
-3. Commit your changes with a descriptive commit message:
+2. Markdown 形式のドキュメントを編集します。
+3. 変更内容を説明するメッセージを添えてコミットします。
    ```
    git commit -am "Add description of your changes"
    ```
 
-## Submitting Your Contribution
+## 変更を提出する
 
-1. Push your changes to your forked repository:
+1. フォークしたリポジトリに変更をプッシュします。
    ```
    git push origin your-feature-branch
    ```
-2. Go to the [welcome](https://github.com/AleoNet/welcome) repository on GitHub and create a new pull request from `your-feature-branch`.
-3. Provide a clear title and description for your pull request, explaining the changes you've made.
-4. Submit the pull request for review.
+2. GitHub の [welcome](https://github.com/AleoNet/welcome) リポジトリで `your-feature-branch` から新しい Pull Request を作成します。
+3. 変更内容が伝わるタイトルと説明を記入します。
+4. Pull Request を送信してレビューを受けます。
 
-## Guidelines
+## ガイドライン
 
-- Ensure your writing is clear, concise, and follows the existing style of the documentation.
-- Use proper Markdown formatting for headings, code blocks, and other elements.
-- If adding new pages, update the sidebar configuration appropriately.
-- Include any necessary images or diagrams to illustrate concepts.
-- Verify all links are correct and working.
+- 文章は簡潔でわかりやすく、既存の文体に合わせてください。
+- 見出しやコードブロックなど、Markdown の書式を適切に使用してください。
+- 新しいページを追加する場合は、サイドバー設定を忘れずに更新してください。
+- 必要に応じて図や画像を追加し、概念を視覚的に説明してください。
+- すべてのリンクが正しく機能するか確認してください。
 
-## Need Help?
+## サポートが必要なときは
 
-If you have any questions or need assistance, please don't hesitate to open an issue in the [welcome](https://github.com/AleoNet/welcome) repository or reach out to the maintainers.
+質問がある場合や助けが必要な場合は、[welcome](https://github.com/AleoNet/welcome) リポジトリに Issue を作成するか、メンテナーに連絡してください。
 
-Thank you for contributing to the Aleo documentation!
+Aleo ドキュメントへの貢献に感謝します！

@@ -1,25 +1,25 @@
 ---
 id: get_latest_height
-title: Get Latest Height
-sidebar_label: Get Latest Height
+title: 最新のブロック高を取得
+sidebar_label: 最新のブロック高を取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/block/height/latest
 ```
-or
+または
 ```bash title=ENDPOINT
 GET /{network}/latest/height
 ```
 
-Returns the latest block height.
+最新のブロック高を返します。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
+### レスポンス
 
-| Parameter | Type |            Description            |
+| パラメーター | 型 |            説明            |
 |:---------:|:----:|:---------------------------------:|
-| `result`  | u32  | The number of blocks in the chain |
+| `result`  | u32  | チェーン内のブロック数 |

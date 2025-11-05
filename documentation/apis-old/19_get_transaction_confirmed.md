@@ -1,23 +1,23 @@
 ---
 id: get_transaction_confirmed
-title: Get Transaction Confirmation Status
-sidebar_label: Get Transaction Confirmation Status
+title: トランザクションの確定状況を取得
+sidebar_label: トランザクションの確定状況を取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/transaction/confirmed/{ID}
 ```
 
-Retrieves the confirmation status of a transaction that was submitted to the Aleo blockchain.
+Aleo ブロックチェーンに送信されたトランザクションの確定状況を取得します。
 
-### Arguments
+### 引数
 
-| Parameter | Type | Description |
+| パラメーター | 型 | 説明 |
 |:---------:|:----:|:-----------:|
-| `ID` | string | The transaction ID to check confirmation status for |
+| `ID` | string | 確定状況を確認するトランザクション ID |
 
-### Response
+### レスポンス
 
-| Parameter | Type |            Description            |
+| パラメーター | 型 |            説明            |
 |:---------:|:----:|:---------------------------------:|
-| `result`  | boolean  | The confirmation status of the transaction | 
+| `result`  | boolean  | トランザクションの確定状況 |

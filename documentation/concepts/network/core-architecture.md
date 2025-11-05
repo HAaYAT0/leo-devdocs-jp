@@ -1,79 +1,79 @@
 ---
 id: core_architecture 
-title: Core Architecture
-sidebar_label: Core Architecture
+title: コアアーキテクチャ
+sidebar_label: コアアーキテクチャ
 ---
-Aleo is focused on permissionless private programmability, which means the ability for anyone to codify any logic onto the Aleo blockchain without asking for anyone's permission. This is achieved through two key components:
+Aleo は「許可不要でプライベートなプログラマビリティ」を重視しており、誰もが他者の許可なく任意のロジックを Aleo ブロックチェーン上に実装できることを意味します。この性質は次の 2 つの主要コンポーネントによって実現されています。
 
-1. [**SnarkVM (AleoVM)**](./snarkvm.md): The off-chain execution environment that serves as the virtual machine for Aleo. SnarkVM is essentially AleoVM, which allows for the execution of Aleo programs and generation of zero-knowledge proofs. By utilizing SnarkVM and encryption, anyone can execute logic in a privacy-preserving manner.
+1. [**SnarkVM (AleoVM)**](./snarkvm.md): Aleo のオフチェーン実行環境であり、仮想マシンとして機能します。SnarkVM は AleoVM と同義で、Aleo プログラムの実行とゼロ知識証明の生成を可能にします。SnarkVM と暗号化を組み合わせることで、誰もがプライバシーを保ったままロジックを実行できます。
 
-2. [**SnarkOS**](./snarkos.md): The blockchain node client of Aleo, powered by AleoBFT consensus mechanism. SnarkOS implements the AleoBFT protocol, which ensures secure and efficient consensus among network participants.
+2. [**SnarkOS**](./snarkos.md): Aleo のブロックチェーンノードクライアントで、AleoBFT コンセンサスメカニズムを採用しています。SnarkOS は AleoBFT プロトコルを実装し、ネットワーク参加者間で安全かつ効率的にコンセンサスを形成します。
 
-Together, these components form a complementary system where SnarkVM handles zero-knowledge off-chain execution, while SnarkOS serves as the network client that verifies the correctness of these off-chain computations by validating the submitted zero-knowledge proofs (zk-SNARKs).
+これら 2 つのコンポーネントが相互補完的に機能し、SnarkVM がゼロ知識のオフチェーン実行を担い、SnarkOS がネットワーククライアントとして提出されたゼロ知識証明（zk-SNARK）を検証し、オフチェーン計算の正当性を確認します。
 
-This architecture enables two key capabilities:
-- **For users**: The ability to maintain data privacy while interacting with decentralized applications (programs) on Aleo through off-chain computation and zero-knowledge proofs
-- **For developers**: The ability to create privacy-preserving decentralized applications using Leo programming language or Aleo instructions and deploy them to the network
+このアーキテクチャによって、以下の主要な機能が実現されます。
+- **ユーザー向け**: オフチェーン計算とゼロ知識証明を活用しながら、Aleo 上の分散型アプリケーション（プログラム）とやり取りしてもデータのプライバシーを維持できる
+- **開発者向け**: Leo プログラミング言語や Aleo instructions を用いてプライバシー保護された分散型アプリケーションを開発し、ネットワークにデプロイできる
 
-For more detailed information on these components, check out [specification](../specifications.md) section in reference, which covers SnarkVM and SnarkOS in depth.
+これらのコンポーネントの詳細は、SnarkVM と SnarkOS を詳説した[仕様](../specifications.md)セクションを参照してください。
 
 ## Aleo Roadmap
 
-Aleo is consistently improving its protocol to enhance privacy, scalability, and usability. The roadmap outlines key initiatives and projects that aim to strengthen the network's infrastructure, introduce new features, and optimize performance. By following the roadmap, developers and users can stay informed about upcoming releases and participate in the evolution of the Aleo ecosystem.
+Aleo はプライバシー、スケーラビリティ、ユーザビリティを高めるために継続的にプロトコルを改善しています。ロードマップでは、ネットワークインフラの強化、新機能の導入、パフォーマンスの最適化を目指す主要な取り組みやプロジェクトを紹介しています。ロードマップを追うことで、開発者とユーザーは今後のリリース情報を把握し、Aleo エコシステムの進化に参加できます。
 
-For the latest updates on Aleo's development progress and future milestones, visit the official [Aleo Roadmap](https://aleo.org/roadmap/). 
+最新の開発状況や今後のマイルストーンについては、公式の [Aleo Roadmap](https://aleo.org/roadmap/) をご確認ください。
 
-## What makes Aleo permissionless, private and programmable ?
+## Aleo を許可不要・プライベート・プログラマブルにしているもの
 
-An overview of the Aleo network architecture will help contextualize the concepts introduced in the learn section.
+Aleo のネットワークアーキテクチャを俯瞰することで、学習セクションで紹介した概念の理解が深まります。
 
 ![overview](./images/overview.png)
 
 
-All these components at play in this diagram together give rise to permissionless programmable privacy.
+図に示した各要素が相互に作用することで、許可不要のプログラマブルなプライバシーが実現されています。
 
 ## Components
 
 ### User
-The **User** initiates private transactions by preparing inputs and generating zero-knowledge proofs (ZKPs) for their actions. Users can generate these proofs locally or delegate this task to a **Third Party Prover** for efficiency.
+**ユーザー**は入力を準備し、自身の操作に対するゼロ知識証明（ZKP）を生成することで秘匿トランザクションを開始します。証明はローカルで生成することも、効率化のために**第三者プローバー**へ委任することもできます。
 
 ### Proof Generation
-This is the process where the user (or a third party) computes a zero-knowledge proof for a transaction. Proof generation can be performed:
-- **Locally by the user** using their own device.
-- **Delegated to a Third Party Prover** (such as a wallet provider), which can handle the computational workload on behalf of the user. This delegation is optional and does not compromise the privacy of the user's data, as authorization/signing is separate from proving.
+ユーザー（または第三者）がトランザクションのゼロ知識証明を計算するプロセスです。証明生成には以下の方法があります。
+- **ユーザー自身がローカルで実行** — 自身のデバイスで処理します。
+- **第三者プローバーへ委任** — ウォレットプロバイダなどがユーザーに代わって計算負荷を引き受けます。委任は任意であり、認可／署名と証明生成が分離されているため、ユーザーデータのプライバシーは損なわれません。
 
 ### Third Party Prover
-A **Third Party Prover** is an external service that users can optionally delegate proof generation to. This entity receives the necessary data from the user, generates the proof, and returns it to the user for submission. This improves efficiency, especially for users with limited computational resources.
+**第三者プローバー**は、ユーザーが証明生成を任意で委任できる外部サービスです。必要なデータを受け取って証明を生成し、提出用にユーザーへ返却します。特に計算資源が限られるユーザーにとって効率化につながります。
 
 ### Client
-The **Client** acts as the interface between the user and the Aleo network. It receives the proof and transaction data from the user (via RPC), and submits transactions to the network. The client also receives new blocks and data from the network, relaying relevant information back to the user.
+**クライアント**はユーザーと Aleo ネットワークをつなぐインターフェースです。ユーザーから（RPC を通じて）証明とトランザクションデータを受け取り、ネットワークへ送信します。また、ネットワークから新しいブロックやデータを受信し、必要な情報をユーザーへ返します。
 
 ### Prover (Miner)
-**Provers** (sometimes called "miners") are network participants who generate SNARK proofs for coinbase puzzles. Their primary role is to improve the efficiency of proof generation, which can lead to faster transaction confirmation times and a better user experience. Provers are not part of the consensus process; instead, they contribute computational resources to help solve cryptographic puzzles, submit solutions to validators, **and earn coinbase rewards from doing so**.
+**プローバー**（「マイナー」と呼ばれることもあります）は、コインベースパズルの SNARK 証明を生成するネットワーク参加者です。主な役割は証明生成の効率を高め、トランザクションの承認時間短縮やユーザー体験の向上につなげることです。プローバーはコンセンサスプロセスには関与せず、暗号パズルを解くための計算資源を提供し、解をバリデータへ提出することで**コインベース報酬を獲得**します。
 
 ### Validators
-**Validators** are responsible for verifying the correctness of submitted zero-knowledge proofs and maintaining consensus using the AleoBFT protocol. Their responsibilities include:
-- **Proof Verification:** Checking the validity of the proofs attached to transactions.
-- **Consensus:** Participating in AleoBFT, a Byzantine Fault Tolerant protocol, to agree on the next block.
-- **Ledger Storage:** Recording verified transactions in the ledger as part of a new block.
+**バリデータ**は提出されたゼロ知識証明を検証し、AleoBFT プロトコルを用いてコンセンサスを維持します。主な責務は次のとおりです。
+- **証明検証**: トランザクションに添付された証明の正当性を確認する。
+- **コンセンサス**: ビザンチン耐性を備えた AleoBFT に参加し、次のブロックに合意する。
+- **台帳保存**: 検証済みトランザクションを新しいブロックとして台帳に記録する。
 
-There are multiple validators (Validator 1, Validator 2, ..., Validator n), and they coordinate to ensure the integrity and security of the network.
+バリデータは複数存在し（バリデータ 1、バリデータ 2、…、バリデータ n）、連携してネットワークの完全性と安全性を確保します。
 
 ### Ledger (Data Storage)
-The **Ledger** is the blockchain's data storage layer. It stores all verified transactions and blocks, ensuring an immutable and publicly verifiable record of all activity on the network.
+**台帳（Ledger）**はブロックチェーンのデータストレージ層であり、検証済みのトランザクションとブロックを保存してネットワーク上のすべての活動を改ざん不能かつ公開検証可能な形で記録します。
 
 ## User flow of executing a Private Transaction
 
-1. User prepares inputs.
+1. ユーザーが入力を準備する。
 
-2. Fetches program from Node.
+2. ノードからプログラムを取得する。
 
-3. Executes required function from fetched program locally using snarkvm.
+3. 取得したプログラムの必要な関数を snarkvm でローカル実行する。
 
-4. Broadcasts the output proof result along with the inputs and outputs to a client node. In the cases of private execution, the inputs and outputs are encrypted.
+4. 出力された証明結果と入力・出力をクライアントノードへブロードキャストする。秘匿実行の場合、入力と出力は暗号化される。
 
-5. Validator verifies proof and consensus is held.
+5. バリデータが証明を検証し、コンセンサスが形成される。
 
-6. If transaction is verified, then it is stored in the ledger in a new block.
+6. トランザクションが検証されると、新しいブロックとして台帳に記録される。
 
-7. Now the transaction is fully complete.
+7. これでトランザクションが完全に完了する。

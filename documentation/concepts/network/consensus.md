@@ -1,61 +1,61 @@
 ---
 id: consensus 
-title: Consensus
-sidebar_label: Consensus
+title: コンセンサス
+sidebar_label: コンセンサス
 ---
 
-## Overview
-Aleo Network employs a unique consensus mechanism known as [AleoBFT](../specifications.md#aleobft) to achieve a secure and resilient consensus system with instant finality for block confirmation. This mechanism combines proof-of-stake (POS) to ensure that validators are rewarded for maintaining the overall system integrity and performance.
+## 概要
+Aleo ネットワークは、ブロック確定を即時ファイナリティで実現する安全かつ堅牢なコンセンサス機構として [AleoBFT](../specifications.md#aleobft) を採用しています。この仕組みはプルーフ・オブ・ステーク（PoS）を組み合わせ、バリデータがシステム全体の完全性と性能維持に貢献した対価を得られるように設計されています。
 
-Aleo Network is run and maintained by three groups of participants:  
-- **Stakers** - Delegate staked Aleo Credits (AC) to help onboard more validators and participate in consensus on the Network.  
-- **Provers** - Utilize specialized hardware to generate proofs and solve coinbase puzzles, contributing to the security of the network.
-- **Validators** - Validate transactions by verifying zero knowledge (ZK) proofs and actively participate in the consensus process on the network.
+Aleo ネットワークは次の 3 種類の参加者によって運営・維持されています。  
+- **ステーカー** — ステークした Aleo クレジット（AC）を委任し、より多くのバリデータを参加させてネットワークのコンセンサスに関与します。  
+- **プローバー** — 専用ハードウェアを用いて証明を生成し、コインベースパズルを解くことでネットワークのセキュリティに貢献します。
+- **バリデータ** — ゼロ知識（ZK）証明を検証してトランザクションを承認し、ネットワークのコンセンサスプロセスに積極的に参加します。
 
-Check this [FAQs](https://aleo.org/faq/) out in regards of the groups mentioned above.
+これらのグループに関するよくある質問は [FAQ](https://aleo.org/faq/) を参照してください。
 
-Everyone can become a staker by locking up their Aleo Credits for a certain period of time to support the security of the Aleo Network. While the minimum amount to stake is 1 AC, stakers will only start earning rewards once they have staked at least 10 ACs. Stakers help lower the barriers to becoming a validator by delegating their stakes to validators of their choice.  
+誰でも一定期間 Aleo クレジットをロックすることでステーカーになり、Aleo ネットワークのセキュリティを支援できます。ステークの最低金額は 1 AC ですが、報酬を得られるのは 10 AC 以上をステークした場合に限られます。ステーカーは、自身のステークをバリデータに委任することでバリデータ参加のハードルを下げる役割も担います。  
 
-Learn more about **stakers** at [here](./staking.md).  
+**ステーカー**の詳細は[こちら](./staking.md)をご覧ください。  
 
-Provers are required to run specialized GPUs and CPUs to generate solutions in SNARK proofs for PoSW (Proof-of-Succinct-Work) coinbase puzzles. They are rewarded based on their efficiency and effectiveness in generating solutions to the puzzles. It's important to note that provers do not produce blocks, but they are incentivized to improve the process of generating proofs, reducing costs, and decreasing latency for program execution.  
+プローバーは、PoSW（Proof-of-Succinct-Work）コインベースパズルに対する SNARK 証明の解を生成するため、専用の GPU や CPU を稼働させる必要があります。報酬は、パズルの解をどれだけ効率的かつ効果的に生成できたかによって決まります。プローバーはブロックを生成しませんが、証明生成の効率化、コスト削減、プログラム実行のレイテンシ低減に貢献するようインセンティブ設計されています。  
 
-Learn more about **provers** at [here](./provers.md).  
+**プローバー**の詳細は[こちら](./provers.md)をご覧ください。  
 
-Validators play a crucial role in securing the network through AleoBFT (to be discussed further below) and must have at least 10 million AC of stakes to get started. The main function of validators is to verify ZK proofs and validate transactions before including them in a confirmed block.
+バリデータは AleoBFT（後述）を通じてネットワークの安全性を確保する重要な役割を担い、参加には最低 1,000 万 AC のステークが必要です。主な機能は、トランザクションをブロックへ含める前に ZK 証明を検証し、取引内容を確認することです。
 
-Learn more about **validators** at [here](./validators.md).   
+**バリデータ**の詳細は[こちら](./validators.md)をご覧ください。   
 
 
 
 ## AleoBFT
-AleoBFT is a new hybrid architecture for consensus. It is a DAG-based BFT protocol inspired by Narwhal and Bullshark. It incentivises validators to preserve network liveness and provers to scale proving capacity for Aleo ecosystem.
+AleoBFT は新しいハイブリッド型コンセンサスアーキテクチャです。Narwhal と Bullshark から着想を得た DAG ベースの BFT プロトコルで、ネットワークのライブネス維持に取り組むバリデータと、Aleo エコシステム全体の証明能力を拡張するプローバーの双方にインセンティブを与えます。
 
-AleoBFT guarantees instant finality once validators achieve consensus for each block. With instant finality, not only validators enjoy better node stability but also creates smooth experience for applications developers and users. And this guarantee makes interoperability with other ecosystem simpler.
+バリデータが各ブロックでコンセンサスに達すると AleoBFT は即時ファイナリティを保証します。これにより、バリデータはノードの安定性向上を享受できるだけでなく、アプリケーション開発者やユーザーにも滑らかな体験を提供します。また、この性質は他のエコシステムとの相互運用性を容易にします。
 
-AleoBFT provers are computing core components of ZK proofs and receive shares of coinbase rewards by solving and producing these coinbase proofs, which is called Proof of Succint Work (PoSW). This incentivise provers to also become a validator themselves by accumulate and stake 10 million ACs. By having broader rewards distribution, it helps Aleo Network to achieve greater proving capacity, further decentralise and scaling Aleo network and fortifies censorship-resistence guarantee.
+AleoBFT のプローバーは ZK 証明の計算基盤となる存在で、Proof of Succinct Work（PoSW）として知られるコインベース証明を解き生成することでコインベース報酬の一部を受け取ります。この仕組みは、プローバー自身が 1,000 万 AC を蓄積してステークし、バリデータへ移行する動機にもつながります。報酬分配が広がることで、Aleo ネットワークは証明能力の向上とさらなる分散化・スケーリングを達成し、検閲耐性の強化にも寄与します。
 
 :::info
-For detailed technical specifications of AleoBFT, please refer to the [AleoBFT specification](https://developer.aleo.org/specs/aleobft.pdf).
+詳しい技術仕様は [AleoBFT 仕様書](https://developer.aleo.org/specs/aleobft.pdf) を参照してください。
 :::
 
 ## Bullshark and Narwhal
 
 ### Bullshark
-Bullshark is a DAG(Directed Acyclic Graph)-based BFT (Byzantine Fault Tolerance) protocol, it separate the network communication layer from the ordering (consensus) logic. Each message contains a set of transactions, and a set of references to previous messages. Together, all the messages form a DAG that keeps growing – a message is a vertex and its references are edges. A vertex can be a proposal and an edge can be a vote.
+Bullshark は DAG（有向非巡回グラフ）ベースの BFT（ビザンチン耐性）プロトコルで、ネットワーク通信層と順序付け（コンセンサス）ロジックを切り離します。各メッセージにはトランザクション群と以前のメッセージへの参照が含まれ、全メッセージが連なることで成長する DAG を構成します。メッセージが頂点、参照が辺になり、頂点は提案、辺は投票を表すことができます。
 
-While different parties may see slightly different DAGs at any point in time due to the asynchronous nature of the network, each validator can still totally (fully) orders all the vertices (blocks) without sending a single extra message by just looking at its local view of the DAG.
+ネットワークが非同期であるため、タイミングによって各ノードで見える DAG がわずかに異なることがあります。それでも各バリデータは追加のメッセージ送信なしに、手元の DAG から全ての頂点（ブロック）を完全に順序付けできます。
 
-The DAG being used here is round-based DAG, each vertex is associated with round number, each round has at most `n` vertices. Each validator broadcasts one message per round and each message references at least `n − f` messages in previous round. `n` is the total number of validating nodes in the network and `f` is the number of Byzantine nodes. Below shows a diagram of how it looks like with `n = 4` and `f = 1`.
+ここで利用される DAG はラウンド制で、各頂点にラウンド番号が割り当てられ、1 ラウンドあたり最大 `n` 個の頂点を持ちます。各バリデータは毎ラウンド 1 メッセージをブロードキャストし、少なくとも `n − f` 個の前ラウンドのメッセージを参照します。`n` はバリデータ総数、`f` はビザンチンノード数です。以下は `n = 4`、`f = 1` の例です。
 
 ![DAG1](./images/DAG1.png)
 Diagram 1: Round-based DAG  
 Image from https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/
 
 ### Ordering Logic
-A predefined leader is elected in every even round and the vertex associated with it is referred as anchor. Anchor is a more suitable term to describe here because unlike typical leader-based protocols where the leader has to do all the works at each round and disseminate data to all other nodes, the anchor here only get chosen to commit its casual history once gather enough votes (`2f + 1`) (3 in this example).  
+偶数ラウンドごとにあらかじめ決められたリーダーが選出され、その頂点をアンカーと呼びます。一般的なリーダーベースのプロトコルとは異なり、アンカーは毎ラウンドデータを配布したり全作業を担ったりするわけではなく、十分な票（`2f + 1`、この例では 3）を集めてはじめて自分の因果履歴をコミットします。  
 
-Each vertex in odd round can contribute one vote for the anchor in previous round. The anchor is commited if it has at least `f + 1` (2 in this example) votes. Once anchor is committed, its casual history is ordered by some deterministic rule. Green-outlined vertices shown in Diagram 2 is Anchor 2 (A2) casual history. Diagram 3 shows A2 is committed with 3 votes but A1 is also committed althought with only 1 vote thanks to the reliability property of the DAG, where transactions broadcast by honest validators are eventually received by all other honest validators.
+奇数ラウンドの各頂点は、直前ラウンドのアンカーへ 1 票を投じられます。アンカーは `f + 1`（この例では 2）票を得るとコミットされます。アンカーがコミットされると、その因果履歴が決定的なルールで順序付けられます。図 2 の緑枠はアンカー 2（A2）の因果履歴です。図 3 では A2 が 3 票でコミットされていますが、正直なバリデータがブロードキャストしたトランザクションは最終的に他の正直なバリデータにも届くという DAG の性質により、1 票しか得られなかった A1 もコミットされることが示されています。
 
 ![DAG2](./images/DAG2.png)
 Diagram 2: Anchor and casual history  
@@ -65,44 +65,44 @@ Image from https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/
 Diagram 3: Commit rule  
 Image from https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/
 
-Due to asynchronous nature of the network, the local views of the DAG might differ for different parties. A1 might have committed by other validator. As shown in diagram 4, validator 2 sees two (`f + 1`) votes for anchor A1 and thus commits it even though validator 1 has not.
+ネットワークが非同期であるため、ノードによって DAG のローカルビューは異なる場合があります。あるバリデータが A1 をコミットしていなくても、他のバリデータはコミットしているかもしれません。図 4 に示すように、バリデータ 2 はアンカー A1 に 2 票（`f + 1`）が集まっていると判断し、バリデータ 1 がまだコミットしていなくても A1 をコミットします。
 
 ![DAG4](./images/DAG4.png)
 Diagram 4: Different local view  
 Image from https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/
 
-Because to commit an anchor requires `f + 1` (2 in this example) votes and each vertex in the DAG has at least `n − f` (3 in this example) edges to vertices from the previous round, it is guaranteed that if some party commits an anchor A then all anchors in higher rounds will have a path to at least one vertex that voted for A, and thus will have a path to A.
+アンカーをコミットするには `f + 1`（この例では 2）票が必要であり、DAG の各頂点は前ラウンドの少なくとも `n − f`（この例では 3）頂点への辺を持ちます。そのため、あるノードがアンカー A をコミットした場合、より後のラウンドのアンカーは必ず A に投票した頂点へのパスを持つことになり、ひいては A へのパスも存在します。
 
-This is also means that if there is no path to a anchor A from a future anchor, then no party committed A and it is safe to skip it. Diagram 5 shows that A2 is not committed by any party and thus A2 is safe to skip.
+言い換えると、後続のアンカーからアンカー A へのパスが存在しない場合、誰も A をコミットしていないことになり、A をスキップしても安全です。図 5 は、A2 に至るパスがないためどのノードも A2 をコミットしておらず、スキップして問題ないことを示しています。
 
 ![DAG5](./images/DAG5.png)
 Diagram 5: Skipping uncommitted anchor  
 Image from https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/
 
-When an achor is committed, the validator checks if there's a path to previous uncommitted anchor. If there is, it will commit the previous anchor as well. This process is repeated until it reaches previous committed anchor. Diagram 5 shows that A3 is committed and A1 is in the path of A3 thus A1 is committed as well.
+アンカーがコミットされると、バリデータは未コミットの直前アンカーへのパスがあるかを確認します。存在すれば、そのアンカーも併せてコミットします。この処理は、直前のコミット済みアンカーに到達するまで繰り返されます。図 5 では A3 がコミットされ、A3 のパス上に A1 が存在するため A1 もコミットされています。
 
-Achors' histories are then ordered by some deterministic order and finally forming a total order or a chain of blocks.
+こうしてアンカーの履歴は決定的な順序で並べられ、最終的に全順序、すなわちブロックチェーンを形成します。
 
 ![DAG6](./images/DAG6.png)
 Diagram 6: Total order  
 Image from https://www.youtube.com/watch?v=aW1-XcGzJ8M
 
 ### Narwhal
-Narwhal is a DAG-based Mempool abstraction protocol. Instead of the proposing validator sending all transactions in a block to the other validators they just send references or certificates of availability for blocks at each round.
+Narwhal は DAG ベースのメモリプール抽象化プロトコルです。提案するバリデータは、ブロック内の全トランザクションを他のバリデータへ直接送るのではなく、各ラウンドでブロックの参照または可用性証明（証明書）だけを送信します。
 
-A single validator will run multiple workers as seperate processes or instances and a single primary. The workers are responsible for receiving transactions and stream transactions in batches to corresponding workers of other validators. Example worker 1 of validator 1 sends transactions to worker 1 of validator 2, worker 2 of validator 1 sends transactions to worker 2 of validator 2 and so on.
+1 つのバリデータは複数のワーカーと 1 つのプライマリ（親プロセス）をそれぞれ独立したプロセスとして動かします。ワーカーはトランザクションを受信し、バッチ化して他バリデータの対応するワーカーへストリーム配信します。例えば、バリデータ 1 のワーカー 1 はバリデータ 2 のワーカー 1 に、バリデータ 1 のワーカー 2 はバリデータ 2 のワーカー 2 に、といった具合です。
 
 ![Narwhal](./images/Narwhal1.png)
 Diagram 7: Narwhal Design  
 image from https://www.youtube.com/watch?v=NGOXVSFzYdI
 
-Every workers within a validator sends batches hash (digest) to its primary. The primary then sends the digest to all other validators along with `n - f` certificates from previous round.  
+各ワーカーはバッチのハッシュ（ダイジェスト）をプライマリに送信します。プライマリはそのダイジェストと前ラウンドの `n - f` 件の証明書を他のバリデータへ送ります。  
 
-Each validator then checks if the digest is from the same round and if it's worker has stored transactions batches that corresponds to the digest. If it is, the validator cast a vote by sending its signature back to the sending primary.  
+各バリデータはダイジェストが同じラウンドのものか、また自分のワーカーがダイジェストに対応するトランザクションバッチを保持しているかを確認します。条件を満たしていれば、送信元プライマリへ署名を送り返して投票します。  
 
-A certificate is created after the sender collects `n - f` signatures from different validators and send this certificate back to all other validators. This certificate is then used as refernece in the next round.
+送信元が異なるバリデータから `n - f` 個の署名を集めると証明書が生成され、その証明書が全バリデータへ送信されます。この証明書は次ラウンドで参照として利用されます。
 
-Whenever a certificate is received, it means the block will be available for download. Therefore, certificate is often referred as a proof of availability and thus ensuring data availabilitiy.
+証明書を受け取ることは、そのブロックがダウンロード可能であることを意味します。そのため証明書は可用性証明（Proof of Availability）とも呼ばれ、データ可用性を保証します。
 
 ![Narwhal2](./images/Narwhal2.png)
 Diagram 8: A round in Narwhal    

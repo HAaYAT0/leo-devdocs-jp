@@ -4,302 +4,264 @@ title: Scalar
 sidebar_label: Scalar
 ---
 
-## Class `Scalar`
+## クラス `Scalar`
 
-Scalar field element.
+Scalar フィールド要素を表します。
 
-## Methods
+## メソッド
 
 ### fromString
- 
-
-Creates a scalar object from a string representation of a scalar element.
+スカラー要素の文字列表現から Scalar オブジェクトを生成します。
 
 ```javascript
 fromString(group) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__group__ | `string` | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| group | `string` | スカラー要素の文字列表現 |
+| *return* | Scalar | 生成された Scalar オブジェクト |
 
 ---
 
 ### toString
-
-
-Returns the string representation of the scalar element.
+スカラー要素の文字列表現を返します。
 
 ```javascript
 toString() ► string
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `string` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `string` | スカラー要素の文字列表現 |
 
 ---
 
 ### fromBytesLe
-
-
-Create a scalar element from a Uint8Array of left endian bytes.
+リトルエンディアンの Uint8Array からスカラー要素を生成します。
 
 ```javascript
 fromBytesLe(bytes) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__bytes__ | `Uint8Array` | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| bytes | `Uint8Array` | スカラー要素を表すバイト配列 |
+| *return* | Scalar | 生成された Scalar オブジェクト |
 
 ---
 
 ### toBytesLe
-
-
-Encode the scalar element as a Uint8Array of left endian bytes.
+スカラー要素をリトルエンディアンの Uint8Array としてエンコードします。
 
 ```javascript
 toBytesLe() ► Uint8Array
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `Uint8Array` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `Uint8Array` | スカラー要素のバイト配列 |
 
 ---
 
 ### fromBitsLe
-
-
-Reconstruct a scalar element from a boolean array representation.
+真偽値配列による表現からスカラー要素を再構築します。
 
 ```javascript
 fromBitsLe(bits) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__bits__ | `Array.<any>` | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| bits | `Array.<any>` | スカラー要素を表す真偽値配列 |
+| *return* | Scalar | 生成された Scalar オブジェクト |
 
 ---
 
 ### toBitsLe
-
-
-Get the left endian boolean array representation of the scalar element.
+スカラー要素のビット列をリトルエンディアンの真偽値配列として取得します。
 
 ```javascript
 toBitsLe() ► Array.<any>
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | `Array.<any>` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | `Array.<any>` | ビット列の真偽値配列 |
 
 ---
 
 ### toPlaintext
-
-
-Create a plaintext element from a scalar element.
+スカラー要素から Plaintext を生成します。
 
 ```javascript
 toPlaintext() ► Plaintext
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Plaintext | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Plaintext | 変換された Plaintext |
 
 ---
 
 ### clone
-
-
-Clone the scalar element.
+スカラー要素を複製します。
 
 ```javascript
 clone() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 複製されたスカラー要素 |
 
 ---
 
 ### random
-
-
-Generate a random scalar element.
+ランダムなスカラー要素を生成します。
 
 ```javascript
 random() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 生成されたスカラー要素 |
 
 ---
 
 ### add
-
-
-Add two scalar elements.
+2 つのスカラー要素を加算します。
 
 ```javascript
 add(other) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 加算するスカラー要素 |
+| *return* | Scalar | 加算結果 |
 
 ---
 
 ### subtract
-
-
-Subtract two scalar elements.
+2 つのスカラー要素を減算します。
 
 ```javascript
 subtract(other) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 減算するスカラー要素 |
+| *return* | Scalar | 減算結果 |
 
 ---
 
 ### multiply
-
-
-Multiply two scalar elements.
+2 つのスカラー要素を乗算します。
 
 ```javascript
 multiply(other) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 乗算するスカラー要素 |
+| *return* | Scalar | 乗算結果 |
 
 ---
 
 ### divide
-
-
-Divide two scalar elements.
+2 つのスカラー要素を除算します。
 
 ```javascript
 divide(other) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 除算の除数となるスカラー要素 |
+| *return* | Scalar | 除算結果 |
 
 ---
 
 ### double
-
-
-Double the scalar element.
+スカラー要素を 2 倍にします。
 
 ```javascript
 double() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 2 倍になったスカラー要素 |
 
 ---
 
 ### pow
-
-
-Power of a scalar element.
+スカラー要素の累乗を計算します。
 
 ```javascript
 pow(other) ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 指数となるスカラー要素 |
+| *return* | Scalar | 累乗結果 |
 
 ---
 
 ### inverse
-
-
-Invert the scalar element.
+スカラー要素の逆元を計算します。
 
 ```javascript
 inverse() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 逆元 |
 
 ---
 
 ### one
-
-
-Get the multiplicative identity of the scalar field.
+スカラーフィールドの乗法単位元を取得します。
 
 ```javascript
 one() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 乗法単位元 |
 
 ---
 
 ### zero
-
-
-Get the additive identity of the scalar field.
+スカラーフィールドの加法単位元を取得します。
 
 ```javascript
 zero() ► Scalar
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__*return*__ | Scalar | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| *return* | Scalar | 加法単位元 |
 
 ---
 
 ### equals
-
-
-Check if one scalar element equals another.
+2 つのスカラー要素が等しいか判定します。
 
 ```javascript
 equals(other) ► boolean
 ```
 
-Parameters | Type | Description
---- | --- | ---
-__other__ | Scalar | **
-__*return*__ | `boolean` | **
+| パラメーター | 型 | 説明 |
+| --- | --- | --- |
+| other | Scalar | 比較対象のスカラー要素 |
+| *return* | `boolean` | 等しい場合は true |
 
 ---

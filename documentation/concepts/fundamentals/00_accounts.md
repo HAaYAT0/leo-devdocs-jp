@@ -1,159 +1,144 @@
 ---
 id: accounts
-title: Accounts
-sidebar_label: Accounts
+title: アカウント
+sidebar_label: アカウント
 ---
 
-An **Aleo account** is composed of an [account private key](#account-private-key), [account view key](#account-view-key),
-and an [account address](#account-address).
+**Aleo アカウント**は、[アカウント秘密鍵](#account-private-key)、[アカウントビューキー](#account-view-key)、そして[アカウントアドレス](#account-address)で構成されます。
 
-The account private key is used to authorize a transaction, which updates the global state of account records. The account
-view key is used to decrypt account records, which are encrypted under the user's account address. Lastly, the account
-address enables users to interact with one another, sending and receiving records that encode values and application data.
+アカウント秘密鍵はトランザクションの署名に使用され、アカウントレコードのグローバルステートを更新します。アカウントビューキーは、ユーザーのアカウントアドレスで暗号化されているアカウントレコードを復号するために利用します。最後に、アカウントアドレスは、値やアプリケーションデータをエンコードしたレコードを送受信する際の識別子として機能します。
 
-To protect user *assets* and *record data*, one should **never disclose their account private key** to any
-third parties. For real-world applications on Aleo, users should derive a compute key from their account private key to
-allow third parties to *trustlessly* run applications and generate transactions on a user's behalf.
+ユーザーの*資産*と*レコードデータ*を守るため、**アカウント秘密鍵は第三者に絶対に開示してはいけません**。実運用の Aleo アプリケーションでは、アカウント秘密鍵からコンピュートキーを導出し、第三者が信用を前提とせずにアプリケーションを実行したり、ユーザーに代わってトランザクションを生成したりできるようにします。
 
-Generate a new Aleo account [here](https://provable.tools).
+新しい Aleo アカウントは[こちら](https://provable.tools)で生成できます。
 
-## Account Private Key
+## アカウント秘密鍵
 
-An account private key is constructed from a randomly-sampled **account seed**. This account seed is used to generate:
-- a **secret key** for the account signature scheme,
-- a **pseudorandom function seed** for transaction serial numbers, and
-- a **commitment randomness** for the account commitment scheme.
+アカウント秘密鍵は、ランダムにサンプリングした**アカウントシード**から構成されます。このアカウントシードから以下を生成します。
+- アカウント署名方式の**秘密鍵**
+- トランザクションシリアルナンバー用の**疑似乱数関数シード**
+- アカウントコミットメント方式のための**コミットメント乱数**
 
-### Private Key Format
+### 秘密鍵フォーマット
 
 ```
 APrivateKey1zkp4X9ApjTb7Rv8EABfZRugXBhbPzCL245GyNtYJP5GYY2k
 ```
 
-An account private key is formatted as a Base58 string, comprised of 59 characters.
-The account private key is encoded with a [private key prefix](#account-prefixes) that reads `APrivateKey1`, indicating
-that it is a private key and should not be shared with other users.
+アカウント秘密鍵は 59 文字で構成される Base58 形式の文字列です。
+[鍵プレフィックス](#account-prefixes)として `APrivateKey1` が付与されており、秘密鍵であることと他者と共有すべきでないことを示します。
 
-## Account View Key
+## アカウントビューキー
 
-An Aleo account view key is derived from an account private key and enables users to decrypt their
-[records](02_records.md) from the global ledger.
-As account view keys are able to access every record in a user's account, this key can be used by
-third-party auditors to verify the complete history of an account.
+Aleo のアカウントビューキーはアカウント秘密鍵から導出され、グローバルレジャー上に保存された自分の[レコード](02_records.md)を復号するために使用します。
+ビューキーによってアカウント内のすべてのレコードにアクセスできるため、第三者の監査人がアカウントの完全な履歴を検証する用途にも利用できます。
 
-The account view key is comprised of:
-- a **secret key** for the account encryption scheme.
+アカウントビューキーは以下で構成されます。
+- アカウント暗号化方式用の**秘密鍵**
 
-### View Key Format
+### ビューキーフォーマット
 
 ```
 AViewKey1nKB4qr9b5gK8wQvmM5sTPEuBwshtDdkCZB1SPWppAG9Y
 ```
 
-An account view key is formatted as a Base58 string, comprised of 53 characters.
-The account view key is encoded with a [view key prefix](#account-prefixes) that reads `AViewKey1`, indicating
-that it is a view key and should only be shared with authorized parties.
+アカウントビューキーは 53 文字で構成される Base58 形式の文字列です。
+ビューキーには `[ビューキープレフィックス](#account-prefixes)`として `AViewKey1` が付与されており、正当な相手にのみ共有すべきキーであることを示します。
 
-## Account Address
+## アカウントアドレス
 
-An Aleo account address is a unique identifier that allows users to transfer value and record data to one another in transactions.
+Aleo のアカウントアドレスは、ユーザー同士がトランザクションで価値やレコードデータをやり取りするための一意の識別子です。
 
-The account address is comprised of:
-- a **public key** for the account encryption scheme.
+アカウントアドレスは以下で構成されます。
+- アカウント暗号化方式の**公開鍵**
 
-### Address Format
+### アドレスフォーマット
 
 ```
 aleo1dg722m22fzpz6xjdrvl9tzu5t68zmypj5p74khlqcac0gvednygqxaax0j
 ```
 
-An account address is formatted as a Bech32 string, comprised of 63 characters.
-The account address is encoded with an [address prefix](#account-prefixes) that reads `aleo1`.
+アカウントアドレスは 63 文字で構成される Bech32 形式の文字列です。
+アドレスには `[アカウントプレフィックス](#account-prefixes)`として `aleo1` が付与されています。
 
-## Advanced Topics
+## 発展トピック
 
-The descriptions of algorithms below make use of the following definitions of mathematical objects:
+以下のアルゴリズムの説明では、次の数学的オブジェクトの定義を使用します。
 
-### Prime Fields
+### 素数体
 
-For a prime `r`, the prime field of order `r` is defined as the set of integers `{0, 1, ..., r - 1}` with addition and multiplication modulo `r`.
-In this document, we will use two prime fields:
-* <code>F<sub>scalar</sub></code>, of prime order `p = 2111115437357092606062206234695386632838870926408408195193685246394721360383`
-* <code>F<sub>base</sub></code>, of prime order `q = 8444461749428370424248824938781546531375899335154063827935233455917409239041`
+素数 `r` に対して、位数 `r` の素数体は整数集合 `{0, 1, ..., r - 1}` に対し、加算と乗算を法 `r` で定義したものです。
+本ドキュメントでは以下の 2 つの素数体を使用します。
+* 素数 `p = 2111115437357092606062206234695386632838870926408408195193685246394721360383` を位数に持つ <code>F<sub>scalar</sub></code>
+* 素数 `q = 8444461749428370424248824938781546531375899335154063827935233455917409239041` を位数に持つ <code>F<sub>base</sub></code>
 
-### Prime Order Elliptic Curve Groups
+### 素数位の楕円曲線群
 
-In this document, we will consider the order-`p` subgroup of points on an elliptic curve defined over the base field <code>F<sub>base</sub></code>.  
+本ドキュメントでは、<code>F<sub>base</sub></code> 上で定義された楕円曲線のうち、位数 `p` の部分群を考えます。  
 
-Elements of this subgroup consist of a coordinate pair `(x, y)`. The group has two
-associated operations: point addition, and point doubling. The group also has a distinguished point, the **generator** `G`,
-which is a fixed point of the group.
+この部分群の要素は座標ペア `(x, y)` で表されます。群には点の加算および倍算という 2 つの演算が定義されています。また、群には特別な点である**生成元** `G` が存在します。
 
 ### HashToField
 
-For a finite field `F`, HashToField is a cryptographic hash function that takes as input either a sequence of bytes or 
-a sequence of field elements and outputs a field element. The output is uniformly distributed over the field `F`.
+有限体 `F` に対して、HashToField はバイト列または体要素の列を入力とし、体 `F` の要素を出力する暗号学的ハッシュ関数です。出力は体 `F` 上で一様に分布します。
 
 ### HashToScalar
 <!-- markdown-link-check-disable -->
-An instantiation of HashToField that output elements in the scalar field <code>F<sub>scalar</sub></code>.
-[source code](https://github.com/ProvableHQ/snarkVM/blob/mainnet/console/algorithms/src/poseidon/hash_to_scalar.rs)
+<code>F<sub>scalar</sub></code> 上の要素を出力する HashToField の具体的な実装です。
+[ソースコード](https://github.com/ProvableHQ/snarkVM/blob/mainnet/console/algorithms/src/poseidon/hash_to_scalar.rs)
 <!-- markdown-link-check-enable -->
 
 ### EncodeToF
 
-EncodeToF(x) is a function that encodes the Unicode string `x` into an element of <code>F<sub>base</sub></code>.
+EncodeToF(x) は、Unicode 文字列 `x` を <code>F<sub>base</sub></code> の要素へエンコードする関数です。
 
-Details of the encoding:
-- `x` is converted to its UTF-8 sequence of bytes `b`.
-- `b` is turned into an unsigned integer `v` that represents the little endian value of `b`.
-- `v` is reduced modulo the prime that defines the field <code>F<sub>base</sub></code>.
+エンコードの詳細:
+- `x` を UTF-8 のバイト列 `b` に変換します。
+- `b` をリトルエンディアンとして解釈した符号なし整数 `v` へ変換します。
+- `v` を <code>F<sub>base</sub></code> を定義する素数で剰余を取ります。
 
-### Account Prefixes
+### アカウントプレフィックス
 
-|                         |  Type  | Human-Readable Prefix |                       Prefix Bytes                        |
+|                         |  型  | ヒューマンリーダブルプレフィックス |                       プレフィックスのバイト列                        |
 |:-----------------------:|:------:|:---------------------:|:---------------------------------------------------------:|
-| **Account Private Key** | bytes  | `APrivateKey1`        | `[127, 134, 189, 116, 210, 221, 210, 137, 145, 18, 253]`  |
-| **Account View Key**    | bytes  | `AViewKey1`           | `[ 14, 138, 223, 204, 247, 224, 122 ]`                    |
-| **Account Address**     | string | `aleo1`               | `aleo1`                                                   |
+| **アカウント秘密鍵** | bytes  | `APrivateKey1`        | `[127, 134, 189, 116, 210, 221, 210, 137, 145, 18, 253]`  |
+| **アカウントビューキー**    | bytes  | `AViewKey1`           | `[ 14, 138, 223, 204, 247, 224, 122 ]`                    |
+| **アカウントアドレス**     | string | `aleo1`               | `aleo1`                                                   |
 
-### Offline Accounts
+### オフラインアカウント
 
-In many instances such as enterprise settings, it is advisable to handle sensitive keys and data on isolated, offline machines.
-An Aleo account can be created on an offline machine and available for immediate use. In conjunction with account proving keys,
-a user can ensure their private key remains offline even for creating transactions.
+企業環境など多くのケースで、機微な鍵やデータは隔離されたオフライン環境で扱うことが推奨されます。
+Aleo アカウントはオフラインマシン上で作成でき、すぐに利用可能です。アカウントの証明鍵と組み合わせれば、トランザクション作成時であっても秘密鍵をオフラインのまま保持できます。
 
-While no solution is perfect, it is advisable to create a new Aleo account on a disconnected device to minimize the risk of
-leaking one's account private key to unintended parties.
+完璧な解決策は存在しませんが、意図しない第三者にアカウント秘密鍵が漏洩するリスクを最小化するためにも、接続されていないデバイスで新しい Aleo アカウントを作成することを推奨します。
 
-### Account Commitment Outputs
+### アカウントコミットメント出力
 
-The account commitment output is used to create an account view key, which is comprised of an encryption secret key.
-This encryption secret key is a scalar field element derived from the account commitment output. To ensure the validity
-of the account view key, the account commitment output should be representable in the scalar field.
+アカウントコミットメント出力はアカウントビューキーを生成する際に使用され、暗号化秘密鍵で構成されます。
+この暗号化秘密鍵はアカウントコミットメント出力から導出されたスカラー体の要素です。ビューキーの正当性を担保するため、アカウントコミットメント出力はスカラー体で表現可能である必要があります。
 
-### Create an Account
+### アカウントの作成
 
-Given global instantiated Aleo parameters and subroutines.
+グローバルに初期化された Aleo パラメーターとサブルーチンが与えられているとします。
 
-#### Generate a Private Key
+#### 秘密鍵の生成
 
-1. Sample a 32 byte `seed` from random
+1. 32 バイトの `seed` をランダムにサンプリングする
 
-2. Construct private key components
+2. 秘密鍵の構成要素を生成する
     - `sk_sig` = HashToScalar(EncodeToF("AleoAccountSignatureSecretKey0") || `seed`)
     - `r_sig` = HashToScalar(EncodeToF("AleoAccountSignatureRandomizer0.0") || `seed`)
 
-    where || denotes concatenation, and `HashToScalar` denotes the [Poseidon hash function](https://eprint.iacr.org/2019/458.pdf), specifically with an input rate of 2. `seed` is converted into `Field` type before hashing.
+    ここで、`||` は連結を表し、`HashToScalar` は入力レート 2 の [Poseidon ハッシュ関数](https://eprint.iacr.org/2019/458.pdf)を指します。`seed` はハッシュ処理の前に `Field` 型へ変換します。
 
-3.`private_key` = (`seed`, (`sk_sig`, `r_sig`))
+3. `private_key` = (`seed`, (`sk_sig`, `r_sig`))
 
-#### Generate a View Key
+#### ビューキーの生成
 1. `(sk_sig, r_sig)` = `private_key`
 2. `view_key` = `sk_sig` + `r_sig` + HashToScalar(`sk_sig` * `G` || `r_sig` * `G`)
 
-where `G` is the generator of the base field, which is a vector of elliptic curve group elements generated by hashing a given input domain message to a curve point and repeatedly doubling it up to the size of the scalar field (in bits). `+` is scalar addition.
+ここで `G` はベースフィールドの生成元であり、入力ドメインメッセージを曲線上の点へハッシュし、スカラー体のビットサイズまで倍算を繰り返すことで得られる楕円曲線群要素のベクトルです。`+` はスカラー加算を表します。
 
-#### Generate an Address
+#### アドレスの生成
 
 1. `address` = `view_key` * `G`

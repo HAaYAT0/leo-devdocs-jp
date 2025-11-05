@@ -1,35 +1,34 @@
 ---
 id: function_key_provider
-title: Function Key Provider
-sidebar_label: Function Key Provider
+title: 関数キー プロバイダー
+sidebar_label: 関数キー プロバイダー
 ---
 
-## Class `AleoKeyProviderParams`
+## クラス `AleoKeyProviderParams`
 
-AleoKeyProviderParams search parameter for the AleoKeyProvider. It allows for the specification of a proverUri and
-verifierUri to fetch keys via HTTP from a remote resource as well as a unique cacheKey to store the keys in memory.
+AleoKeyProviderParams は AleoKeyProvider 向けの検索パラメーターです。遠隔リソースから HTTP 経由で鍵を取得するための proverUri と verifierUri、メモリに鍵を保存するための一意な cacheKey を指定できます。
 
-#### Constructor
+#### コンストラクター
 
 
 #### `AleoKeyProviderParams(params)`
+
+KeySearchParams インターフェースを実装する新しい AleoKeyProviderParams オブジェクトを作成します。ユーザーは任意で proverUri と verifierUri に URL を指定し、遠隔リソースから HTTP で鍵を取得できます。また、将来の利用に備えて鍵をメモリへ保存するための一意な cacheKey も指定できます。proverUri か verifierUri を指定しない場合は、cacheKey を必ず指定してください。
 
 Create a new AleoKeyProviderParams object which implements the KeySearchParams interface. Users can optionally
 specify a url for the proverUri &amp; verifierUri to fetch keys via HTTP from a remote resource as well as a unique
 cacheKey to store the keys in memory for future use. If no proverUri or verifierUri is specified, a cachekey must
 be provided.
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __params__ | `AleoKeyProviderInitParams` | *Optional search parameters*
 
 ---
 
-## Class `AleoKeyProvider`
+## クラス `AleoKeyProvider`
 
-AleoKeyProvider class. Implements the KeyProvider interface. Enables the retrieval of Aleo program proving and
-verifying keys for the credits.aleo program over http from official Aleo sources and storing and retrieving function
-keys from a local memory cache.
+AleoKeyProvider クラス。KeyProvider インターフェースを実装します。credits.aleo プログラムの証明鍵と検証鍵を公式 Aleo ソースから HTTP 経由で取得し、ローカルメモリキャッシュに保存・取得できます。
 
 **Kind**: global class
 
@@ -50,27 +49,25 @@ keys from a local memory cache.
         * [.feePublicKeys()](#feepublickeys) ⇒ <code>Promise.&lt;FunctionKeyPair&gt;</code>
         * [.getVerifyingKey()](#getverifyingkey) ⇒ <code>Promise.&lt;VerifyingKey&gt;</code>
 
-## Methods
+## メソッド
 
 ### useCache
 
-
-
-Use local memory to store keys
+ローカルメモリに鍵を保存するかどうかを設定します。
 
 ```javascript
 useCache(useCache)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__useCache__ | `boolean` | *whether to store keys in local memory*
+__useCache__ | `boolean` | *鍵をローカルメモリに保存するかどうか*
 
 ---
 
 ### clearCache
 
-Clear the key cache
+キャッシュされた鍵をクリアします。
 
 ```javascript
 clearCache()
@@ -80,91 +77,90 @@ clearCache()
 
 ### cacheKeys
 
-Cache a set of keys. This will overwrite any existing keys with the same keyId. The user can check if a keyId
-exists in the cache using the containsKeys method prior to calling this method if overwriting is not desired.
+鍵のセットをキャッシュします。同じ keyId が既に存在する場合は上書きされます。上書きを避けたい場合は、事前に containsKeys メソッドで存在を確認してください。
 
 ```javascript
 cacheKeys(keyId, keys)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__keyId__ | `string` | *access key for the cache*
-__keys__ | `FunctionKeyPair` | *keys to cache*
+__keyId__ | `string` | *キャッシュにアクセスするためのキー*
+__keys__ | `FunctionKeyPair` | *キャッシュする鍵*
 
 ---
 
 ### containsKeys
 
-Determine if a keyId exists in the cache
+指定した keyId がキャッシュに存在するか判定します。
 
 ```javascript
 containsKeys(keyId)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__keyId__ | `string` | *keyId of a proving and verifying key pair*
-__*return*__ | `boolean` | *true if the keyId exists in the cache, false otherwise*
+__keyId__ | `string` | *証明鍵・検証鍵ペアの keyId*
+__*return*__ | `boolean` | *キャッシュに存在する場合は true、存在しない場合は false*
 
 ---
 
 ### deleteKeys
 
-Delete a set of keys from the cache
+キャッシュから鍵のセットを削除します。
 
 ```javascript
 deleteKeys(keyId)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__keyId__ | `string` | *keyId of a proving and verifying key pair to delete from memory*
-__*return*__ | `boolean` | *true if the keyId exists in the cache and was deleted, false if the key did not exist*
+__keyId__ | `string` | *削除したい証明鍵・検証鍵ペアの keyId*
+__*return*__ | `boolean` | *存在し削除できた場合は true、存在しなかった場合は false*
 
 ---
 
 ### getKeys
 
-Get a set of keys from the cache
+キャッシュから鍵のセットを取得します。
 
 ```javascript
 getKeys(keyId)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__keyId__ | `undefined` | *keyId of a proving and verifying key pair*
-__*return*__ | `FunctionKeyPair` | *Proving and verifying keys for the specified program*
+__keyId__ | `undefined` | *証明鍵・検証鍵ペアの keyId*
+__*return*__ | `FunctionKeyPair` | *指定したプログラムの証明鍵と検証鍵*
 
 ---
 
 ### functionKeys
 
-Get arbitrary function keys from a provider
+プロバイダーから任意の関数鍵を取得します。
 
 ```javascript
 functionKeys(params)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __params__ | `KeySearchParams` | *parameters for the key search in form of: \{proverUri: string, verifierUri: string, cacheKey: string\}*
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the specified program*
+__*return*__ | `Promise.<FunctionKeyPair>` | *指定したプログラムの証明鍵と検証鍵*
 
 #### Examples
 
 ```javascript
-// Create a new object which implements the KeyProvider interface
+// KeyProvider インターフェースを実装した新しいオブジェクトを作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Initialize a program manager with the key provider to automatically fetch keys for value transfers
+// ProgramManager にキープロバイダーを設定すると、送金用の鍵を自動取得できます
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwnjvggqcad0at", "public", 0.5);
 
-// Keys can also be fetched manually using the key provider
+// キープロバイダーを使って手動で鍵を取得することもできます
 const keySearchParams = { "cacheKey": "myProgram:myFunction" };
 const [transferPrivateProvingKey, transferPrivateVerifyingKey] = await keyProvider.functionKeys(keySearchParams);
 ```
@@ -173,28 +169,28 @@ const [transferPrivateProvingKey, transferPrivateVerifyingKey] = await keyProvid
 
 ### fetchRemoteKeys
 
-Returns the proving and verifying keys for a specified program from a specified url.
+指定した URL からプログラムの証明鍵と検証鍵を取得します。
 
 ```javascript
 fetchRemoteKeys(verifierUrl, proverUrl, cacheKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__verifierUrl__ | `string` | *Url of the proving key*
-__proverUrl__ | `string` | *Url the verifying key*
-__cacheKey__ | `string` | *Key to store the keys in the cache*
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the specified program*
+__verifierUrl__ | `string` | *検証鍵の URL*
+__proverUrl__ | `string` | *証明鍵の URL*
+__cacheKey__ | `string` | *キャッシュに保存する際のキー*
+__*return*__ | `Promise.<FunctionKeyPair>` | *指定したプログラムの証明鍵と検証鍵*
 
 #### Examples
 
 ```javascript
-// Create a new AleoKeyProvider object
+// 新しい AleoKeyProvider オブジェクトを作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Initialize a program manager with the key provider to automatically fetch keys for value transfers
+// ProgramManager にキープロバイダーを設定すると、送金用の鍵を自動取得できます
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwnjvggqcad0at", "public", 0.5);
 
@@ -215,7 +211,7 @@ Returns the proving and verifying keys for the transfer functions in the credits
 transferKeys(visibility)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __visibility__ | `string` | *Visibility of the transfer function*
 __*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the transfer functions*
@@ -228,7 +224,7 @@ const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v
 const keyProvider = new AleoKeyProvider();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Initialize a program manager with the key provider to automatically fetch keys for value transfers
+// ProgramManager にキープロバイダーを設定すると、送金用の鍵を自動取得できます
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwnjvggqcad0at", "public", 0.5);
 
@@ -246,7 +242,7 @@ Returns the proving and verifying keys for the join function in the credits.aleo
 joinKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
 
@@ -260,7 +256,7 @@ Returns the proving and verifying keys for the split function in the credits.ale
 splitKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the split function*
 
@@ -274,7 +270,7 @@ Returns the proving and verifying keys for the fee_private function in the credi
 feePrivateKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the fee function*
 
@@ -288,7 +284,7 @@ Returns the proving and verifying keys for the fee_public function in the credit
 feePublicKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the fee function*
 
@@ -302,7 +298,7 @@ Gets a verifying key. If the verifying key is for a credits.aleo function, get i
 getVerifyingKey()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __*return*__ | `Promise.<VerifyingKey>` | *Verifying key for the function*
 

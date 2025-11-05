@@ -1,177 +1,173 @@
 ---
 id: program_upgradability
-title: Program Upgrades on Aleo
-sidebar_label: Program Upgrades
+title: Aleo におけるプログラムのアップグレード
+sidebar_label: プログラムのアップグレード
 ---
 
-Traditionally, blockchain development has been defined by immutable, "deploy-once" contracts. This provides security but makes it hard to fix bugs or add features. To solve this, Aleo introduces a framework for program upgradability that is timely, cost-effective, and doesn't disrupt your application's state.
+従来のブロックチェーン開発では、1 度デプロイしたら変更できない「イミュータブルな」コントラクトが当たり前でした。これは高い安全性をもたらす一方で、バグ修正や機能追加が難しくなります。Aleo はこの課題を解決するために、アプリケーションの状態を壊さず、タイムリーかつコスト効率よくアップグレードできる枠組みを導入しました。
 
-This framework moves Aleo development from a static model to a dynamic one, allowing applications to evolve. 
-It lets you modify program logic after deployment, so you can patch vulnerabilities, improve features, and adapt to user needs without a complex and costly state migration. 
-Developers are required to design upgradability at the start and reason about the lifecycle of their programs.
+このフレームワークにより、Aleo の開発は静的なモデルから動的なモデルへと進化し、アプリケーションを継続的に改善できます。デプロイ後にプログラムロジックを書き換えられるため、脆弱性の修正や機能強化、ユーザー要件への対応を大掛かりなステート移行なしで行えます。開発者はアップグレードを念頭に置いた設計を初期段階から行い、プログラムのライフサイクルを考慮する必要があります。
 
-This guide covers how this feature works, its security implications, and the rules you need to follow.
+本ガイドでは、この機能の仕組みとセキュリティ面の影響、そして遵守すべきルールについて解説します。
 
-## Constructor
+## コンストラクタ
 
-The `constructor` is a special block of code that acts as the sole gateway for enabling and managing upgrades. Including a `constructor` in your program's code at its initial deployment is the only way to make it upgradable. 
-Programs deployed after program upgradability is supported must all have **non-empty** constructors. 
-Developers have the freedom to implement the `constructor` logic as they see fit, allowing for flexibility in how upgrades are handled. 
+`constructor` は、アップグレードを有効化・管理する唯一の入り口となる特別なコードブロックです。初回デプロイ時に `constructor` を含めることが、プログラムをアップグレード可能にする唯一の方法です。アップグレード可能な仕組みが有効になった後にデプロイされるプログラムは、すべて**空でない**コンストラクタを持たなければなりません。`constructor` 内のロジックは自由に設計でき、アップグレード手順に柔軟性を持たせられます。
 
-Its behavior is strictly defined:
+その挙動は厳格に定義されています。
 
-*   **Execution Context:** The `constructor` logic runs on-chain by the Aleo Virtual Machine (AVM) only during a deployment event (the initial deployment and every subsequent upgrade). It never runs during a standard function call.
-*   **Immutability:** The logic inside a `constructor` is permanent. Once a program is deployed, its `constructor` can't be modified or removed in an upgrade. This ensures the rules for upgrading your program are stable and can't be bypassed.
-*   **Transaction Finality:** The `constructor` is a final check for any deployment or upgrade. If its logic halts (for example, due to a failed `assert` statement), the entire deployment or upgrade transaction fails. This makes the `constructor` a powerful tool for enforcing conditions on upgrades.
+* **実行コンテキスト:** `constructor` のロジックは、初回デプロイおよびそれ以降のアップグレードといったデプロイイベント時にのみ AVM (Aleo Virtual Machine) によってオンチェーンで実行されます。通常の関数呼び出しでは実行されません。
+* **不変性:** `constructor` 内のロジックは恒久的です。プログラムをデプロイすると、アップグレードで `constructor` を変更・削除することはできません。これにより、アップグレードルールが安定し、迂回できないようになります。
+* **トランザクションの最終性:** `constructor` はすべてのデプロイやアップグレードにおける最終チェックとして機能します。ロジックが停止した場合（`assert` が失敗するなど）、デプロイまたはアップグレードのトランザクション全体が失敗します。アップグレード条件を強制する強力な手段といえます。
 
 :::note
-Mutability is a feature you must explicitly design into your program from the start.
+可変性は、最初から明示的に設計へ組み込む必要がある機能です。
 :::
 
-## Program Metadata Operands
+## プログラムメタデータのオペランド
 
-Alongside the `constructor`, the AVM also provides three new metadata operands. These give you on-chain, verifiable information about the program's state, allowing you to write secure upgrade rules.
+`constructor` に加えて、AVM は 3 つの新しいメタデータオペランドを提供します。これらはオンチェーンで検証可能なプログラムの状態情報を提供し、安全なアップグレードルールを記述するのに役立ちます。
 
-**`<PROGRAM_ID>/edition` | `edition` **
-  *   **Description:** An unsigned 16-bit integer (`u16`) that acts as the program's version number.
-  *   **Rules:** The `edition` must be `0u16` for the initial deployment. For every valid upgrade, it must increment by exactly 1.
-  *   **Scope:** This operand is exclusively available within the `finalize` scope.
+**`<PROGRAM_ID>/edition` | `edition`**  
+  * **概要:** プログラムのバージョン番号として機能する符号なし 16 ビット整数 (`u16`)。  
+  * **ルール:** 初回デプロイでは必ず `0u16` でなければなりません。正当なアップグレードごとに必ず 1 ずつ増加します。  
+  * **使用可能な範囲:** `finalize` スコープ内のみで利用できます。
 
-**`<PROGRAM_ID>/checksum` | `edition`**
-  *   **Description:** A 32-byte array (`[u8; 32u32]`) representing the SHA3-256 hash of the program string. It's a unique fingerprint of the program's code.
-  *   **Rules:** The `checksum` is required in any deployment of an upgradable program and is used to verify that the deployed code is what was expected.
-  *   **Scope:** This operand is exclusively available within the `finalize` scope.
+**`<PROGRAM_ID>/checksum` | `edition`**  
+  * **概要:** プログラム文字列の SHA3-256 ハッシュを表す 32 バイト配列 (`[u8; 32u32]`) で、コードの指紋に相当します。  
+  * **ルール:** アップグレード可能なプログラムをデプロイする際は必須で、デプロイされたコードが期待どおりであることを検証します。  
+  * **使用可能な範囲:** `finalize` スコープ内のみで利用できます。
 
-**`<PROGRAM_ID>/program_owner` | `program_owner`**
-  *   **Description:** The `address` of the account that submitted the deployment transaction.
-  *   **Rules:** The `program_owner` is required in any deployment of an upgradable program.
-  *   **Scope:** This operand is exclusively available within the `finalize` scope.
+**`<PROGRAM_ID>/program_owner` | `program_owner`**  
+  * **概要:** デプロイトランザクションを送信したアカウントの `address`。  
+  * **ルール:** アップグレード可能なプログラムをデプロイする際には必須です。  
+  * **使用可能な範囲:** `finalize` スコープ内のみで利用できます。
 
 :::info
-The `finalize`-only scope for all three operands is a critical security feature. It forces any logic that authorizes an upgrade—based on ownership, version, or content—to be executed and verified on-chain as part of a public state transition. This prevents these sensitive checks from being spoofed or manipulated in an off-chain proof context.
+これら 3 つのオペランドが `finalize` スコープでのみ利用できる点は重要なセキュリティ設計です。所有者、バージョン、コード内容に基づくアップグレードの認可ロジックを公開状態遷移としてオンチェーンで実行・検証させることで、オフチェーンの証明コンテキストで偽装されるのを防ぎます。
 :::
 
-## Cost of Upgradability
+## アップグレードにかかるコスト
 
-Executing a `constructor` consumes network resources and has a cost. The cost model is the same as for standard `finalize` blocks but with a significant multiplier applied (currently 100x).
+`constructor` を実行するにはネットワーク資源が必要で、コストが発生します。基本的なコストモデルは通常の `finalize` ブロックと同じですが、大きな係数（現在は 100 倍）が掛かります。
 
-This higher cost serves two purposes. First, it reflects the importance of the deployment transaction. Second, it acts as an economic incentive to keep your `constructor` logic simple and efficient, which reduces the risk of bugs in this critical, immutable code.
+コストが高めに設定されているのには 2 つの理由があります。1 つはデプロイトランザクションの重要性を反映するため、もう 1 つは `constructor` のロジックをシンプルで効率的に保つインセンティブを与えるためです。これにより、変更不可能なクリティカルコードでバグが発生するリスクを下げられます。
 
-## Rules of Upgradability
+## アップグレードのルール
 
-The Aleo protocol enforces strict rules on what makes a valid program upgrade. These rules balance the need for new logic with the need to protect a program's public interface and data structures, ensuring dependent programs and users aren't affected by breaking changes.
+Aleo プロトコルは、有効なプログラムアップグレードの条件を厳格に定めています。新しいロジックを導入する必要と、既存ユーザーや依存プログラムに破壊的な影響を与えないことのバランスを取っています。
 
-The AVM has clear rules about what you can add, modify, and what you can't change.
+AVM は、追加・変更・禁止事項に関する明確なルールを持っています。
 
-An upgrade **can**:
-*   **Modify Logic:** Change the internal implementation of any existing `function` or `finalize` block. This is the main way to fix bugs or improve performance.
-*   **Add New Components:** Define new `struct`s, `record`s, `mapping`s, `function`s, and `closure`s to extend functionality.
-*   **Add Imports:** Import new external programs.
+アップグレードで**できること**:
+* **ロジックの変更:** 既存の `function` や `finalize` ブロックの内部実装を変更できます。バグ修正や性能改善の主な手段です。
+* **新しい要素の追加:** 追加の `struct`、`record`、`mapping`、`function`、`closure` を定義して機能を拡張できます。
+* **新しい import:** 外部プログラムを新たに import できます。
 
-An upgrade **cannot**:
-*   **Change Interfaces:** Modify the `input` or `output` signature of any existing `function`, or the `input` interface of a `finalize` block. This maintains backward compatibility.
-*   **Modify Closures:** Change the logic within an existing `closure`. Doing so would invalidate all its proving and verifying keys, breaking existing user assets.
-*   **Alter Data Structures:** Modify or remove any existing `struct`, `record`, or `mapping`. This preserves existing program state.
-*   **Delete Components:** No program component of any kind can be deleted.
+アップグレードで**できないこと**:
+* **インターフェースの変更:** 既存 `function` の `input` / `output` シグネチャ、または `finalize` ブロックの `input` インターフェースを変更できません。後方互換性を守るためです。
+* **クロージャの変更:** 既存 `closure` のロジックは変更できません。変更すると、それに紐づく証明鍵と検証鍵が無効化され、ユーザー資産が破損する恐れがあります。
+* **データ構造の変更:** 既存の `struct`、`record`、`mapping` を変更・削除できません。既存のプログラム状態を保護するためです。
+* **要素の削除:** どの種類のプログラム要素も削除できません。
 
-Below is a quick reference table:
+クイックリファレンスは以下のとおりです。
 
-| Program Component | Delete | Modify | Add |
+| プログラム要素 | 削除 | 変更 | 追加 |
 | :--- | :---: | :---: | :---: |
 | `import` | ❌ | ❌ | ✅ |
 | `struct` | ❌ | ❌ | ✅ |
 | `record` | ❌ | ❌ | ✅ |
 | `mapping` | ❌ | ❌ | ✅ |
 | `closure` | ❌ | ❌ | ✅ |
-| `function` | ❌ | ✅ (logic) | ✅ |
-| `finalize` | ❌ | ✅ (logic) | ✅ |
+| `function` | ❌ | ✅ (ロジック) | ✅ |
+| `finalize` | ❌ | ✅ (ロジック) | ✅ |
 | `constructor` | ❌ | ❌ | ❌ |
 
-## On-Chain Validation
+## オンチェーンでの検証
 
-When a `Deployment` transaction is submitted, the AVM runs a series of checks.
+`Deployment` トランザクションが送信されると、AVM は一連の検証を行います。
 
-**1. New Program Deployment (`edition` is 0):**
-For a new, upgradable program, the AVM verifies [1]:
-*   The program contains a `constructor`.
-*   The `edition` is `0u16`.
-*   The `checksum` is present and matches the hash of the program code.
-*   The `program_owner` is present and matches the transaction signer.
-*   The program ID does not already exist.
+**1. 新規プログラムのデプロイ (`edition` が 0 の場合):**  
+アップグレード可能な新規プログラムについて AVM は次を確認します。[1]
+* `constructor` を含んでいること。
+* `edition` が `0u16` であること。
+* `checksum` が存在し、プログラムコードのハッシュと一致していること。
+* `program_owner` が存在し、トランザクション送信者と一致していること。
+* そのプログラム ID が未使用であること。
 
-**2. Program Upgrade (`edition` > 0):**
-For an upgrade, the validation is more extensive [1]:
-*   The program ID must already exist.
-*   The new `edition` must be `old_edition + 1`.
-*   The upgraded code must follow all modification rules (e.g., no changing function signatures).
-*   The existing on-chain program being upgraded **must already have a `constructor`**.
+**2. プログラムのアップグレード (`edition` が 0 より大きい場合):**  
+アップグレードではより多くの検証が行われます。[1]
+* そのプログラム ID がすでに存在していること。
+* 新しい `edition` が旧バージョンの `edition + 1` になっていること。
+* コードの変更がすべてルールに従っていること（例: 関数シグネチャを変えていない）。
+* アップグレード対象の既存プログラムに**すでに `constructor` が存在すること**。
 
-This final check is the lynchpin of the system. It ensures that only programs designed for upgradability can ever be changed.
+特に最後のチェックが仕組みの要です。アップグレードできるのは、最初からアップグレードを想定して設計されたプログラムのみという保証になります。
 
-## Security and Best Practices
+## セキュリティとベストプラクティス
 
-Upgradability is powerful, but it introduces risks around mutability. When you make a program upgradable, you take on the responsibility of managing that power securely. A malicious or compromised developer could push an upgrade that introduces vulnerabilities, drains funds, or freezes user assets.
+アップグレード機能は強力ですが、可変性に起因するリスクを伴います。プログラムをアップグレード可能にするということは、その権限を安全に管理する責任を負うことでもあります。悪意ある、あるいは乗っ取られた開発者がアップグレードを利用して脆弱性や資金流出、資産ロックを引き起こす可能性もゼロではありません。
 
-When a user interacts with an upgradable program, they are trusting both the current code and the governance process that can change it.
+ユーザーがアップグレード可能なプログラムを利用する場合、現在のコードだけでなく、将来的にコードを変更するガバナンス手続きも信頼する必要があります。
 
-### Constructor is immutable
+### コンストラクタは不変
 
-The most critical security component of an upgradable program is the `constructor` itself. Its logic is immutable and cannot be changed by a future upgrade.
+アップグレード可能なプログラムにおける最重要のセキュリティ要素は `constructor` です。`constructor` のロジックは不変であり、将来のアップグレードでも変更できません。
 
-A bug in the `constructor` is permanent and cannot be patched. If you hardcode the wrong admin address or have a flaw in your voting logic, you could be locked out or have your governance bypassed forever. Treat your `constructor` as mission-critical code and subject it to rigorous audits before deployment.
+`constructor` にバグがあると永続的に修正できません。誤った管理者アドレスをハードコードしたり、投票ロジックに欠陥があると、制御権を失ったりガバナンスが成立しなくなる恐れがあります。`constructor` はミッションクリティカルなコードとして扱い、デプロイ前に慎重な監査を行ってください。
 
-### Design Patterns 
+### 設計パターン
 
-You can use several patterns in your `constructor` to build safer, more trustworthy programs.
+`constructor` で安全性・信頼性を高めるさまざまなパターンを活用できます。
 
-*   **Multi-Signature Governance:** Require multiple signatures for an upgrade to prevent a single point of failure.
-*   **Time-Locked Upgrades:** Enforce a delay between announcing an upgrade and executing it. This gives users time to review the changes and opt out.
-*   **Program Ossification:** Include a mechanism to permanently disable future upgrades, for example by setting the constructor only runs when program edition is 0 but not future edition.
-*   **Dependency Pinning:** If your program depends on another upgradable program, you can "pin" the dependency to a specific version by asserting its `edition` in a `finalize` block (e.g., `assert.eq child.aleo/edition 0u16;`). This protects you from breaking changes in the dependency but requires you to upgrade your own program to adopt new, legitimate versions of that dependency. [Example below](#managing-dependencies).
+* **マルチシグによるガバナンス:** アップグレードに複数署名を必須とし、単一障害点を排除する。
+* **タイムロック付きアップグレード:** アップグレードの告知から実行までに猶予期間を設け、ユーザーが変更内容を確認し離脱できるようにする。
+* **プログラムの凍結 (ossification):** `constructor` にメカニズムを組み込み、将来のアップグレードを恒久的に禁止できるようにする。たとえば「edition が 0 のときだけ許可する」といった条件にする。
+* **依存関係の固定:** アップグレード可能な別プログラムへ依存している場合は、`finalize` ブロックで `edition` をチェック（例: `assert.eq child.aleo/edition 0u16;`）し、特定バージョンに固定できます。依存側が破壊的な変更をしても影響を受けにくくなりますが、新しい正当なバージョンを採用するには自分のプログラムもアップグレードする必要があります（詳細は[依存関係の管理](#managing-dependencies)を参照）。
 
-## Examples
+## 例
 
-The `constructor` lets you implement a wide range of governance models. Below are practical, commented examples written in Aleo Instructions (the low-level format executed by the AVM) for common upgrade patterns. 
+`constructor` を使えば、多彩なガバナンスモデルを実装できます。以下では AVM が実行する低レベル言語である Aleo Instructions を用いて、代表的なアップグレードパターンをコメント付きで紹介します。  
+Leo 言語での記述方法については、[Leo ドキュメント](https://github.com/ProvableHQ/leo-docs-source/blob/6ec29db64ef4620b9bfd86a876818f260202c230/documentation/guides/03_program_upgradability.md)を参照してください。
 
-To learn how to write these patterns in the Leo language, please refer to the [Leo documentation](https://github.com/ProvableHQ/leo-docs-source/blob/6ec29db64ef4620b9bfd86a876818f260202c230/documentation/guides/03_program_upgradability.md).
+### アップグレード不可のプログラム
 
-### Non-upgradable program
-
-A program that can never be upgraded.
+一切アップグレードできないプログラムの例です。
 
 ```aleo
 program noupgrade_example.aleo;
 
 constructor:
-    // This assertion checks if the program's edition is 0.
-    // It passes on initial deployment. For any upgrade attempt,
-    // the edition will be > 0, causing the assertion to fail and
-    // halting the upgrade transaction.
+    // このアサーションは edition が 0 であることを確認します。
+    // 初回デプロイでは成立しますが、アップグレード時には edition が 0 より大きくなるため
+    // アサーションが失敗し、アップグレードトランザクションが停止します。
     assert.eq edition 0u16;
 
-//... other program logic...
+//... その他のプログラムロジック...
 ```
-The `constructor` ensures the program can only be deployed at `edition 0`, making upgrades impossible.
 
-### Admin-controlled upgrades
+`constructor` が `edition 0` でのデプロイしか許さないため、アップグレードは不可能になります。
 
-Restrict upgrades to a single, hardcoded administrator address.
+### 管理者によるアップグレード
+
+ハードコードした 1 つの管理者アドレスにアップグレード権限を限定する例です。
 
 ```aleo
 program admin_example.aleo;
 
 constructor:
-    // This asserts that the address deploying this version of the program is the predefined ADMIN_ADDRESS.
-    // IMPORTANT: This address is hardcoded and cannot be changed after deployment.
+    // 今回デプロイしているアドレスがあらかじめ定義した ADMIN_ADDRESS と一致するか検証します。
+    // 重要: このアドレスはハードコードされ、デプロイ後に変更できません。
     assert.eq program_owner <ADMIN_ADDRESS>;
 
-//... other program logic...
+//... その他のプログラムロジック...
 ```
-This pattern uses `program_owner` operand to check that the deployer is the designated admin. It's simple, but if the admin key is lost, control is lost forever.
 
-### Configurable admin & pre-approved upgrades
+このパターンでは `program_owner` オペランドを使って、デプロイしたアドレスが指定した管理者であることを確認します。シンプルですが、管理者鍵を失うと永遠に制御を取り戻せません。
 
-Allow a changeable admin to pre-authorize specific upgrades by their `checksum`.
+### 管理者を差し替えられる事前承認アップグレード
+
+管理者を変更可能にし、アップグレード対象の `checksum` をあらかじめ登録させる例です。
 
 ```aleo
 program preapproved_example.aleo;
@@ -185,39 +181,40 @@ mapping expected:
     value as [u8; 32u32].public;
 
 constructor:
-    // If this is the first deployment (edition 0), set the initial admin.
+    // edition が 0（初回デプロイ）の場合は初期管理者を設定します。
     branch.neq edition 0u16 to upgrade_check;
-    set <ADMIN_ADDRESS> into admin[true]; // Replace with the initial admin address.
+    set <ADMIN_ADDRESS> into admin[true]; // 初期管理者アドレスに置き換えてください。
     branch.eq true true to end;
 
-    // For all upgrades, check the checksum against the pre-approved value.
+    // それ以降のアップグレードでは、事前承認されたチェックサムと一致するか検証します。
     position upgrade_check;
     get expected[true] into r0;
     assert.eq checksum r0;
 
     position end;
 
-// This function allows the current admin to set the checksum for the next upgrade.
+// この関数は現在の管理者が次回アップグレード用のチェックサムを設定するためのものです。
 function set_expected:
     input r0 as [u8; 32u32].public;
     async set_expected self.caller r0 into r1;
     output r1 as foo.aleo/set_expected.future;
 
 finalize set_expected:
-    input r0 as address.public; // The caller.
-    input r1 as [u8; 32u32].public; // The expected checksum.
-    // Get the current admin.
+    input r0 as address.public; // 呼び出し元
+    input r1 as [u8; 32u32].public; // 設定するチェックサム
+    // 現在の管理者を取得
     get admin[true] into r2;
-    // Check that the caller is the admin.
+    // 呼び出し元が管理者か確認
     assert.eq r0 r2;
-    // Set the checksum for the next expected upgrade.
+    // 次回アップグレードのチェックサムを保存
     set r1 into expected[true];
 ```
-This pattern uses on-chain `mapping`s to store the admin and the `checksum` of the next valid upgrade. A separate function, `set_expected`, allows the admin to authorize the next upgrade. Another function could be added to change the admin, providing more flexibility than a hardcoded address.
 
-### DAO-driven upgrades
+このパターンでは、管理者と次回許可するアップグレードの `checksum` をオンチェーンの `mapping` に保存します。`set_expected` 関数により管理者が次のアップグレードを承認できます。管理者を変更する関数も追加すれば、ハードコード方式より柔軟に運用できます。
 
-Let an external DAO contract governs upgrades.
+### DAO によるアップグレード
+
+DAO コントラクトがアップグレードを管理する例です。
 
 ```aleo
 import governor.aleo;
@@ -225,37 +222,37 @@ import governor.aleo;
 program dao_example.aleo;
 
 constructor:
-    // If edition is 0 (first deployment), skip upgrade checks.
+    // edition が 0（初回デプロイ）のときはアップグレードチェックをスキップします。
     branch.eq edition 0u16 to end;
 
-    // This assumes 'governor.aleo' is a DAO contract that stores the
-    // checksum of an approved upgrade in a mapping.
+    // 'governor.aleo' が承認済みチェックサムをマッピングに保持している DAO コントラクトであると仮定します。
     get governor.aleo/approved_checksum[true] into r0;
 
-    // Assert that the checksum of the program being deployed
-    // matches the checksum approved by the DAO.
+    // デプロイしようとしているプログラムのチェックサムが
+    // DAO が承認したチェックサムと一致することを確認します。
     assert.eq checksum r0;
 
     position end;
 
-//... other program logic...
+//... その他のプログラムロジック...
 ```
-This pattern delegates upgrade authority to another program. The `constructor` fetches the valid `checksum` from the DAO contract, decoupling the application's logic from its governance.
 
-### Time-locked upgrade
+このパターンではアップグレード権限を別プログラムに委任します。`constructor` が DAO コントラクトから有効な `checksum` を取得し、アプリケーションロジックとガバナンスを切り離します。
 
-**Goal:** Only allow upgrades after a specific block height.
+### タイムロック付きアップグレード
+
+**目的:** 特定のブロック高に達するまでアップグレードを許可しない。
 
 ```aleo
 program timelock_example.aleo;
 
 constructor:
-    // Checks if the edition is 0 (first deployment); if so, skips the time-lock check.
+    // edition が 0（初回デプロイ）のときは時間制限のチェックをスキップします。
     gt edition 0u16 into r0;
     branch.eq r0 false to end_then_0_0;
 
-    // Otherwise, it asserts that the current block height is greater than or equal
-    // to the defined height, creating a time-lock for upgrades.
+    // それ以外の場合は、現在のブロック高が定めた値以上であることを確認し
+    // アップグレードにタイムロックをかけます。
     gte block.height <BLOCK_HEIGHT> into r1;
     assert.eq r1 true;
     
@@ -263,13 +260,14 @@ constructor:
     position end_then_0_0;
     position end_otherwise_0_1;
 
-//... other program logic...
+//... その他のプログラムロジック...
 ```
-*   **Mechanism:** This `constructor` uses `block.height` to enforce a time-based constraint, which can ensure a "cool-down" period before an upgrade is applied.[1]
 
-### Program ossification
+* **メカニズム:** この `constructor` は `block.height` を利用して時間的な制約を課し、アップグレード前に「クールダウン期間」を設けます。[1]
 
-Allow an admin to permanently lock a program from future upgrades.
+### プログラムの凍結 (Ossification)
+
+管理者が将来のアップグレードを恒久的に禁止できる例です。
 
 ```aleo
 program ossification_example.aleo;
@@ -279,20 +277,21 @@ mapping is_locked:
     value as boolean.public;
 
 constructor:
-    // This check runs on every upgrade attempt. If the 'is_locked' flag
-    // is true, the assertion fails, halting the upgrade.
+    // すべてのアップグレードで実行されます。is_locked フラグが true の場合、
+    // アサーションが失敗してアップグレードが停止します。
     contains is_locked[true] into r0;
     assert.eq r0 false;
 
-    //... other upgrade logic (e.g., admin check) can follow...
+    //... ここに管理者チェックなど追加のロジックを記述できます...
 
-//... other logic, including a function for an admin to set is_locked[true] to true.
+//... 管理者が is_locked[true] を true に設定する関数など、他のロジックを続けます。
 ```
-*This pattern uses a `mapping` as a one-way flag. Once set to `true`, the `constructor` will block all future upgrade attempts.
 
-### Managing dependencies
+*このパターンでは `mapping` を片道フラグとして利用します。`true` に設定すると、以降のアップグレードは `constructor` で拒否されます。*
 
-Protect a program from unexpected upgrades in its dependencies by pinning to a specific version.
+### 依存関係の管理
+
+依存しているプログラムの予期しないアップグレードから身を守るため、特定バージョンに固定する例です。
 
 ```aleo
 import child.aleo;
@@ -300,54 +299,54 @@ import child.aleo;
 program parent.aleo;
 
 constructor:
-    //... Programs that fix dependencies should have an upgrade mechanism
-    // in case the dependency made an upgrade.
+    //... 依存先がアップグレードした場合に備え、自分側にもアップグレードの仕組みを用意しておくべきです。
 
 function some_function:
-    //... logic that calls a function from child.aleo
+    //... child.aleo の関数を呼び出すロジック
     call child.aleo/some_child_function...;
 
 finalize some_function:
     //...
-    // In the finalize scope, assert that the dependency is on the expected edition.
-    // This must be in finalize, as the 'edition' operand is only available here.
+    // finalize スコープ内で依存先の edition をチェックします。
+    // このオペランドは finalize 内でしか利用できません。
     assert.eq child.aleo/edition 0u16;
     //...
 
-//... other program logic...
+//... その他のプログラムロジック...
 ```
-This is a defensive pattern used in a `finalize` block, not the `constructor`. It checks the `edition` of a dependency before interacting with it. This prevents breaking changes but requires an upgrade to `parent.aleo` to adopt a new, valid version of `child.aleo`.
+
+この防御的パターンは `constructor` ではなく `finalize` ブロックで使用し、依存先の `edition` を検証します。破壊的変更から身を守れますが、依存先の新しい正当なバージョンを利用するには自分のプログラムもアップグレードする必要があります。
 
 :::warning[important]
-If using this pattern, we recommend you make your program upgradable, in case your function is locked due to a dependency upgrade.
+このパターンを使う場合、依存先のアップグレードで自分の機能がロックされる可能性に備えて、自分のプログラムもアップグレード可能にしておくことを推奨します。
 :::
 
-## Quick Reference Summary
+## クイックリファレンスサマリー
 
-| Concept | Mechanism                                                           | Critical Takeaway                                                                        |
-| :--- |:--------------------------------------------------------------------|:-----------------------------------------------------------------------------------------|
-| **Enabling Upgradability** | All new programs must specify how they will handle upgrades.        | Know your upgrade.                                                                       |
-| **Legacy Program Status** | Programs deployed before the feature lack a `constructor`.          | Permanently non-upgradable.                                                              |
-| **Upgrade Authority** | The immutable logic within the `constructor`.                       | Your `constructor` is your governance. Its logic is permanent.                           |
-| **Core Risk** | The `constructor` logic itself is immutable and cannot be patched.  | A bug in the `constructor` is permanent. Audit this code with extreme care.              |
-| **Valid Upgrade Changes** | Modify logic in `function`s/`finalize`; add new components.         | Interfaces (function signatures, existing data structures) cannot be changed or removed. |
-| **Program Ossification** | Logic in the `constructor` to permanently revoke upgrade authority. | Provide a path to make your program immutable to build long-term user trust.             |
+| 概念 | 仕組み | 重要なポイント |
+| :--- | :--- | :--- |
+| **アップグレードの有効化** | 新しいプログラムはすべて、どのようにアップグレードするかを明示する必要がある。 | 自身のアップグレード方針を明確にすること。 |
+| **レガシープログラムの扱い** | アップグレード機能導入前にデプロイされたプログラムには `constructor` がない。 | 恒久的にアップグレード不可。 |
+| **アップグレード権限** | 不変の `constructor` ロジックにより決まる。 | `constructor` がガバナンスそのもの。ロジックは永久に固定される。 |
+| **主なリスク** | `constructor` 自体が不変であり修正できない。 | `constructor` のバグは永続的。徹底した監査が必須。 |
+| **有効な変更内容** | `function` / `finalize` のロジック変更、新しい要素の追加など。 | 既存のインターフェースやデータ構造は変更・削除できない。 |
+| **プログラムの凍結** | `constructor` にアップグレード権限を永久に破棄するロジックを組み込む。 | 長期的にユーザーへ安心感を与えるため、イミュータブル化の道も提供する。 |
 
-## Pre-Upgradability Programs
+## アップグレード機能導入前のプログラム
 
-All programs deployed to the Aleo network before the upgradability feature was activated are, and will remain, permanently non-upgradable.
+アップグレード機能が導入される前に Aleo ネットワークへデプロイされたプログラムは、今後も永久にアップグレードできません。
 
-The AVM's validation logic requires that an existing program must have a `constructor` to be upgraded. Since legacy programs were created before the `constructor` existed, they don't have one. Any attempt to upgrade a legacy program will automatically fail the AVM's checks.
+AVM の検証ロジックでは、既存プログラムをアップグレードするには `constructor` が必須です。レガシープログラムが作成された当時は `constructor` という概念が存在しなかったため、これらのプログラムには含まれていません。そのためアップグレードを試みても AVM の検証で必ず失敗します。
 
 :::note
-1.  A program with a `constructor` is upgradable.
-2.  A program without a `constructor` is permanently non-upgradable.
+1. `constructor` を持つプログラムはアップグレード可能です。  
+2. `constructor` を持たないプログラムは永久にアップグレードできません。
 :::
 
-### The No-Migration Policy
+### マイグレーションを行わない方針
 
-Early proposals discussed a "one-time migration" path that would have allowed owners of legacy programs to add a `constructor`.
+初期の提案では、レガシープログラムの所有者が 1 度だけ `constructor` を追加できる「一度限りのマイグレーション」を検討していました。
 
-**This proposed migration path has been officially rescinded and is not supported by the protocol.** There is no way to retroactively add a `constructor` to a program that has already been deployed.
+**しかしこの移行案は正式に撤回され、プロトコルとしてサポートされていません。** 既にデプロイ済みのプログラムに後から `constructor` を追加する手段はありません。
 
-If you maintain a legacy application and need to add new features or fix bugs, you must deploy an entirely new program and create a migration path for your users to move their state and assets.
+レガシーアプリケーションに新機能の追加やバグ修正が必要な場合は、まったく新しいプログラムをデプロイし、ユーザーがステートや資産を移行できる経路を用意する必要があります。

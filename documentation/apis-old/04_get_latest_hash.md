@@ -1,26 +1,25 @@
 ---
 id: get_latest_hash
-title: Get Latest Hash
-sidebar_label: Get Latest Hash
+title: 最新のブロックハッシュを取得
+sidebar_label: 最新のブロックハッシュを取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/block/hash/latest
 ```
-or
+または
 ```bash title=ENDPOINT
 GET /{network}/latest/hash
 ```
 
-Returns the latest block hash.
+最新のブロックハッシュを返します。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
+### レスポンス
 
-| Parameter |  Type  |                 Description                  |
+| パラメーター |  型  |                 説明                  |
 |:---------:|:------:|:--------------------------------------------:|
-| `result`  | string |   The block hash of the most recent block    |
-
+| `result`  | string |   最新ブロックのブロックハッシュ    |

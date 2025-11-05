@@ -1,64 +1,61 @@
 ---
 id: tooling
-title: Tooling for Aleo Instructions
-sidebar_label: Tooling
+title: Aleo instructions のためのツール
+sidebar_label: ツール
 ---
 
 :::info
-If you have installed a Leo syntax [plugin](https://docs.leo-lang.org/getting_started/ide#plugins).
-then you should already be able to see syntax highlighting for `.aleo` Aleo instructions.
+Leo 構文の[プラグイン](https://docs.leo-lang.org/getting_started/ide#plugins)を導入済みであれば、`.aleo` ファイルの構文ハイライトはすでに利用できるはずです。
 :::
 
-Aleo maintains several syntax highlighting implementations across different platforms. If you do not see your favorite editor on this list, please reach out on [GitHub](https://github.com/ProvableHQ/leo).
+Aleo では複数プラットフォーム向けに構文ハイライトを提供しています。お使いのエディタがこの一覧にない場合は、[GitHub](https://github.com/ProvableHQ/leo) でお気軽にご連絡ください。
 
-1. [Sublime Text](#sublime-text).
-2. [Visual Studio Code](#vscode).
-3. [Intellij](#intellij).
+1. [Sublime Text](#sublime-text)
+2. [Visual Studio Code](#vscode)
+3. [IntelliJ](#intellij)
 
 ## Sublime Text
 
 ![](./images/sublime.png)  
-Download the editor here: https://www.sublimetext.com/download.
-Aleo instructions support for Sublime's LSP plugin is provided through a language-server.
+エディタはこちらからダウンロードできます: https://www.sublimetext.com/download  
+Aleo instructions のサポートは Sublime の LSP プラグイン経由で提供されます。
 
-### Install
+### インストール
 
+1. Package Control から [LSP](https://packagecontrol.io/packages/LSP) と [LSP-leo](https://packagecontrol.io/packages/LSP-leo) をインストールします。
+2. Sublime を再起動します。
 
-1. Install [LSP](https://packagecontrol.io/packages/LSP) and [LSP-leo](https://packagecontrol.io/packages/LSP-leo) from Package Control.
-2. Restart Sublime.
+### 使い方
 
+次の手順で `Aleo instructions` のシンタックスハイライトを有効化できます。
 
-### Usage
-
-Follow these steps to toggle the `Aleo instructions` syntax highlighter.
-
-1. Open `Sublime Text`.
-2. From Settings > Select Color Scheme... > LSP-leo
-3. This will also allow you to see syntax highlighting for Aleo instructions. 
+1. `Sublime Text` を開きます。
+2. Settings > Select Color Scheme... > LSP-leo を選択します。
+3. これで Aleo instructions の構文ハイライトが表示されるようになります。
 
 ## VSCode
 
-![](./images/vscode.png)
-Download the editor here: https://code.visualstudio.com/download.
+![](./images/vscode.png)  
+エディタはこちらからダウンロードできます: https://code.visualstudio.com/download
 
-### Install
+### インストール
 
-1. Install [Leo for VSCode](https://marketplace.visualstudio.com/items?itemName=aleohq.leo-extension) from VSCode marketplace.   
-2. The correct extension ID is `provablehq.leo-extension`, and the description should state "the official VSCode extension for Leo".
+1. VSCode Marketplace から [Leo for VSCode](https://marketplace.visualstudio.com/items?itemName=aleohq.leo-extension) をインストールします。  
+2. 正しい拡張 ID は `provablehq.leo-extension` で、説明には「the official VSCode extension for Leo」と記載されています。
 
-### Usage
+### 使い方
 
-1. Open `VSCode`.
-2. Go to Settings > Extensions or use the left side panel Extensions button to enable the Leo plugin.
-3. This will also allow you to see syntax highlighting for Aleo instructions. 
+1. `VSCode` を開きます。
+2. 設定 > 拡張機能、または左側パネルの拡張機能ボタンから Leo プラグインを有効にします。
+3. これで Aleo instructions の構文ハイライトが表示されるようになります。
 
 ## IntelliJ
 
-![](./images/intellij.png)
-Download the editor here: https://www.jetbrains.com/idea/download/.
+![](./images/intellij.png)  
+エディタはこちらからダウンロードできます: https://www.jetbrains.com/idea/download/
 
-### Install
+### インストール
 
-1. Download the [Aleo Developer Plugin](https://plugins.jetbrains.com/plugin/19890-aleo-developer) from JetBrains marketplace.
-2. Click on the gear icon in the upper right > Plugins > gear icon up top > Install Plugin from Disk > Select the downloaded zip file
-3. This will also allow you to see syntax highlighting for Aleo instructions. 
+1. JetBrains Marketplace から [Aleo Developer Plugin](https://plugins.jetbrains.com/plugin/19890-aleo-developer) をダウンロードします。
+2. 右上のギアアイコン > Plugins > 上部のギアアイコン > Install Plugin from Disk を順に選択し、ダウンロードした zip ファイルを指定します。
+3. これで Aleo instructions の構文ハイライトが表示されるようになります。

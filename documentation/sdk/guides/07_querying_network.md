@@ -1,16 +1,15 @@
 ---
 id: querying_network
-title: Querying the Aleo Network
-sidebar_label: Querying the Network
+title: Aleo ネットワークへのクエリ
+sidebar_label: ネットワークへのクエリ
 ---
 
-Communication with the Aleo network is done through the `AleoNetworkClient` class. This class provides methods to query
-data from Aleo network nodes and submit transactions to the Aleo network.
+Aleo ネットワークとの通信は `AleoNetworkClient` クラスを通じて行います。このクラスは Aleo ネットワークのノードからデータを取得したり、トランザクションを送信したりするためのメソッドを提供します。
 
-## Blocks
-Blocks are formed by Aleo validators and represent the canonical unit of state change. They contain all transactions, solutions to the Aleo puzzle, metadata about the block (such as height, current coinbase target, etc.) and cryptographic information such as the block's merkle roots and validator signatures.  The `AleoNetworkClient` can querying the block and return it in JSON format. The returned JSON mirrors the block's Typescript interface.
+## ブロック
+ブロックは Aleo のバリデーターによって生成され、状態変化の正準な単位を表します。ブロックにはすべてのトランザクション、Aleo パズルの解、ブロックのメタデータ（ブロック高や現在のコインベースターゲットなど）、およびマークルルートやバリデーター署名といった暗号情報が含まれます。`AleoNetworkClient` を使うとブロックを取得し、JSON 形式で受け取れます。返される JSON はブロックの TypeScript インターフェースと同じ構造です。
 
-The following Typescript snippet shows how to extract most of the important information from a block:
+次の TypeScript スニペットでは、ブロックから主要な情報を抽出する方法を示します。
 
 ```typescript
 import { AleoNetworkClient } from "@provablehq/sdk"
@@ -18,123 +17,121 @@ const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v
 
 const block = await networkClient.getBlock(1);
 
-// Get the block's metadata
+// ブロックのメタデータを取得します
 const blockHeight = block.header.metadata.height;
 const blockHash = block.block_hash;
 const blockTimestamp = block.header.metadata.timestamp;
 const coinbaseTarget = block.header.metadata.coinbase_target;
 const proofTarget = block.header.metadata.proof_target;
 
-// Get the block's transactions
+// ブロックに含まれるトランザクションを取得します
 const transactions = block.transactions;
 
-// Iterate through the transactions in the block.
+// ブロック内のトランザクションを走査します
 for (let i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
-    // Get the transaction's ID.
+    // トランザクション ID を取得します
     const transactionID = transaction.id;
     
-    // Get the transaction's type.
+    // トランザクションのタイプを取得します
     const transactionType = transaction.type;
     if (transactionType === "execute") {
-        // Get the execution.
+        // 実行情報を取得します
         const execution = transaction.transaction.execution;
-        // Get the transitions in the execution.
+        // 実行に含まれるトランジションを取得します
         const transitions = execution.transitions;
         for (let j = 0; j < transitions.length; j++) {
             const transition = transitions[j];
-            // Get the inputs of an individual transition.
+            // 個々のトランジションの入力を取得します
             const transitionInputs = transition.inputs;
-            // Get the outputs of an individual transition.
+            // 個々のトランジションの出力を取得します
             const transitionOutputs = transition.outputs;
         }
     } else if (transactionType === "deploy") {
-        // Get the transaction's deployment data.
+        // トランザクションのデプロイデータを取得します
         const deploymentData = transaction.transaction.deployment;
-        // Get the program's name.
+        // プログラム名を取得します
         const programName = deploymentData.program;
-        // Get the program's verifying keys.
+        // プログラムの検証鍵を取得します
         const verifyingKeys = deploymentData.verifying_keys;
     }
     
-    // Get the block and puzzle reward (this information is important to calculating staking and mining rewards).
+    // ブロック報酬とパズル報酬を取得します（ステーキングとマイニング報酬の計算に重要です）
     const ratificationsJSON = block.ratifications;
     const blockReward = ratificationsJSON[0].amount;
     const puzzleReward = ratificationsJSON[1].amount;
     
-    // Get the block's puzzle solutions.
+    // ブロックのパズル解を取得します
     const solutions = block.solutions
 }
 ```
 
-## Transactions and Transitions
-While blocks contain most relevant information, they are large and may represent more data than is necessary for your application. An application may only be interested in specific transactions, and the `AleoNetworkClient` provides methods to query transactions by their unique ID. 
+## トランザクションとトランジション
+ブロックには関連情報のほとんどが含まれますが、サイズが大きく、アプリにとって不要なデータまで含む場合があります。アプリが特定のトランザクションだけを参照したい場合は、`AleoNetworkClient` のメソッドで一意の ID を指定してトランザクションを直接照会できます。
 
-Transactions contain either deployments of new programs or executions of existing programs that change chain state. Each execution transaction contain one or more transitions that list all inputs and outputs of the executed functions including any records produced or futures created by functions with finalize statements.
+トランザクションには、新しいプログラムのデプロイまたは既存プログラムの実行が含まれ、これらがチェーン状態を変更します。各実行トランザクションには 1 つ以上のトランジションが含まれ、実行された関数の入力と出力（生成されたレコードやファイナライズを持つ関数が作成した Future など）が列挙されます。
 
-After a program function relevant to an app has been executed, it is often useful to query transaction objects to visualize, store, or use the state changes produced in the transaction within the app.  Each transaction has a unique ID with the `bech32` prefix at. When a transaction is executed and submitted by the deploy or execute methods of the `ProgramManager` or submitted manually via the `submitTransaction()` method of the `AleoNetworkClient`, the transaction ID is returned as a `string`.  This transaction ID can then be used to query the transaction data from the Aleo network.
-
-
+アプリに関連するプログラム関数が実行された後、そのトランザクションオブジェクトを照会して可視化・保存したり、トランザクションで生じた状態変化をアプリ内で利用したりすると便利です。各トランザクションには `bech32` プレフィックス `at` が付いた一意の ID があります。トランザクションを `ProgramManager` の deploy / execute メソッドで送信した場合や、`AleoNetworkClient` の `submitTransaction()` メソッドで手動送信した場合、このトランザクション ID が `string` として返されます。以後はこの ID を使って Aleo ネットワークからトランザクションデータを取得できます。
 
 ```typescript
 import { AleoNetworkClient, Transition } from '@provablehq/sdk';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get a transaction by id and get its inputs and outputs from the JSON representation.
+// トランザクション ID から取得し、JSON 表現から入力と出力を取り出します
 let jsonRecords = [];
 const transactionJSON = await networkClient.getTransaction('at1...');
 const transitions = transactionJSON["execution"]["transitions"];
 for (let i = 0; i < transitions.length; i++) {
     const transition = transitions[i];
-    // Get the records of an individual transition.
+    // 個々のトランジションに含まれるレコードを取得します
     const transitionRecords = transition["records"];
-    // Get the inputs of an individual transition.
+    // 個々のトランジションの入力を取得します
     const transitionInputs = transition["inputs"];
-    // Get the outputs of an individual transition.
+    // 個々のトランジションの出力を取得します
     const transitionOutputs = transition["outputs"];
-    // Record all records in the transaction.
+    // トランザクション内のレコードを収集します
     jsonRecords.push(transitionRecords);
 }
 ```
 
-The `AleoNetworkClient` also provides a method for transaction information back in the format of a WASM object. The WASM representation will provide the raw snarkVM object, which has several convenience methods for extracting the objects such as inputs, outputs, and records without the need for traditional JSON parsing. The choice of representation is up to the developer's personal preference in ergonomics.
+`AleoNetworkClient` には、トランザクション情報を WASM オブジェクトとして取得するメソッドも用意されています。WASM 表現では生の snarkVM オブジェクトを返すため、JSON をパースしなくても入力・出力・レコードなどを取り出す便利なメソッドが利用できます。どの表現を使うかは、開発者が扱いやすい方を選択してください。
 
 ```typescript
 import { AleoNetworkClient, Transition } from '@provablehq/sdk';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get a transaction by id and get its inputs and outputs from the Wasm representation.
+// トランザクション ID から取得し、Wasm 表現から入力と出力を取り出します
 const transactionWasm = await networkClient.getTransactionObject(`at1...`);
 const transitionsWasm = transactionWasm.transitions();
 for (let i = 0; i < transitionsWasm.length; i++) {
     const transition = transitionsWasm[i];
-    // Get the records of an individual transition.
+    // 個々のトランジションのレコードを取得します
     const transitionRecords = transition.records();
-    // Get the inputs of an individual transition.
+    // 個々のトランジションの入力を取得します
     const transitionInputs = transition.inputs();
-    // Get the outputs of an individual transition.
+    // 個々のトランジションの出力を取得します
     const transitionOutputs = transition.outputs();
 }
 
-// Get all records present in a transaction.
+// トランザクション内に存在するすべてのレコードを取得します
 const transactionRecords = transactionWasm.records();
 ```
 
-## Programs
-It is often key to use data both about a program's structure and it's internal data within apps. The AleoNetworkClient provides several methods to query and inspect programs on the Aleo Network.
+## プログラム
+アプリでは、プログラムの構造や内部データを参照する必要がある場面が頻繁にあります。AleoNetworkClient には、Aleo ネットワーク上のプログラムを照会・調査するためのメソッドがそろっています。
 
-### Querying Public Program State
-The public state of a program exists within its mappings. These mappings often contain information such as public balances, validator stake, token information and more. This information will often change from block to block, and at any given block it can be queried using the AleoNetworkClient.
+### プログラムの公開状態を取得する
+プログラムの公開状態はマッピングに保存されています。マッピングには公開残高、バリデーターのステーク量、トークン情報などが含まれることが多く、ブロックごとに更新される場合があります。任意のブロック時点の情報を AleoNetworkClient で取得できます。
 
-#### Querying Mappings
-The list of mappings within a program can be queried using the getProgramMappingNames method of the AleoNetworkClient:
+#### マッピングの照会
+プログラム内のマッピング一覧は、AleoNetworkClient の `getProgramMappingNames` メソッドで取得します。
 
 ```typescript
 import { AleoNetworkClient } from '@provablehq/sdk';
 import { deepStrictEqual } from 'assert';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get the list of program mappings in credits.aleo.
+// credits.aleo に存在するマッピング一覧を取得します
 const expectedMappings = [
     "committee",
     "delegated",
@@ -150,28 +147,27 @@ const creditsMappings = await networkClient.getProgramMappingNames("credits.aleo
 deepStrictEqual(creditsMappings, expectedMappings);
 ```
 
-To get the value from a mapping, one must know the type of the mapping's keys. When this is known, the `getMappingValue()` method can be used:
+マッピングの値を取得するには、キーの型を把握しておく必要があります。型が分かっていれば `getMappingValue()` メソッドを使用できます。
 
 ```typescript
 import { AleoNetworkClient } from '@provablehq/sdk';
 import { strictEqual } from 'assert';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-
-// Get the balance of an account in the `account` mapping in credits.aleo.
+// credits.aleo の `account` マッピングからアカウント残高を取得します
 const account = await networkClient.getProgramMappingValue("credits.aleo", "account", "aleo1q3vx8pet0h7739hx5xlekfxh9kus6qdlxhx9qdkxhh9rnva8q5gsskve3t");
 const expectedBalance = null;
 strictEqual(account, expectedBalance);
 ```
 
-Often the returned value from a mapping will be a struct or array. When returned as a string, this can be difficult to parse. The `AleoNetworkClient` provides a method to return the value as a WASM object called a `Plaintext`, which has several convenience methods for inspecting the returned value. The `toObject()` method can be used to convert the WASM object to a JavaScript object:
+マッピングから返される値が構造体や配列の場合、文字列のままでは扱いづらいことがあります。`AleoNetworkClient` には `Plaintext` と呼ばれる WASM オブジェクトとして値を返すメソッドがあり、便利なアクセサを使って中身を確認できます。`toObject()` メソッドを使えば WASM オブジェクトを JavaScript オブジェクトへ変換できます。
 
 ```typescript
 import { AleoNetworkClient } from '@provablehq/sdk';
 import {deepStrictEqual} from 'assert';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get a token value of the `registered_tokens` mapping in token_registry.aleo.
+// token_registry.aleo の `registered_tokens` マッピングからトークン情報を取得します
 const tokenStruct = await networkClient.getProgramMappingPlaintext("token_registry.aleo", "registered_tokens", "1381601714105276218895759962490543360839827276760458984912661726715051428034field");
 const tokenObject = tokenStruct.toObject();
 const expectedTokenObject = {
@@ -188,41 +184,42 @@ const expectedTokenObject = {
 
 deepStrictEqual(tokenObject,expectedTokenObject);
 ```
-### Querying Program Structure
-Apps often need to know information about a program's structure such as its source code, the functions it contains, function inputs and their types, and the mappings, records, and other programs it imports. The guide below shows how to query this information.
 
-#### Querying Program Source Code
-To get the source code of a program, the `AleoNetworkClient` provides a method to query the program by its unique ID.
+### プログラム構造の照会
+アプリでは、プログラムのソースコードや含まれる関数、関数の入力と型、マッピングやレコード、インポートしているプログラムなど、構造に関する情報が必要になることがあります。以下でその取得方法を紹介します。
+
+#### プログラムのソースコードを取得する
+プログラムのソースコードは `AleoNetworkClient` のメソッドでユニーク ID を指定して取得します。
 
 ```typescript
 import { AleoNetworkClient } from '@provablehq/sdk';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get the source code of credits.aleo.
+// credits.aleo のソースコードを取得します
 const credits = await networkClient.getProgram("credits.aleo");
-// Get the source code of token_registry.aleo.
+// token_registry.aleo のソースコードを取得します
 const token_registry = await networkClient.getProgram("token_registry.aleo");
 ```
 
-#### Querying Programs as Objects
-The snarkVM representation of a program can be queried from the Aleo network by its unique ID. The returned object representation has several convenience methods for extracting a list of program's functions, inputs and input types , mappings, records, and address. This is useful because this data is difficult to parse from the source code directly.
+#### プログラムをオブジェクトとして取得する
+プログラムの snarkVM 表現は、ユニーク ID を指定して Aleo ネットワークから取得できます。返されるオブジェクトには、関数一覧や入力・入力型、マッピング、レコード、アドレスなどを取り出す便利なメソッドが用意されています。ソースコードから直接解析する場合よりも扱いやすくなります。
 
 ```typescript
 import { AleoNetworkClient } from '@provablehq/sdk';
 import {deepStrictEqual} from 'assert';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get credits.aleo as a program object.
+// credits.aleo をプログラムオブジェクトとして取得します
 const credits_program = await networkClient.getProgramObject("credits.aleo");
 
-// Get all functions in the program.
+// プログラム内の全関数を取得します
 const functions = credits_program.getFunctions();
 
-// Get all inputs for the `transfer_private` function.
+// `transfer_private` 関数の入力を取得します
 const transfer_function_inputs = credits_program.getFunctionInputs("transfer_private");
 
-// Inputs will be an array of objects with the following structure, this an be used to build web forms or other UI 
-// elements. An example of an Aleo function input form can be seen at https://provable.tools/develop.
+// 入力は以下の構造を持つオブジェクト配列で、Web フォームなどの UI 要素を構築する際に活用できます。
+// Aleo 関数入力フォームの具体例は https://provable.tools/develop で確認できます。
 const expected_inputs = [
     {
       type:"record",
@@ -254,30 +251,30 @@ const expected_inputs = [
 ];
 deepStrictEqual(transfer_function_inputs, expected_inputs);
 
-// Get all mappings in the program.
+// プログラム内のすべてのマッピングを取得します
 const mappings = credits_program.getMappings();
 
-// Get all programs the program imports.
+// プログラムがインポートしているすべてのプログラムを取得します
 const records = credits_program.getImports()
 ```
 
-#### Querying Program Imports and Mappings
-The following example shows how to query the mappings within a program and the other programs it imports:
+#### プログラムのインポートとマッピングを取得する
+次の例では、プログラムがインポートしているプログラムと、内部に保持するマッピングを取得します。
 
 ```typescript
 import { AleoNetworkClient, Program } from '@provablehq/sdk';
 import {deepStrictEqual} from 'assert';
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 
-// Get the program's import names.
+// プログラムがインポートしているプログラム名を取得します
 const programImportsNames = await networkClient.getProgramImportNames("token_registry.aleo");
 const expectedImportsNames = ["credits.aleo"];
 deepStrictEqual(programImportsNames, expectedImportsNames);
 
-// Get the source code of all imported programs.
+// インポートしているプログラムのソースコードをすべて取得します
 const programImports = await networkClient.getProgramImports("token_registry.aleo");
 
-// Get the list of all program mappings.
+// プログラム内のマッピング一覧を取得します
 const programMappings = await networkClient.getProgramMappingNames("token_registry.aleo");
 const expectedMappings = [
     "registered_tokens",
@@ -289,5 +286,4 @@ const expectedMappings = [
 deepStrictEqual(programMappings, expectedMappings);
 ```
 
-A full list of methods provided by the `AleoNetworkClient` class and usage examples can be found in the
-[Network Client API documentation](../../sdk/api-specification/02_aleo_network_client.md).
+`AleoNetworkClient` クラスが提供するメソッドの一覧と使用例は、[Network Client API ドキュメント](../../sdk/api-specification/02_aleo_network_client.md) にまとめられています。

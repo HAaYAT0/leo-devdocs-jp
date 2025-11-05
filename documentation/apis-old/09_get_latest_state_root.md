@@ -1,7 +1,7 @@
 ---
 id: get_latest_state_root
-title: Get Latest State Root
-sidebar_label: Get Latest State Root
+title: 最新のステートルートを取得
+sidebar_label: 最新のステートルートを取得
 ---
 
 ```bash title=ENDPOINT
@@ -12,14 +12,13 @@ GET /{network}/stateRoot/latest
 GET /{network}/latest/stateRoot
 ```
 
-Returns the latest state root.
+最新のステートルートを返します。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
-| Parameter |                 Type                  |      Description      |
+### レスポンス
+| パラメーター |                 型                  |      説明      |
 |:---------:|:-------------------------------------:|:---------------------:|
-| `result`  | [string](../concepts/fundamentals/05_blocks.md) | The latest state root |
-
+| `result`  | [string](../concepts/fundamentals/05_blocks.md) | 最新のステートルート |

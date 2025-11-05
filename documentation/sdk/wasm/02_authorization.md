@@ -1,23 +1,23 @@
 ---
-title: Authorization
-sidebar_label: Authorization
+title: 承認
+sidebar_label: 承認
 ---
 
 <a name="Authorization"></a>
 
-## Overview
+## 概要
 
-<p>Authorization object containing the authorization for a transaction. This class provides methods for creating, manipulating, and querying authorization objects that are used in Aleo transactions to authorize program executions.</p>
+<p>Authorization オブジェクトはトランザクションの承認情報を保持します。このクラスは、Aleo トランザクションでプログラム実行を承認するために使用される Authorization オブジェクトを生成・操作・照会するためのメソッドを提供します。</p>
 
 
 
-## Methods
+## メソッド
 
 <a name="Authorization.new"></a>
 
 ### new
 
-<p>Create a new authorization from a request object</p>
+<p>リクエストオブジェクトから新しい Authorization を作成します。</p>
 
 ```javascript
 new(request) ► Authorization
@@ -25,9 +25,9 @@ new(request) ► Authorization
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| request | <code>ExecutionRequest</code> | The ExecutionRequest to build the authorization from |
+| request | <code>ExecutionRequest</code> | Authorization の元となる ExecutionRequest |
 | *return* | <code>Authorization</code> |
 
 ---
@@ -36,7 +36,7 @@ new(request) ► Authorization
 
 ### replicate
 
-<p>Returns a new and independent replica of the Authorization</p>
+<p>Authorization の内容を複製し、新しい独立したインスタンスを返します。</p>
 
 ```javascript
 replicate() ► Authorization
@@ -44,7 +44,7 @@ replicate() ► Authorization
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Authorization</code> |
 
@@ -54,7 +54,7 @@ replicate() ► Authorization
 
 ### toString
 
-<p>Returns the string representation of the Authorization</p>
+<p>Authorization の文字列表現を返します。</p>
 
 ```javascript
 toString() ► string
@@ -62,7 +62,7 @@ toString() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>string</code> |
 
@@ -72,7 +72,7 @@ toString() ► string
 
 ### fromString
 
-<p>Reconstructs an Authorization object from its string representation</p>
+<p>文字列表現から Authorization オブジェクトを再構築します。</p>
 
 ```javascript
 fromString(authorization) ► Authorization
@@ -80,9 +80,9 @@ fromString(authorization) ► Authorization
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| authorization | <code>String</code> | The string representation of the Authorization |
+| authorization | <code>String</code> | Authorization の文字列表現 |
 | *return* | <code>Authorization</code> |
 
 ---
@@ -91,7 +91,7 @@ fromString(authorization) ► Authorization
 
 ### toBytesLe
 
-<p>Returns the left-endian byte representation of the Authorization</p>
+<p>Authorization のリトルエンディアンのバイト表現を返します。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
@@ -99,7 +99,7 @@ toBytesLe() ► Uint8Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -109,7 +109,7 @@ toBytesLe() ► Uint8Array
 
 ### fromBytesLe
 
-<p>Creates an authorization object from a left-endian byte representation of an Authorization</p>
+<p>Authorization のリトルエンディアンのバイト表現から Authorization オブジェクトを生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Authorization
@@ -117,9 +117,9 @@ fromBytesLe(bytes) ► Authorization
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | Left-endian bytes representing the Authorization |
+| bytes | <code>Uint8Array</code> | Authorization を表すリトルエンディアンのバイト列 |
 | *return* | <code>Authorization</code> |
 
 ---
@@ -128,7 +128,7 @@ fromBytesLe(bytes) ► Authorization
 
 ### equals
 
-<p>Check if an Authorization object is the same as another</p>
+<p>2 つの Authorization オブジェクトが同一かどうかを判定します。</p>
 
 ```javascript
 equals(other) ► boolean
@@ -136,9 +136,9 @@ equals(other) ► boolean
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| other | <code>Authorization</code> | The Authorization object to determine equality with |
+| other | <code>Authorization</code> | 比較対象の Authorization オブジェクト |
 | *return* | <code>boolean</code> |
 
 ---
@@ -147,7 +147,7 @@ equals(other) ► boolean
 
 ### len
 
-<p>Returns the number of Requests in the Authorization</p>
+<p>Authorization に含まれるリクエストの数を返します。</p>
 
 ```javascript
 len() ► number
@@ -155,7 +155,7 @@ len() ► number
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>number</code> |
 
@@ -165,7 +165,7 @@ len() ► number
 
 ### isEmpty
 
-<p>Return true if the Authorization is empty</p>
+<p>Authorization が空であれば true を返します。</p>
 
 ```javascript
 isEmpty() ► boolean
@@ -173,7 +173,7 @@ isEmpty() ► boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>boolean</code> |
 
@@ -183,7 +183,7 @@ isEmpty() ► boolean
 
 ### isFeePrivate
 
-<p>Returns true if the Authorization is for credits.aleo/fee_private</p>
+<p>Authorization が credits.aleo/fee_private を対象としている場合に true を返します。</p>
 
 ```javascript
 isFeePrivate() ► boolean
@@ -191,7 +191,7 @@ isFeePrivate() ► boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>boolean</code> |
 
@@ -201,7 +201,7 @@ isFeePrivate() ► boolean
 
 ### isFeePublic
 
-<p>Returns true if the Authorization is for credits.aleo/fee_public</p>
+<p>Authorization が credits.aleo/fee_public を対象としている場合に true を返します。</p>
 
 ```javascript
 isFeePublic() ► boolean
@@ -209,7 +209,7 @@ isFeePublic() ► boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>boolean</code> |
 
@@ -219,7 +219,7 @@ isFeePublic() ► boolean
 
 ### isSplit
 
-<p>Returns true if the Authorization is for credits.aleo/split</p>
+<p>Authorization が credits.aleo/split を対象としている場合に true を返します。</p>
 
 ```javascript
 isSplit() ► boolean
@@ -227,7 +227,7 @@ isSplit() ► boolean
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>boolean</code> |
 
@@ -237,7 +237,7 @@ isSplit() ► boolean
 
 ### insertTransition
 
-<p>Insert a transition into the Authorization</p>
+<p>Authorization にトランジションを追加します。</p>
 
 ```javascript
 insertTransition(transition) ► void
@@ -245,9 +245,9 @@ insertTransition(transition) ► void
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| transition | <code>Transition</code> | The transition object to insert into the Authorization |
+| transition | <code>Transition</code> | Authorization に追加するトランジション |
 | *return* | <code>void</code> |
 
 ---
@@ -256,7 +256,7 @@ insertTransition(transition) ► void
 
 ### transitions
 
-<p>Get the transitions in an Authorization</p>
+<p>Authorization 内のトランジション一覧を取得します。</p>
 
 ```javascript
 transitions() ► Array.<Transition>
@@ -264,9 +264,9 @@ transitions() ► Array.<Transition>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Array.&lt;Transition&gt;</code> | Array of transition objects |
+| *return* | <code>Array.&lt;Transition&gt;</code> | トランジションオブジェクトの配列 |
 
 ---
 
@@ -274,7 +274,7 @@ transitions() ► Array.<Transition>
 
 ### toExecutionId
 
-<p>Returns the execution ID for the Authorization</p>
+<p>Authorization の実行 ID を返します。</p>
 
 ```javascript
 toExecutionId() ► Field
@@ -282,8 +282,8 @@ toExecutionId() ► Field
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Field</code> | The execution ID for the Authorization, call toString() after this result to get the string representation |
+| *return* | <code>Field</code> | Authorization の実行 ID。文字列表現が必要な場合は戻り値に対して toString() を呼び出してください |
 
 ---

@@ -1,44 +1,42 @@
 ---
 id: snarkvm_contribute
-title: SnarkVM Contribution
-sidebar_label: SnarkVM Contribution
+title: SnarkVM への貢献
+sidebar_label: SnarkVM への貢献
 ---
-This guide details the steps required to update snarkVM and propagate these changes to the Aleo network.
+このガイドでは、snarkVM を更新し、その変更を Aleo ネットワークに反映させるまでの手順を説明します。
 
-## Branches Overview
-[**staging branch**](https://github.com/AleoNet/snarkVM)
-- This branch acts as a staging environment for integrating and initially testing changes before they are promoted to the mainnet branch.
+## ブランチの概要
+[**staging ブランチ**](https://github.com/AleoNet/snarkVM)
+- mainnet ブランチに昇格させる前に、変更を統合し初期テストを行うステージング環境です。
 
-[**mainnet branch**](https://github.com/AleoNet/snarkVM/tree/mainnet)
-- This is the production branch where only stable and thoroughly tested changes are merged. It directly mirrors the staging branch after changes are validated. It is used to create production releases.
+[**mainnet ブランチ**](https://github.com/AleoNet/snarkVM/tree/mainnet)
+- 安定性が確認された変更のみをマージする本番ブランチです。検証済みの変更を staging から直接ミラーし、プロダクションリリースの作成に利用します。
 
-## Implications of a snarkVM Pull Request (PR)
-- When a new PR is merged into staging for snarkVM, snarkOS must also be updated to reflect the updated snarkVM dependency. This requires a separate PR for snarkOS, ensuring all checks are passed as specified in the snarkOS contribution guide.
-- In some cases, a snarkVM PR may have a corresponding "sister PR" in snarkOS, necessary for the successful compilation of snarkOS. Always check for the term "sister PR" in the PR README.
+## snarkVM Pull Request (PR) が与える影響
+- snarkVM の staging に新しい PR がマージされると、snarkOS の依存関係も更新する必要があります。そのためには snarkOS 向けに別の PR を作成し、snarkOS 貢献ガイドで定められたチェックをすべて通過させます。
+- 場合によっては、snarkOS のコンパイルを成功させるために snarkOS 側に「姉妹 PR」が必要になることがあります。PR の README に "sister PR" という記載がないか必ず確認してください。
 
-## Review and Merge Process for snarkVM PRs
-**1. Review snarkVM PRs:**
-- Carefully review PRs for snarkVM, considering their status and any comments.  
+## snarkVM PR のレビューとマージ手順
+**1. snarkVM PR をレビューする**  
+PR のステータスやコメントを確認しながら、内容を丁寧にレビューします。  
 
-**2. Run CI on snarkVM PRs:**
-- Execute Continuous Integration (CI) to validate the reviewed PRs.  
+**2. snarkVM PR の CI を実行する**  
+レビューした PR で CI（継続的インテグレーション）を実行し、問題がないか検証します。  
 
-**3. Checkout and Push snarkVM Branch:**
-- Checkout the relevant snarkVM branch and push it to the repository.  
+**3. snarkVM ブランチをチェックアウトしてプッシュする**  
+対象の snarkVM ブランチをチェックアウトし、リポジトリへプッシュします。  
 
-**4. Merge snarkVM PRs:**
-- Merge the reviewed and approved snarkVM PRs.  
+**4. snarkVM PR をマージする**  
+レビューと CI が完了したら、snarkVM の PR をマージします。  
 
-## Genesis Block and Parameter Re-generation
-- Re-generate Genesis Block and Parameters:
-  - To determine if parameters need re-generation and uploading, run the scripts located in snarkVM/parameters/scripts/.
-  - After running the scripts, execute git status. If no changes (git diff) are detected, there is no need to upload anything new.
-  - First-Time Parameters CDN Use:
-    - If this is the first time using the parameters CDN, also upload the .usrs files. These files are fixed and won't show any changes in git diff, but they must be present in the parameters CDN.
-  - Resample Genesis Block:
-    - You may need to resample the genesis block using the snarkup tool.
+## ジェネシスブロックとパラメータの再生成
+- ジェネシスブロックとパラメータの再生成:
+  - パラメータの再生成とアップロードが必要か判断するには、`snarkVM/parameters/scripts/` 配下のスクリプトを実行します。
+  - スクリプト実行後に `git status` を実行してください。差分がなければ新しいアップロードは不要です。
+  - 初めてパラメータ CDN を利用する場合は `.usrs` ファイルもアップロードしてください。これらは固定のファイルで `git diff` には表示されませんが、CDN には必ず存在している必要があります。
+  - 必要に応じて snarkup ツールを使い、ジェネシスブロックを再サンプリングします。
 
-## Update snarkOS to Reference the Latest snarkVM Commit
-- Create a snarkOS PR:
-  - Create a PR for snarkOS that updates the Cargo.toml and Cargo.lock files to point to the latest snarkVM commit hash.
-  - Follow the procedures outlined in the snarkOS contribution guide to ensure proper integration.
+## snarkOS を最新の snarkVM コミットに更新する
+- snarkOS の PR を作成する:
+  - snarkOS の `Cargo.toml` と `Cargo.lock` を更新し、最新の snarkVM コミットハッシュを参照するようにします。
+  - 適切に統合するため、snarkOS 貢献ガイドで説明されている手順に従ってください。

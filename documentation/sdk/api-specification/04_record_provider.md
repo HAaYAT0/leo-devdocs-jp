@@ -1,15 +1,14 @@
 ---
 id: record_provider
-title: Record Provider
-sidebar_label: Record Provider
+title: レコードプロバイダー
+sidebar_label: レコードプロバイダー
 ---
 
-## Overview
+## 概要
 
-A record provider implementation that uses the official Aleo API to find records for usage in program execution and
-deployment, wallet functionality, and other use cases.
+プログラムの実行やデプロイ、ウォレット機能などで利用するレコードを検索するために、Aleo 公式 API を利用するレコードプロバイダー実装です。
 
-**Kind**: global class  
+**種類**: グローバルクラス  
 
 * [NetworkRecordProvider](#networkrecordprovider)
     * _instance_
@@ -29,14 +28,14 @@ deployment, wallet functionality, and other use cases.
 new NetworkRecordProvider(account, networkClient)
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| account | <code>Account</code> | The account to use for searching for records |
-| networkClient | <code>AleoNetworkClient</code> | The network client to use for API calls |
+| account | <code>Account</code> | レコード検索に使用するアカウント |
+| networkClient | <code>AleoNetworkClient</code> | API 呼び出しに使用するネットワーククライアント |
 
 **Example**  
 ```js
-// Create a new NetworkRecordProvider
+// 新しい NetworkRecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const account = new Account();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
@@ -46,19 +45,19 @@ const recordProvider = new NetworkRecordProvider(account, networkClient);
 
 ### setAccount
 
-Set the account used to search for records
+レコード検索に使用するアカウントを設定します。
 
 ```javascript
 setAccount(account)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__account__ | Account | *The account to use for searching for records*
+__account__ | Account | *レコード検索に使用するアカウント*
 
 **Example**
 ```javascript
-// Set a new account for the record provider
+// レコードプロバイダーに新しいアカウントを設定します
 const newAccount = new Account();
 recordProvider.setAccount(newAccount);
 ```
@@ -67,36 +66,36 @@ recordProvider.setAccount(newAccount);
 
 ### findCreditsRecords
 
-Find a list of credit records with a given number of microcredits by via the official Aleo API
+指定したマイクロクレジット量のクレジットレコードを、Aleo 公式 API を通じて複数件検索します。
 
 ```javascript
 findCreditsRecords(microcredits, unspent, nonces, searchParameters)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__microcredits__ | `Array.<number>` | *The number of microcredits to search for*
-__unspent__ | `boolean` | *Whether or not the record is unspent*
-__nonces__ | `Array.<string>` | *Nonces of records already found so that they are not found again*
-__searchParameters__ | `RecordSearchParams` | *Additional parameters to search for*
-__*return*__ | `Promise.<RecordPlaintext>` | *The record if found, otherwise an error*
+__microcredits__ | `Array.<number>` | *検索するマイクロクレジット量*
+__unspent__ | `boolean` | *レコードが未使用かどうか*
+__nonces__ | `Array.<string>` | *再取得を防ぐために、既に見つかったレコードのノンスを指定します*
+__searchParameters__ | `RecordSearchParams` | *追加の検索パラメーター*
+__*return*__ | `Promise.<RecordPlaintext>` | *レコードが見つかった場合はレコード、そうでない場合はエラー*
 
 **Example**
 ```javascript
-// Create a new NetworkRecordProvider
+// 新しい NetworkRecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// The record provider can be used to find records with a given number of microcredits
+// レコードプロバイダーを使って、指定したマイクロクレジット量のレコードを検索します
 const record = await recordProvider.findCreditsRecord(5000, true, []);
 
-// When a record is found but not yet used, it's nonce should be added to the nonces parameter so that it is not
-// found again if a subsequent search is performed
+// レコードが見つかりまだ使用していない場合、nonces パラメーターにノンスを追加して
+// 次回の検索で再取得されないようにします
 const records = await recordProvider.findCreditsRecords(5000, true, [record.nonce()]);
 
-// When the program manager is initialized with the record provider it will be used to find automatically find
-// fee records and amount records for value transfers so that they do not need to be specified manually
+// ProgramManager にレコードプロバイダーを設定すると、
+// 手数料レコードや送金額のレコードを自動的に検索するため、手動で指定する必要がなくなります
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwnjvggqcad0at", "public", 0.5);
 ```
@@ -105,36 +104,36 @@ programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwn
 
 ### findCreditsRecord
 
-Find a credit record with a given number of microcredits by via the official Aleo API
+指定したマイクロクレジット量のクレジットレコードを、Aleo 公式 API を通じて 1 件検索します。
 
 ```javascript
 findCreditsRecord(microcredits, unspent, nonces, searchParameters)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__microcredits__ | `number` | *The number of microcredits to search for*
-__unspent__ | `boolean` | *Whether or not the record is unspent*
-__nonces__ | `Array.<string>` | *Nonces of records already found so that they are not found again*
-__searchParameters__ | `RecordSearchParams` | *Additional parameters to search for*
-__*return*__ | `Promise.<RecordPlaintext>` | *The record if found, otherwise an error*
+__microcredits__ | `number` | *検索するマイクロクレジット量*
+__unspent__ | `boolean` | *レコードが未使用かどうか*
+__nonces__ | `Array.<string>` | *再取得を防ぐため、既に見つかったレコードのノンス*
+__searchParameters__ | `RecordSearchParams` | *追加の検索パラメーター*
+__*return*__ | `Promise.<RecordPlaintext>` | *レコードが見つかった場合はレコード、そうでない場合はエラー*
 
 **Example**
 ```javascript
-// Create a new NetworkRecordProvider
+// 新しい NetworkRecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const keyProvider = new AleoKeyProvider();
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// The record provider can be used to find records with a given number of microcredits
+// レコードプロバイダーを使って、指定したマイクロクレジット量のレコードを検索します
 const record = await recordProvider.findCreditsRecord(5000, true, []);
 
-// When a record is found but not yet used, it's nonce should be added to the nonces parameter so that it is not
-// found again if a subsequent search is performed
+// レコードが見つかりまだ使用していない場合、nonces パラメーターにノンスを追加して
+// 次回の検索で再取得されないようにします
 const records = await recordProvider.findCreditsRecords(5000, true, [record.nonce()]);
 
-// When the program manager is initialized with the record provider it will be used to find automatically find
-// fee records and amount records for value transfers so that they do not need to be specified manually
+// ProgramManager にレコードプロバイダーを設定すると、
+// 手数料レコードや送金額のレコードを自動的に検索するため、手動で指定する必要がなくなります
 const programManager = new ProgramManager("https://api.explorer.provable.com/v1", keyProvider, recordProvider);
 programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwnjvggqcad0at", "public", 0.5);
 ```
@@ -143,26 +142,26 @@ programManager.transfer(1, "aleo166q6ww6688cug7qxwe7nhctjpymydwzy2h7rscfmatqmfwn
 
 ### findRecord
 
-Find an arbitrary record. WARNING: This function is not implemented yet and will throw an error.
+任意のレコードを検索します。警告: この関数はまだ実装されていないため、エラーを投げます。
 
 ```javascript
 findRecord(unspent, nonces, searchParameters)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__unspent__ | `boolean` | *Whether or not the record is unspent*
-__nonces__ | `Array.<string>` | *Nonces of records already found so that they are not found again*
-__searchParameters__ | `RecordSearchParams` | *Additional parameters to search for*
-__*return*__ | `Promise.<RecordPlaintext>` | *The record if found, otherwise an error*
+__unspent__ | `boolean` | *レコードが未使用かどうか*
+__nonces__ | `Array.<string>` | *再取得を防ぐための既存レコードのノンス*
+__searchParameters__ | `RecordSearchParams` | *追加の検索パラメーター*
+__*return*__ | `Promise.<RecordPlaintext>` | *レコードが見つかった場合はレコード、そうでない場合はエラー*
 
 **Example**
 ```javascript
-// Create a new NetworkRecordProvider
+// 新しい NetworkRecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Find an arbitrary record (not yet implemented)
+// 任意のレコードを検索します（未実装）
 try {
     const record = await recordProvider.findRecord(true, [], null);
 } catch (error) {
@@ -174,26 +173,26 @@ try {
 
 ### findRecords
 
-Find multiple records from a specified program.
+指定したプログラムから複数のレコードを検索します。
 
 ```javascript
 findRecords(unspent, nonces, searchParameters)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__unspent__ | `boolean` | *Whether or not the records are unspent*
-__nonces__ | `Array.<string>` | *Nonces of records already found so that they are not found again*
-__searchParameters__ | `RecordSearchParams` | *Additional parameters to search for*
-__*return*__ | `Promise.<Array.<RecordPlaintext>>` | *Array of records if found, otherwise an error*
+__unspent__ | `boolean` | *レコードが未使用かどうか*
+__nonces__ | `Array.<string>` | *再取得を避けるための既存レコードのノンス*
+__searchParameters__ | `RecordSearchParams` | *追加の検索パラメーター*
+__*return*__ | `Promise.<Array.<RecordPlaintext>>` | *レコードが見つかった場合はレコード配列、そうでない場合はエラー*
 
 **Example**
 ```javascript
-// Create a new NetworkRecordProvider
+// 新しい NetworkRecordProvider を作成します
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const recordProvider = new NetworkRecordProvider(account, networkClient);
 
-// Find multiple records from a specified program
+// 指定したプログラムから複数のレコードを検索します
 const records = await recordProvider.findRecords(true, [], null);
 ```
 

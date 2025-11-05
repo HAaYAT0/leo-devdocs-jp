@@ -1,32 +1,32 @@
 ---
 id: get_program
-title: Get Program
-sidebar_label: Get Program
+title: プログラムを取得
+sidebar_label: プログラムを取得
 ---
 
 ```bash title=ENDPOINT
-# Get program without edition (uses latest edition)
+# エディション指定なしでプログラムを取得（最新エディションを使用）
 GET /{network}/program/{programID}
 
-# Get program with specific edition
+# 特定のエディションでプログラムを取得
 GET /{network}/program/{programID}/{edition}
 
-# Get program with specific edition and include metadata
+# 特定のエディションのプログラムにメタデータを含める
 GET /{network}/program/{programID}/{edition}?metadata=true
 ```
 
-Returns the program for the given program ID.
+指定したプログラム ID に対応するプログラムを返します。
 
-### Arguments
+### 引数
 
-| Parameter   |  Type  | Required | Description                             |
+| パラメーター   |  型  | 必須 | 説明                             |
 |:------------|:------:|:--------:|:----------------------------------------|
-| `programID` | string |   Yes    | The program id of the requested program |
-| `edition`   | integer|   Yes    | The program edition                     |
-| `metadata`  | boolean|    No     | Include program metadata in response    |
+| `programID` | string |   Yes    | 取得したいプログラムの program ID |
+| `edition`   | integer|   Yes    | プログラムのエディション                     |
+| `metadata`  | boolean|    No     | レスポンスにプログラムのメタデータを含めます    |
 
-### Response
+### レスポンス
 
-| Parameter |                  Type                   |      Description      |
+| パラメーター |                  型                   |      説明      |
 |:---------:|:---------------------------------------:|:---------------------:|
-| `result`  | [object](../concepts/fundamentals/01_programs.md) | The requested program |
+| `result`  | [object](../concepts/fundamentals/01_programs.md) | 要求されたプログラム |

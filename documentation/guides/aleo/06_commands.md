@@ -1,12 +1,12 @@
 ---
 id: commands
-title: The snarkVM Command Line Interface
-sidebar_label: Commands
+title: snarkVM コマンドラインインターフェース
+sidebar_label: コマンド
 ---
 
-# List of Commands
+## コマンド一覧
 :::tip
-You can print the list of commands by running `snarkvm --help`
+`snarkvm --help` を実行するとコマンド一覧を表示できます。
 :::
 
 * [snarkvm new](#aleo-new)
@@ -19,101 +19,100 @@ You can print the list of commands by running `snarkvm --help`
 [//]: # (5. [aleo node]&#40;#5-aleo-node&#41;)
 [//]: # (5. [aleo deploy]&#40;#6-aleo-deploy&#41;)
 
-The Aleo private key, view key, and address will be printed to console.
-See [`concepts/accounts`](../../concepts/fundamentals/00_accounts.md) for more information.
+Aleo のプライベートキー、ビューキー、アドレスがコンソールに出力されます。  
+詳しくは [`concepts/accounts`](../../concepts/fundamentals/00_accounts.md) を参照してください。
 
 ## `snarkvm new` {#aleo-new}
 
-To create a new package, run:
+新しいパッケージを作成するには次を実行します。
 ```bash
 snarkvm new {$NAME}
 ```
 
-Valid package names are snake_case: lowercase letters and numbers separated by underscore.
-This command will create a new directory with the given package name.
-The new package will have a directory structure as follows:
+有効なパッケージ名は snake_case で、英小文字と数字をアンダースコアで区切った形式です。  
+このコマンドは指定したパッケージ名のディレクトリを作成し、以下のような構造を生成します。
 
 ```bash
 package-name/
-├── program.json # Your program manifest
-├── README.md # Your program description
-└── main.leo # Your program file
+├── program.json # プログラムのマニフェスト
+├── README.md # プログラムの説明
+└── main.leo # プログラム本体
 ```
 
 ## `snarkvm build` {#aleo-build}
 :::info
-This command is deprecated as of snarkVM `v0.14.5`. It will be removed in a future release.
+このコマンドは snarkVM `v0.14.5` で非推奨になりました。今後のリリースで削除される予定です。
 :::
-To compile your program and verify that it builds properly, run:
+プログラムをコンパイルして正常にビルドできるか確認するには次を実行します。
 ```bash
 snarkvm build
 ```
 
-To compile your program in offline mode run:
+オフラインモードでコンパイルするには次を実行します。
 ```bash
 snarkvm build --offline
 ```
 
 ## `snarkvm run` {#aleo-run}
 
-To run your Aleo program function run:
+Aleo プログラムの関数を実行するには次を実行します。
 ```bash
 snarkvm run {$FUNCTION} {$INPUTS}
 
-// Example
+// 例
 snarkvm run hello 2u32 3u32
 ```
 
-To run your Aleo program function in offline mode run:
+オフラインモードで関数を実行するには次を実行します。
 ```bash
 snarkvm run {$FUNCTION} {$INPUTS} --offline
 ```
 
-To run your Aleo program function to a specified endpoint run:
+特定のエンドポイントに対して関数を実行するには次を実行します。
 ```bash
 snarkvm run {$FUNCTION} {$INPUTS} --endpoint {$ENDPOINT}
 ```
 
 ## `snarkvm execute` {#aleo-execute}
 
-To execute your Aleo program function run:
+Aleo プログラムの関数を実行（execute）するには次を実行します。
 ```bash
 snarkvm execute {$FUNCTION} {$INPUTS}
 
-// Example
+// 例
 snarkvm run hello 2u32 3u32
 ```
 
-To execute your Aleo program function in offline mode run:
+オフラインモードで実行するには次を実行します。
 ```bash
 snarkvm execute {$FUNCTION} {$INPUTS} --offline
 ```
 
-To execute your Aleo program function to a specified endpoint run:
+特定のエンドポイントに対して実行するには次を実行します。
 ```bash
 snarkvm execute {$FUNCTION} {$INPUTS} --endpoint {$ENDPOINT}
 ```
 
 ## `snarkvm clean` {#aleo-clean}
 
-To clean the Aleo package build directory run:
+Aleo パッケージのビルドディレクトリをクリーンアップするには次を実行します。
 ```bash
 snarkvm clean
 ```
 
 ## `snarkvm update` {#aleo-update}
 
-To update snarkVM to the latest version run:
+snarkVM を最新バージョンに更新するには次を実行します。
 ```
 snarkvm update
 ```
 
-To list the available versions of Aleo run:
+Aleo の利用可能なバージョンを一覧表示するには次を実行します。
 ```
 snarkvm update --list
 ```
 
-To update snarkVM and suppress outputs to terminal run:
+snarkVM を更新しつつターミナルへの出力を抑制するには次を実行します。
 ```
 snarkvm update --quiet
 ```

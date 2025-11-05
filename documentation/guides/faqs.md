@@ -1,130 +1,126 @@
 ---
 id: faqs
-title: FAQs
-sidebar_label: FAQs
---- 
-## Do applications in Aleo function similarly to ZK rollups?  
+title: よくある質問 (FAQ)
+sidebar_label: FAQ
+---
 
-Differences between Aleo applications and ZK rollups:
+## Aleo のアプリケーションは ZK ロールアップと同じように動作しますか？
 
-| Aspect | ZK Rollup | Aleo Application |
+ZK ロールアップと Aleo アプリケーションの違いは次のとおりです。
+
+| 観点 | ZK ロールアップ | Aleo アプリケーション |
 |--------|-----------|-------------------|
-| Information visibility | All **information is public** | Can make some inputs private, using the **zero-knowledge** property of **zk**SNARK |
-| Proof generation | Rollup coordinator generates the proof and submits it in the rollup-transaction | Users generate the proof themselves and submit it as part of the transaction |
-| Batching | Batches multiple transactions | Can batch multiple transitions into the same **transaction** |
-| zkSNARK usage | Uses the **succinct** property to prove correct execution of a batch of transactions | Can use rollup-like architecture with added privacy features |
+| 情報の可視性 | すべての**情報が公開**される | **zk**SNARK の**ゼロ知識**性を利用し、一部の入力を秘匿にできる |
+| 証明の作成 | ロールアップコーディネーターが証明を生成し、ロールアップトランザクションで提出する | ユーザー自身が証明を生成し、トランザクションとともに提出する |
+| バッチ処理 | 複数のトランザクションをまとめる | 1 つの**トランザクション**に複数のトランジションをまとめられる |
+| zkSNARK の使い方 | **簡潔性**を活用してバッチの正当性を証明する | プライバシー機能を追加したロールアップ風の構成を利用できる |
 
-Similar to batching multiple transactions in a zk-rollup, Aleo has a way to batch multiple **transitions** into the same **transaction**.
+ZK ロールアップで複数トランザクションをまとめられるのと同様に、Aleo でも 1 本の**トランザクション**に複数の**トランジション**をまとめる方法があります。
 
-## How does the network of provers work, including their incentives and the consensus mechanism?
+## 証明者ネットワークの仕組み、インセンティブ、コンセンサスはどのようになっていますか？
 
-Aleo is SNARK-based and uses the Marlin-proving algorithm to generate program proofs. The cryptography and proof generation are handled by SnarkVM. Aleo program proofs can currently be generated locally by the user or delegated to a third-party prover. These involve tradeoffs between performance and privacy:  
+Aleo は SNARK を基盤としており、Marlin 証明アルゴリズムでプログラム証明を生成します。暗号処理と証明生成は SnarkVM が担います。Aleo のプログラム証明は、利用者自身がローカルで生成することも、専門ハードウェアを備えた第三者の証明者に委任することもできます。どちらにも性能とプライバシーのトレードオフがあります。  
 
 ![tradeoff](./images/tradeoff.png)
 
-Local proof generating is the most trust-minimized solution since it doesn’t require sharing private inputs with anyone else. However, the performance is limited to your hardware.  
+ローカルで証明を生成する方法は、秘密入力を他者と共有する必要がなく、最も信頼最小化された手段です。ただし性能は自分のマシン性能に依存します。  
 
-For more complex proofs - users can/may delegate to third-party provers with specialized hardware. While outsourcing proof generation leads to better performance, it sacrifices privacy as users need to share some data used in the computation to enable the prover to compute the zero-knowledge proof.  
+複雑な証明が必要な場合、ユーザーは専用ハードウェアを持つ第三者に証明生成を委任できます。アウトソーシングによって性能は向上しますが、ゼロ知識証明を計算してもらうために一部データを共有する必要があるため、プライバシーは低下します。  
 
-In the Aleo Network, provers use specialized hardware to generate proofs and solve puzzles that help secure the Network. They generate proofs for a given block and earn pro rata portions of the coinbase reward (a subset of the total block reward) based on how many above-target proofs they submit. Talking about the network and reward share among the provers:  
+Aleo ネットワークでは、証明者が専用ハードウェアで証明を生成し、ネットワークを保護するパズルを解きます。各ブロックに対して証明を生成し、目標難易度を超える証明を提出した数に応じて、コインベース報酬（ブロック報酬の一部）を按分で受け取ります。報酬配分に関する補足は次のとおりです。  
 
-> Proof difficulties are set by a version of the algorithm created by the Bitcoin Cash team called ASERT. When a proof exceeds the current difficulty limit, a coinbase reward is shared among all provers who contributed. The computational work done by provers includes Multi-Scalar multiplication and fast-Fourier transforms.
+> 証明の難易度は、Bitcoin Cash チームが開発した ASERT アルゴリズムを基に設定されています。証明が現在の難易度を上回った場合、そのブロックに貢献したすべての証明者でコインベース報酬を分配します。証明者が行う計算処理には、多重スカラー乗算や高速フーリエ変換などが含まれます。
 
-## How do Aleo Credits work?
+## Aleo Credits はどのように機能しますか？
 
-Aleo Credits are used in two main ways:
+Aleo Credits には主に 2 つの用途があります。
 
-1. Secure the network:  Validators stake Aleo Credits to propose blocks and secure the network, and receive Aleo Credits as a reward for validation. This is standard for PoS blockchains.
-2. Purchase zero-knowledge compute: Applications that need zkSNARK-proving use Aleo credits to pay provers to generate the proofs.
+1. **ネットワークの保護:** バリデータは Aleo Credits をステークしてブロック提案とネットワーク保護を行い、検証報酬として Aleo Credits を受け取ります。これは PoS ブロックチェーンで一般的な仕組みです。
+2. **ゼロ知識計算の購入:** zkSNARK 証明が必要なアプリケーションは、証明生成を依頼する証明者に Aleo Credits で報酬を支払います。
 
-## How does Proof of Succint Work (PoSW) operate for provers in Aleo?
-Proof of Succinct Work (PoSW) in Aleo is an incentive mechanism designed to drive hardware acceleration for zero‐knowledge proof (ZKP) generation. At its core, PoSW challenges provers with a cryptographic puzzle—known as the Coinbase puzzle—which directs them to execute critical computations (such as multi‐scalar multiplications and fast Fourier transforms) that underpin zkSNARK operations. Provers DO NOT produce blocks, but they do earn a portion of the coinbase reward from each block. The coinbase reward is not winner-take-all; all the provers who contribute solutions for a given block above the minimum difficulty target receive a pro-rata portion of the reward.
+## Aleo における PoSW (Proof of Succinct Work) はどのように動作しますか？
 
-As the Coinbase puzzle gradually becomes more difficult over time, provers must continuously upgrade their hardware and refine their proving techniques in order to solve increasingly tougher puzzles. This evolving difficulty not only promotes ongoing innovation but also ensures that all participating provers, regardless of whether they are the fastest, receive proportionate rewards per block. In essence, PoSW transforms the proving process into a decentralized, competitive ecosystem akin to a mining pool, where the collective effort drives both performance improvements and cost reductions.
+Proof of Succinct Work (PoSW) は、ゼロ知識証明 (ZKP) 生成のハードウェア高速化を促すインセンティブ設計です。中心には Coinbase パズルと呼ばれる暗号パズルがあり、証明者に対してマルチスカラー乗算や高速フーリエ変換など、zkSNARK を支える計算を実行させます。証明者はブロックを生成するわけではありませんが、各ブロックのコインベース報酬の一部を受け取ります。報酬は勝者総取りではなく、最低難易度を上回る解を提出したすべての証明者に対して按分されます。
 
-By linking rewards to useful work that directly contributes to the efficiency of ZKP generation, PoSW encourages broad participation and investment in specialized hardware (like ASICs). This alignment of incentives helps maintain a decentralized prover network that is robust, censorship-resistant, and continuously improving—a key factor in Aleo’s mission to deliver privacy-first blockchain technology.
+Coinbase パズルは時間とともに少しずつ難しくなるため、証明者は常にハードウェアを更新し、証明生成手法を改良する必要があります。この難易度の進化は継続的なイノベーションを促し、最速の証明者でなくともブロックごとに相応の報酬を得られる仕組みを維持します。結果として PoSW は採掘プールのような分散型・競争的エコシステムを形成し、性能向上とコスト削減を両立させます。
 
-## How is the record model in Aleo designed, and how does it compare to the account and UTXO models?
-Aleo supports both the UTXO like model with Records and account like-models with mapping. In the record model, a decentralized ledger tracks every record via a global state.  
+こうした報酬設計により、ZKP 生成に直接寄与する有用な計算へインセンティブが結びつき、ASIC などの専用ハードウェアへの投資と広範な参加を促します。これによって分散性・検閲耐性・継続的な改善を備えた証明者ネットワークが維持され、プライバシーを第一とする Aleo の目標を支える基盤となります。
 
-We still have users with addresses but instead of running a transaction in an application on a bunch of inputs, we actually execute the transaction locally on a bunch of records and provide these transitions within the transaction with the proof that I have actually executed these records correctly. And in this manner when the network updates the program is no longer a global store of encrypted states, it’s now an abstraction over records. Essentially splitting up the state in a more proficient manner.  
+## Aleo のレコードモデルはどのように設計されており、アカウントモデルや UTXO モデルとどう違いますか？
+
+Aleo は、レコードによる UTXO 型モデルと、マッピングによるアカウント型モデルの両方をサポートしています。レコードモデルでは、分散型台帳がグローバルステートを通じてすべてのレコードを追跡します。  
+
+ユーザーはアドレスを持ちますが、複数の入力をまとめてアプリケーションのトランザクションを実行する代わりに、ローカルで複数のレコードに対してトランザクションを実行し、その処理が正しいことを証明付きでトランジションに含めて送信します。こうすることでネットワークが状態を更新するとき、プログラムは暗号化されたグローバルストアではなくレコードの抽象として扱われ、状態をより効率的に分割できます。  
 
 ![record model](./images/record_model.png)
 
-Record model is very similar to the UTXO model (of Bitcoin). The addition on top of the UTXO model is that the content of the UTXO can be as per the program needs and not baked into the protocol level and **all the content is encrypted by default.**
+レコードモデルは Bitcoin の UTXO モデルに近い構成です。大きな違いは、UTXO の中身をプロトコル側で固定せずプログラム側で自由に定義できること、そして**内容が標準で暗号化される**ことです。
 
-## From the blockchain dilemma triangle perspective, which aspect, if any, did Aleo compromise on?
+## ブロックチェーン・ジレンマの観点で、Aleo が妥協した要素はありますか？
 
-Aleo doesn’t compromise on the trilemma and in fact addresses it in totality. This is possible because of Aleo’s consensus algorithm and ZK Snarks.  
+Aleo はトリレンマをすべて満たすことを目標に設計されており、コンセンサスアルゴリズムと ZK SNARK の組み合わせによってこれを実現します。  
 
-Aleo enables Account privacy: The decentralized ledger indexes the global state based on program IDs.  
+- **アカウントプライバシー:** 分散型台帳はプログラム ID を基にグローバルステートをインデックス化します。  
+- **効率的なステート更新:** レコードによる抽象化により、他者とは独立して情報を分割管理できます。更新されるのは該当プログラムのレコードのみです。  
+- **並行性:** レコードと台帳により同時更新が可能であり、二重使用を防ぎながら複数のレコード更新を一度にマークルツリーへ反映できます。これにより、従来のアカウントモデルと同様の利便性を保ちながら並行処理を実現します。  
 
-Efficient state updates: Record abstraction: helps you segment/compartmentalize your information from others. Predicates essentially only consume program records being updated.  
+## Aleo はどのように二重支出を防ぎ、トランザクションのファイナリティや手数料にどのような影響がありますか？
 
-Concurrency: Simultaneous updates to the program states are achieved through records and the ledger ensures that the program records are not double spent. If we look at the records, we have a Merkle tree of all these leaves, leaves are usually entries. How’s concurrency achieved? Because we can have the network effectively take all these record updates, and then in one go, update a Merkle tree with everybody's deltas, everybody's diffs, and then subsequently linearize that and patch up to a Merkle group and put that into the block header. And so this fundamentally gives us the ability to get back the feature that we had in the previous account model now in this record model, but with concurrency.   
+Aleo はレコードによる UTXO モデルとマッピングによるアカウントモデルの両方を備えており、二重支出の防止方法も異なります。
 
-## How does Aleo prevent double spending, and what are the implications for transaction finality and fees?
+**UTXO モデルの場合:**  
+各レコードはコミットメントと対応するシリアルナンバーを持ちます。レコードを使用するときは、コミットメントツリーに含まれていることを示す公開の包含証明を作成し、シリアルナンバーで再利用されていないか確認します。同じレコードを再度使おうとすると検証が失敗します。  
 
-Since Aleo supports both the UTXO-model with records and account model with mappings, the double-spending is prevented in different ways:
+コミットメントは、提供された情報が正しいことを保証する暗号的手法で、敏感なデータを保護しつつ検証と信頼を可能にします。Aleo でスマートコントラクトを実装する際も、条件を検証しつつ基礎データを非公開に保つために欠かせません。  
 
-**For UTXO model:**  
+トランザクションを生成するときは、新しいレコードに対するコミットメントを作成すると同時に、消費するレコードの一意なシリアルナンバーを計算します。コミットメントはトランジションとトランザクションの両方で証明生成に利用されます。  
 
-Each record has a serial number and a corresponding commitment. When spending the record, you publicly create an inclusion proof verifying that the record is in a tree of commitments and the serial number is used to verify that the same record has not been used previously. If we try to spend the same record it fails.  
+**アカウントモデルの場合:**  
+マッピング上のグローバルなアカウント残高が更新されます。送金が行われると、送信者の残高が減算され、受信者の残高が加算されます（Ethereum などと同様）。情報はグローバルに共有されるため、保有していない額を送金することはできません。マッピングを更新するトランザクションでも、署名ではなく状態ルートに基づく証明が必要です。もし他のトランザクションによってマッピングが更新され状態ルートが変わると、証明が失敗します。
 
-*Commitments are a cryptographic way to ensure that the information provided is valid and hasn't been tampered with. They allow protecting sensitive information while still enabling verification and trust. Commitments are also essential for implementing smart contracts on Aleo, as they enable the verification of contract conditions and ensure that the contract's execution adheres to the specified rules without exposing the underlying data*
+## Aleo instructions の目的と機能は何ですか？
 
-Generating a transaction involves creating commitments to new records as well as computing the unique serial number for consumed records. Commitments are part of proof generation at both the transition and transaction level.  
+Aleo instructions は Aleo プログラムの中間表現です。すべての Leo プログラムは Aleo instructions にコンパイルされ、さらにバイトコードへ変換されます。Aleo instructions は AVM（Aleo Virtual Machine）が実行できるオペコードへ変換されます。  
 
-**For account models:**  
+ゼロ知識証明を生成するには算術回路が必要です。EVM エコシステムの開発者は Circom や ZoKrates を利用して回路を書き、証明鍵・検証鍵を作成してから証明を生成します。Aleo instructions は、これらの回路を記述するための手段です。  
 
-The account is updated globally in a mapping. So everytime the transfers happen, the amount is subtracted from the sender’s account and added to the receiver’s account (similar to Ethereum and other public chains). Since the information is global, you cannot make transfers of the amount that you do not have in your account. For transactions that update the mapping, one still requires the proofs (unlike the signatures for authorization of transfer) and the proof is based on a stateRoot. If there has been an update in the mapping by some prev transaction, the stateRoot changes and the proof will fail. 
-
-## What is the purpose and functionality of Aleo instructions?
-
-Aleo instructions is the intermediate representation of Aleo programs. All Leo programs compile to Aleo instructions which compile to bytecode. Aleo instructions are compiled into AVM opcodes that can be executed by the Aleo Virtual Machine.  
-
-To generate the zero-knowledge proof, arithmetic circuits are used. Developers on the EVM ecosystem write these circuits using Circom, Zokrates which are later used to generate the proving and verifying keys to generate the proofs. Aleo instructions are the way to write these circuits.  
-
-If we have a leo program to add two u32 variables:  
+例えば 2 つの `u32` を足し合わせる Leo プログラムは次のようになります。  
 
 ![leo example](./images/leo_example.png)
 
-The Aleo instructions would look something like this (very similar to assembly language):  
+このプログラムを Aleo instructions で表すと（アセンブリに近い記法になります）次の通りです。  
 
 ![ai example](./images/ai_example.png)
 
-## Why was Leo created, and how does it differ from other smart contract languages like Solidity?
-To generate the zero-knowledge proof, arithmetic circuits are used. Developers on the EVM ecosystem write these circuits using Circom, Zokrates which are later used to generate the proving and verifying keys to generate the proofs. Writing circuits can be a bit daunting.  
+## Leo はなぜ作られ、Solidity のようなスマートコントラクト言語と何が違いますか？
 
-So Leo abstracts that away and makes it easier for developers to write their logic in higher level language called Leo (files with .leo extension) instead of Aleo (files with .aleo extension) circuits.
+ZK 証明を生成するには算術回路が必要であり、EVM エコシステムの開発者は Circom や ZoKrates を利用して回路を記述し、その後証明鍵・検証鍵を生成して証明を作成します。しかし回路を手作業で書くのは難易度が高い作業です。  
 
+Leo はこの工程を抽象化し、開発者が `.leo` 拡張子の高級言語でロジックを書くだけで、`.aleo` の回路へコンパイルできるようにします。
 
-## How does Aleo's approach to off-chain computation differ from other solutions like ZK-Coprocessor, and what are the privacy implications of outsourcing proving tasks?
+## Aleo のオフチェーン計算は ZK Coprocessor などとどう違い、証明生成を委託するとどんなプライバシー上の影響がありますか？
 
-The approach is very similar. Each transition on Aleo can have an additional finalize block. The logic of the transition block is verified with the ZK-proof and the logic in the finalized block is re-executed by all the nodes on the network to update the state stored in the mapping.   
+概念的にはとても似ています。Aleo の各トランジションには追加の `finalize` ブロックを付けられます。トランジションブロックのロジックは ZK 証明で検証され、`finalize` ブロックのロジックはネットワーク上のノードが再実行してマッピングに保存された状態を更新します。  
 
-In this sense the logic inside transition acts like the computations sent to the ZK-processor which requires a fixed transaction cost (no matter the size of the logic) and the logic inside the finalize block is similar to the on-chain execution of other public blockchains like Ethereum.  
+この意味で、トランジション内部のロジックは ZK コプロセッサーへ送る計算に相当し、ロジックの規模に関わらず一定のトランザクションコストで済みます。一方、`finalize` ブロック内のロジックは Ethereum など他のパブリックチェーンにおけるオンチェーン実行に相当します。  
 
-Right now, on Aleo, you have the option to delegate proof generation to a remote server. This will speed up proof generation but disclose the transaction details to a trusted server. For some applications and users, this makes sense but for some applications where privacy is of utmost importance, users still have the option to generate the proof themselves.   
+現在の Aleo では、証明生成をリモートサーバーに委任することもできます。これにより証明生成は高速になりますが、信頼したサーバーにトランザクション内容が知られてしまいます。プライバシーより利便性を重視するユースケースでは有効ですが、プライバシーが最優先のアプリケーションではユーザーが自前で証明を生成する選択肢も残されています。  
 
-Private proof delegation would be the holy grail but we aren’t there (yet).  
+秘匿されたまま証明生成を委任できる仕組みが完成すれば理想的ですが、現時点ではまだ実現していません。アウトソーシングの最新状況については[こちら](https://www.youtube.com/watch?v=bulEa85cptc)をご覧ください。
 
-Learn more about the state of outsourcing proving tasks [here](https://www.youtube.com/watch?v=bulEa85cptc).
-
-## How does Aleo compare to Bitcoin and Ethereum in terms of its core design and functionality?
+## Aleo の設計は、Bitcoin や Ethereum と比べてどのような特徴がありますか？
 
 ![aleo advantage](./images/aleo_advantage.png)
 
-From the above slide from The Aleo advantage perfectly answers the question.  
+上図（The Aleo Advantage）が質問への答えを端的に示しています。  
 
-Bitcoin is public money. It is not programmable and all of the user’s transactions are public.  
-Ethereum introduced programmability but still didn’t offer privacy.  
-Some projects like ZCast offered privacy but didn’t provide programmability.  
-Aleo provides both privacy and programmability.  
+- Bitcoin は公開型のお金であり、プログラム可能ではなく、すべてのトランザクションが公開されます。  
+- Ethereum はプログラム可能性を導入しましたが、依然としてプライバシーを提供しません。  
+- Zcash など一部プロジェクトはプライバシーを提供しますが、プログラム性は限定的でした。  
+- Aleo はプライバシーとプログラム性の双方を提供します。  
 
+## 講演や動画はどこで視聴できますか？
 
-
-## Where can I watch talks and videos?
 * Coinbase BUIDL - [**Learning LEO | Coding Private Application with ZK Cryptography**](https://youtu.be/LJXjtthDl6I)
 * DEVCON - [**Aleo Developer Workshop: Leo Coding & Examples**](https://youtu.be/ABPCr2TwrgE)
 * DEVCON - [**What are ZK Proofs Good For? Applications to Anonymous Identity, Sybil Prevention and Moderation**](https://youtu.be/d2n0Al0P2Jc)
@@ -137,8 +133,7 @@ Aleo provides both privacy and programmability.
 * The Interop - [**Zero-Knowledge Smart Contracts with Alex Pruden of Aleo**](https://youtu.be/6BwefrwgN3w)
 * Axelar - [**Tech Talks with Aleo**](https://youtu.be/P7G2DKWZbVM)
 
-
-## What are the Aleo's social accounts?
+## Aleo の公式アカウントは？
 
 [//]: # (disabling markdown checks for twitter links)
 
@@ -156,8 +151,8 @@ Aleo provides both privacy and programmability.
 
 ✍️ | Community Blog ~ **https://medium.com/@aleohq**
 
-## Are there more useful resources?
+## 他に参考になるリソースはありますか？
 
-🏎️ | A curated list of Aleo & Leo code and resources ~ **https://github.com/howardwu/awesome-aleo**
+🏎️ | Aleo と Leo のコード・資料の厳選リスト ~ **https://github.com/howardwu/awesome-aleo**
 
-📜 | A starter guide to build applications on Aleo ~ **https://github.com/AleoNet/workshop**
+📜 | Aleo でアプリケーションを構築するためのスターターガイド ~ **https://github.com/AleoNet/workshop**

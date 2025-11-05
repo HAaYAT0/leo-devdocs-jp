@@ -1,23 +1,23 @@
 ---
 id: get_latest_total_supply
-title: Get Latest Total Supply
-sidebar_label: Get Latest Total Supply
+title: 最新の総供給量を取得
+sidebar_label: 最新の総供給量を取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/latest/totalSupply
 ```
 
-Retrieves the latest total supply for the Aleo blockchain.
+Aleo ブロックチェーンの最新の総供給量を取得します。
 
-**Note:** This endpoint is only available for mainnet currently.
+**注記:** 現在、このエンドポイントは Mainnet でのみ利用できます。
 
-### Arguments
+### 引数
 
-None
+なし
 
-### Response
+### レスポンス
 
-| Parameter | Type |            Description            |
+| パラメーター | 型 |            説明            |
 |:---------:|:----:|:---------------------------------:|
-| `result`  | u64  | The total supply of Aleo credits | 
+| `result`  | u64  | Aleo credit の総供給量 |

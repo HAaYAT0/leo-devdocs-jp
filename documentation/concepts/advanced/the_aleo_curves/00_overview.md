@@ -1,32 +1,28 @@
 ---
 id: overview
-title: Overview
-sidebar_label: Overview
+title: 概要
+sidebar_label: 概要
 ---
 
 
 |                     |  Edwards BLS12  |     BLS12-377      |  
 |:------------------- |:---------------:|:------------------:|
-| Curve Type          | Twisted Edwards | Barreto-Lynn-Scott |
-| Scalar Field Size   |    251 bits     |      253 bits      |
-| Base Field Size     |    253 bits     |      377 bits      |
-| G1 Compressed Size* |    32 bytes     |      48 bytes      |
-| G2 Compressed Size* |       N/A       |      96 bytes      |
+| 曲線の種類          | ツイストエドワーズ | Barreto-Lynn-Scott |
+| スカラー体のサイズ  |    251 bits     |      253 bits      |
+| ベースフィールドのサイズ |    253 bits     |      377 bits      |
+| G1 圧縮サイズ*      |    32 bytes     |      48 bytes      |
+| G2 圧縮サイズ*      |       N/A       |      96 bytes      |
 
-\* rounded to multiples of 8 bytes.
+\* 8 バイトの倍数に丸めています。
 
 ## Keccak
-The sponge construction `Sponge[f, pad, r]` is a function that takes a variable-length input
-and produces a fixed-length output (the hash value).
-The permutation `f` is a function that takes a fixed-length input and produces a fixed-length output,
-defined as `f = Keccak-f[b]`, where `b := 25 * 2^l` is the width of the permutation,
-and `l` is the log width of the permutation.
-For our case, `l = 6`, thus `b = 1600`.
-The padding rule `pad` is a function that takes a variable-length input and produces a fixed-length output.
-In Keccak, `pad` is a multi-rate padding, defined as `pad(M) = M || 0x01 || 0x00…0x00 || 0x80`,
-where `M` is the input data, and `0x01 || 0x00…0x00 || 0x80` is the padding.
-In SHA-3, `pad` is a SHAKE, defined as `pad(M) = M || 0x06 || 0x00…0x00 || 0x80`,
-where `M` is the input data, and `0x06 || 0x00…0x00 || 0x80` is the padding.
-The bitrate `r` is the number of bits that are absorbed into the sponge state in each iteration
-of the absorbing phase.
-In addition, the capacity is defined as `c := b - r`.
+スポンジ構成 `Sponge[f, pad, r]` は、可変長の入力を受け取り固定長の出力（ハッシュ値）を生成する関数です。
+置換 `f` は固定長の入力から固定長の出力を生成する関数で、`f = Keccak-f[b]` と定義されます。ここで `b := 25 * 2^l` は置換の幅、`l` はその対数幅です。
+今回のケースでは `l = 6` のため、`b = 1600` になります。
+パディング規則 `pad` は可変長の入力を受け取り固定長の出力を生成する関数です。
+Keccak では `pad` はマルチレートパディングであり、`pad(M) = M || 0x01 || 0x00…0x00 || 0x80` と定義されます。
+ここで `M` は入力データ、`0x01 || 0x00…0x00 || 0x80` がパディングです。
+SHA-3 では `pad` は SHAKE であり、`pad(M) = M || 0x06 || 0x00…0x00 || 0x80` と定義されます。
+`M` は入力データであり、`0x06 || 0x00…0x00 || 0x80` がパディングです。
+ビットレート `r` は、吸収フェーズの各反復でスポンジ状態に取り込まれるビット数を表します。
+また、キャパシティは `c := b - r` と定義されます。

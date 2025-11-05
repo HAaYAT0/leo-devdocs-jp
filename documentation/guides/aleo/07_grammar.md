@@ -1,11 +1,10 @@
----
 id: grammar
-title: Aleo Instructions Grammar
-sidebar_label: Grammar
+title: Aleo instructions の文法
+sidebar_label: 文法
 ---
 
-This chapter contains a high-level grammar of Aleo instructions.
-A more detailed ABNF grammar can be found [here](https://github.com/ProvableHQ/grammars).
+この章では Aleo instructions の高レベルな文法を紹介します。  
+より詳細な ABNF 文法は [こちら](https://github.com/ProvableHQ/grammars) を参照してください。
 
 ```
 program = *import

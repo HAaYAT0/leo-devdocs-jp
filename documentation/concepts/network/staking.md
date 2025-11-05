@@ -1,52 +1,52 @@
 ---
 id: staking 
-title: Staking
-sidebar_label: Staking
+title: ステーキング
+sidebar_label: ステーキング
 ---
-## What is staking?
+## ステーキングとは？
 
-**Staking** is an economic security mechanism used to secure decentralized networks that rely on **Proof of Stake (PoS)** as their consensus mechanism. Unlike **Proof of Work (PoW)**, where miners compete to solve cryptographic puzzles in order to add new blocks, PoS selects validators at random for each block to confirm transactions and validate block data. This approach replaces competitive mining with a randomized, stake-based selection process, where validators earn rewards based on their participation rather than computational power.
+**ステーキング**は、コンセンサスメカニズムとして **Proof of Stake (PoS)** を採用する分散型ネットワークを保護する経済的なセキュリティ手段です。**Proof of Work (PoW)** が新しいブロックを追加するため暗号パズルの解法競争を行うのに対し、PoS では各ブロックごとにバリデータをランダムに選出してトランザクションの確認とブロックデータの検証を行います。これにより競争的なマイニングの代わりに、ステーク量に基づくランダムな選出プロセスが導入され、バリデータは計算能力ではなく参加度に応じて報酬を得ます。
 
-To become a validator and participate in consensus, **a minimum stake of 10,000,000 ACs is required**. This ensures that the network is economically secured by validators with a significant investment in the system. However, not everyone has the resources to meet this threshold individually. Staking allows users to delegate their ACs to support validators, helping them become active participants in the consensus process while sharing in the rewards.
+バリデータとしてコンセンサスに参加するには、**最低 10,000,000 AC のステークが必要**です。これにより、大きな投資を行うバリデータがネットワークの経済的安全性を担保します。ただし、誰もがこの閾値を単独で満たせるわけではありません。ステーキングではユーザーが自分の AC を委任してバリデータを支援できるため、コンセンサスプロセスに積極的に関与しつつ報酬を分配してもらえます。
 
-## How to become a staker?
+## ステーカーになるには？
 
-Stakers are individuals or organizations who lock up or delegate Aleo Credits (ACs) to support validators in participating in consensus on the network. In return, they earn rewards proportional to the amount of ACs they have staked, reflecting their contribution to network security. This allows users who do not run validator nodes to still participate in the consensus process and receive staking rewards. Stakers are sometimes refer as delegators because they delegate their stakes to validators.
+ステーカーは、Aleo クレジット（AC）をロックまたは委任して、バリデータがネットワークのコンセンサスに参加できるよう支援する個人または組織です。その対価として、自身がステークした AC の量に応じた報酬を受け取り、ネットワークセキュリティへの貢献が評価されます。バリデータノードを自分で運用しなくてもコンセンサスプロセスに参加し、ステーキング報酬を得られる仕組みです。ステークをバリデータに委任することから、ステーカーは「デリゲーター」と呼ばれることもあります。
 
-Anyone holding ACs can become a staker. **[Native staking](#native-staking) is available starting from 10,000 ACs**, there are also [liquid staking](#liquid-staking) options available for holders who has less than 10,000 ACs. To get started, users can utilize various tools developed by the Aleo ecosystem—such as staking platforms or supported wallets.
+AC を保有している人であれば誰でもステーカーになれます。**[ネイティブステーキング](#native-staking) は 10,000 AC から利用可能**で、10,000 AC 未満の保有者向けに [リキッドステーキング](#liquid-staking) の選択肢も提供されています。ステーキングを始めるには、Aleo エコシステムが開発したステーキングプラットフォームや対応ウォレットなどの各種ツールを利用できます。
 
 :::warning[disclaimer]
-The community tools are developed by third parties within the Aleo ecosystem. Aleo does not endorse, review, or audit these tools, and users are solely responsible for their use.
+コミュニティツールは Aleo エコシステムに属する第三者によって開発されています。Aleo はこれらのツールを推奨・審査・監査しておらず、利用はユーザー自身の責任において行ってください。
 :::
 
 ## Native Staking
 
-Native staking enables token holders to interact on-chain and stake their Aleo Credits (ACs) directly, without the need to rely on third-party programs or custodial services. The native staking functions are made available in the `credits.aleo` program, the same program that host every Aleo Credit. There are staking rules enforced in the `credits.aleo` program:
+ネイティブステーキングでは、トークン保有者がサードパーティのプログラムやカストディサービスに頼ることなく、オンチェーンで Aleo クレジット（AC）を直接ステークできます。ネイティブステーキングの機能は、Aleo クレジットを管理する `credits.aleo` プログラムに実装されています。`credits.aleo` プログラムでは次のステーキングルールが適用されます。
 
-* **Self-bond minimums** for validators (≥ 100 credits)
-* **Delegation minimums** for stakers (≥ 10 000 credits)
-* **Automatic removal** of validators that drop below 10 M total stake
-* **Time-locked unbonding** (360 blocks) before re-claiming stakes
+- **バリデータの自己ボンド最低額**（100 クレジット以上）
+- **ステーカーの委任最低額**（10,000 クレジット以上）
+- **総ステークが 1,000 万クレジット未満になったバリデータの自動除外**
+- **アンボンド後、再度引き出せるまで 360 ブロックのタイムロック**
 
-The source code in Aleo Instructions can be found [here](https://github.com/ProvableHQ/snarkVM/blob/staging/synthesizer/program/src/resources/credits.aleo).
+Aleo Instructions によるソースコードは[こちら](https://github.com/ProvableHQ/snarkVM/blob/staging/synthesizer/program/src/resources/credits.aleo)で確認できます。
 
-### Function glossary
+### 関数一覧
 
-| Function | Caller | Purpose |
+| 関数 | 呼び出し元 | 目的 |
 |----------|---------------|---------|
-| `bond_validator` | Validator (self-bond) | Creates a validator or tops-up self-bonded stake and sets commission + withdrawal address |
-| `bond_public` | Staker | Bonds (delegates) stake to an existing validator that is open to new stake |
-| `unbond_public` | Validator or Staker | Starts the unbonding timer for some or all of the bonded amount |
-| `claim_unbond_public` | Anyone | After the timer has expired, transfers the unbonded amount to the staker's withdrawal address |
+| `bond_validator` | バリデータ（自己ボンド） | バリデータを作成または自己ボンド額を増資し、手数料率と出金先アドレスを設定する |
+| `bond_public` | ステーカー | 新規ステークを受け付けている既存バリデータにステーク（委任）する |
+| `unbond_public` | バリデータまたはステーカー | ボンド済みの一部または全額についてアンボンドタイマーを開始する |
+| `claim_unbond_public` | 誰でも | タイマー満了後、アンボンドされた額をステーカーの出金先アドレスへ送金する |
 
-### Staking related mappings
+### ステーキング関連マッピング
 
-The staking system in Aleo uses several key mappings to track validator and delegator states:
+Aleo のステーキングシステムでは、バリデータとデリゲーターの状態を追跡するために複数のマッピングを利用します。
 
 #### `committee`
-Contains the active validator set with their committee state:
-- Whether the validator is open to new stakers (`is_open`)
-- The commission percentage (0-100) that the validator keeps from rewards
+アクティブなバリデータ集合とその状態を保持します。
+- バリデータが新規ステーカーを受け付けているか (`is_open`)
+- バリデータが報酬から控除する手数料率（0〜100）
 
 ```aleo
 /// The `committee` mapping contains the active validator set and their corresponding stake.
@@ -65,7 +65,7 @@ struct committee_state:
 ```
 
 #### `delegated`
-Tracks the total amount of microcredits bonded to each validator address (including both self-bonded and delegator bonds). This mapping is used to determine if a validator meets the minimum 10 million credits threshold to join the committee.
+各バリデータアドレスにボンドされた microcredit の総額（自己ボンドと委任分の両方）を追跡します。このマッピングによって、バリデータが委員会に参加するための最低条件である 1,000 万クレジットを満たしているかどうかを判断します。
 
 ```aleo
 // The `delegated` mapping tracks the total amount of microcredits that are prebonded and bonded to validator addresses.
@@ -117,9 +117,9 @@ struct bond_state:
 ```
 
 #### `unbonding`
-Tracks stakers who have initiated the unbonding process:
-- The amount of microcredits currently unbonding
-- The block height when unbonding will be complete (360 blocks from initiation)
+アンボンド処理を開始したステーカーを管理します。
+- 現在アンボンド中の microcredit の数量
+- アンボンド完了予定のブロック高（開始から 360 ブロック）
 
 ```aleo
 // The `unbonding` mapping contains a set of stakers with their unbonding microcredits and unlock height.
@@ -138,7 +138,7 @@ struct unbond_state:
 ```
 
 #### `withdraw`
-Maps each staker's address to their withdrawal address, which is where rewards and unbonded amounts are sent.
+各ステーカーのアドレスを出金先アドレスに関連付け、報酬やアンボンド済みの資金が送られる先を管理します。
 
 ```aleo
 // The `withdraw` mapping contains the staking address and their corresponding withdrawal address.
@@ -149,10 +149,9 @@ mapping withdraw:
     value as address.public;
 ```
 
-### Becoming or topping-up as a validator
+### バリデータになる／自己ボンドを増資する
 
-To become a validator or top-up the self-bonded stake, execute the `bond_validator` function using the validator address:
-
+バリデータとして参加する、または自己ボンド額を追加する場合は `bond_validator` 関数をバリデータアドレスで実行します。
 ```bash
 leo execute credits.aleo/bond_validator <withdrawal_address> <amount> <commission_percentage> --network mainnet --endpoint https://api.explorer.provable.com/v1 --broadcast 
 ```
@@ -167,44 +166,44 @@ function bond_validator:
     input r2 as u8.public;
 ```
 
-* **withdrawal_address** – a separate address that will receive rewards and unbonded stake. Must be different from the validator address.
-* **amount_in_microcredits** – minimum 1 AC. To enter the committee you need ≥ 10 millions ACs combining self-bond + delegation.
-* **commission_percentage** – integer 0-100 that defines the share of rewards kept by the validator.
+* **withdrawal_address** – 報酬とアンボンド額を受け取るための別アドレス。バリデータアドレスとは異なる必要があります。
+* **amount_in_microcredits** – 最低 1 AC。委員会入りには自己ボンドと委任を合わせて 1,000 万 AC 以上が必要です。
+* **commission_percentage** – バリデータが報酬から控除する割合を表す 0〜100 の整数。
 
-What happens on-chain:
+オンチェーンで行われる処理:
 
-1. The amount is subtracted from the validator's public `account` balance.
-2. `bonded[validator]` is written/updated with the new self-bond amount.
-3. `delegated[validator]` is updated (self-bond counts towards total delegation).
-4. If the total delegation is ≥ 10 millions ACs and the validator was not in `committee` yet, they are added and `metadata[committee_size]` is incremented. (Subjected to network maximum committee size that can be increased with protocol upgrades)
+1. 指定額がバリデータの公開 `account` 残高から差し引かれます。
+2. `bonded[validator]` に自己ボンド額が書き込まれ（または更新され）ます。
+3. `delegated[validator]` が更新されます（自己ボンドも総委任額に含まれます）。
+4. 総委任額が 1,000 万 AC 以上で、まだ `committee` に属していなければ委員会へ追加され、`metadata[committee_size]` が増加します（ネットワークの最大委員会サイズにより制限され、プロトコルアップグレードで変更される可能性があります）。
 
-### Delegating to a validator
+### バリデータへの委任
 
-If you are not running a validator, you can still participate in the network by delegating your Aleo Credits to a validator and earn rewards based on their performance.
+バリデータを運用していなくても、Aleo クレジットをバリデータに委任することでネットワークに参加し、そのパフォーマンスに応じた報酬を得られます。
 
-#### Choosing a validator
+#### バリデータの選び方
 
-Before you delegate, inspect the candidate validator's on-chain stats. You can query `committee`, `delegated`, and `bonded` mappings via [API endpoints](https://docs.explorer.provable.com/docs/api-reference/vz155069d5xy3-introduction) or block explorers to learn:
+委任する前に、候補となるバリデータのオンチェーン統計を確認しましょう。[API エンドポイント](https://docs.explorer.provable.com/docs/api-reference/vz155069d5xy3-introduction) やブロックエクスプローラを利用して `committee`、`delegated`、`bonded` マッピングを照会し、以下を把握できます。
 
-* **Total stake** – how much ACs have been delegated to the validator.
-* **Self-bond** – validator's own stake (at least 100 ACs is required).
-* **Commission** – the % of rewards the validator keeps (0–100).
-* **Is open** – only validators with `is_open = true` can accept new stake.
+* **総ステーク** – バリデータにどれだけの AC が委任されているか。
+* **自己ボンド** – バリデータ自身のステーク（最低 100 AC が必要）。
+* **手数料** – バリデータが保持する報酬の割合（0〜100%）。
+* **受付状態** – `is_open = true` のバリデータのみが新しいステークを受け付けます。
 
-A healthy validator typically has:
+健全なバリデータの目安:
 
-* At least 10 millions ACs total stake (otherwise it is not in the committee and earns no block rewards).
-* Consistent uptime / performance (check explorers).
+* 総ステークが 1,000 万 AC 以上（そうでなければ委員会に参加できず、ブロック報酬も得られません）。
+* 安定した稼働率・パフォーマンス（エクスプローラで確認しましょう）。
 
-#### Steps to delegate
+#### 委任の手順
 
-1. Decide the amount you want to delegate (≥ 10 000 AC).
+1. 委任したい金額を決める（10,000 AC 以上）。
 :::warning[important]
 Must keep minimum bonded balance of ≥ 10 000 ALEO bonded at all times.
 :::
-2. Ensure that amount is available in your public account balance.
-3. Choose a withdrawal address (can reuse current signer address or another address).
-4. Execute `bond_public` function from `credits.aleo` using [Leo CLI](https://docs.leo-lang.org/cli/execute):
+2. 公開アカウント残高に十分な額があることを確認する。
+3. 出金先アドレスを選ぶ（現在の署名者アドレスを再利用しても別アドレスを指定しても構いません）。
+4. [Leo CLI](https://docs.leo-lang.org/cli/execute) を使って `credits.aleo` の `bond_public` 関数を実行する。
 
 ```bash
 leo execute credits.aleo/bond_public <validator_address> <withdrawal_address> <amount> --network mainnet --endpoint https://api.explorer.provable.com/v1 --broadcast 
@@ -224,28 +223,27 @@ function bond_public:
 [Staking.xyz](https://www.staking.xyz/stake?network=aleo&currency=ALEO&stakingType=native) also provides an interface to `bond_public`. 
 :::
 
-After the transaction is finalized you will start to accrue a share of the validator's block rewards proportionally to your stake. You may top up your bond at any time, in any amount.
+トランザクションが確定すると、ステーク量に応じてバリデータのブロック報酬が分配され始めます。ボンドはいつでも、任意の金額で追加できます。
 
-On-chain effects:
+オンチェーンでの影響:
 
-1. Deducts the amount from the staker's `account`.
-2. Updates `bonded[delegator]` (mapping staker → validator).
-3. Adds the amount to `delegated[validator]`.
-4. Increments the global staker counter (`metadata[delegator_count]`, capped at 100,000).
+1. 指定額がステーカーの `account` から控除されます。
+2. `bonded[delegator]`（ステーカー → バリデータのマッピング）が更新されます。
+3. `delegated[validator]` に金額が加算されます。
+4. グローバルなステーカー数（`metadata[delegator_count]`、上限 100,000）が増加します。
 
 :::warning[important]
 The validator must be open (`committee_state.is_open = true`) and not in the unbonding (exiting) process.
 :::
 :::info
-Each address can be bonded to one validator at a time. Staker may bond to a new validator only after the previous bond has fully unbonded and the ACs has been claimed. Or simply use a new address.
+1 つのアドレスが同時にボンドできるバリデータは 1 つだけです。既存のボンドが完全にアンボンドされ、AC を回収した後でなければ別のバリデータにボンドし直せません。あるいは新しいアドレスを使用してください。
 :::
 
-### Withdrawing stake
+### ステークの引き出し
 
- Stakers can withdraw bonded ACs at any time, provided the remaining bonded balance stays ≥ 10 000. Any withdrawal that takes the bonded balance below 10 000 ACs immediately triggers a full unbond.
- 
-To withdraw a stake, the staker must first call the `unbond_public` function. This function initiates the unbonding process by specifying the staker's address and the amount of microcredits to unbond. The unbonding process allows the staker to either partially or fully unbond their stake. This can be done by using [Leo CLI](https://docs.leo-lang.org/cli/execute):
+ステーカーは、残りのボンド残高が常に 10,000 AC 以上である限り、いつでもボンド済みの AC を引き出せます。引き出し後の残高が 10,000 AC を下回ると、即座に全額アンボンドが発動します。
 
+ステークを引き出すには、まず `unbond_public` 関数を呼び出してアンボンド処理を開始する必要があります。この関数でステーカーアドレスとアンボンドする microcredit の量を指定すると、部分的あるいは全額のアンボンドが可能になります。[Leo CLI](https://docs.leo-lang.org/cli/execute) から次のように実行できます。
 ```bash
 leo execute credits.aleo/unbond_public <staker_address> <amount> --network mainnet --endpoint https://api.explorer.provable.com/v1 --broadcast 
 ```
@@ -258,16 +256,16 @@ function unbond_public:
     input r1 as u64.public;
 ```
 
-Called either by the staker's withdrawal address or the validator's withdrawal address.
+この関数はステーカーの出金先アドレス、またはバリデータの出金先アドレスから実行できます。
 
-* Stakers may unbond partially or fully. If the remaining bond falls below 10 000 ACs, the entire bond is unbonded and the staker entry is removed.
-* Validators can unbond themselves or forcibly unbond a staker.
-* If unbonding causes the validator's total stake to drop below 10 millions ACs or self-bond below 100 ACs, the validator is removed from the committee.
-* The amount begins a 360-block cooldown stored in `unbonding[staker]`.
+* ステーカーは部分的なアンボンドと全額アンボンドのどちらも可能です。残高が 10,000 AC を下回る場合、全額がアンボンドされ、ステーカーのエントリは削除されます。
+* バリデータは自身をアンボンドしたり、ステーカーを強制的にアンボンドさせたりできます。
+* アンボンドによってバリデータの総ステークが 1,000 万 AC 未満、または自己ボンドが 100 AC 未満になると、バリデータは委員会から外されます。
+* 指定額は `unbonding[staker]` に格納され、360 ブロックのクールダウンが開始されます。
 
-#### Claiming unbonded stake
+#### アンボンド完了分の請求
 
-To claim your unbonded stake, make sure the 360 blocks cooldown has passed, then you can use the [Leo CLI](https://docs.leo-lang.org/cli/execute) as follows:
+アンボンド済みのステークを引き出すには、360 ブロックのクールダウンが経過していることを確認し、[Leo CLI](https://docs.leo-lang.org/cli/execute) で以下のコマンドを実行します。
 
 ```bash
 leo execute credits.aleo/claim_unbond_public <staker_address> --network mainnet --endpoint https://api.explorer.provable.com/v1 --broadcast
@@ -279,16 +277,16 @@ function claim_unbond_public:
     input r0 as address.public;
 ```
 
-* Anyone can trigger this once `block.height ≥ unbonding[staker].height`.
-* The unbonded amount is transferred to the staker's withdrawal address (`account[withdrawal]`).
-* The corresponding `unbonding` entry is cleared. If the staker has no remaining bond, their withdrawal address is also removed.
+* `block.height ≥ unbonding[staker].height` を満たせば誰でも実行できます。
+* アンボンドされた額はステーカーの出金先アドレス（`account[withdrawal]`）へ送金されます。
+* 対応する `unbonding` エントリは削除されます。残りのボンドがない場合は出金先アドレスも削除されます。
 
 
-## Liquid Staking
+## リキッドステーキング
 
-Liquid staking is an innovative approach that allows users to stake their Aleo Credits (ACs) while maintaining liquidity. Instead of locking up your ACs, you receive a liquid staking token (stToken) that represents your staked position. This enables you to participate in staking while still being able to use your tokens in other DeFi activities. Liquid staking platforms allow users to stake with less than 10,000 ACs, making staking more accessible to everyone.
+リキッドステーキングは、Aleo クレジット（AC）をステークしながら流動性を維持できる手法です。AC をロックする代わりに、ステークポジションを表すリキッドステーキングトークン（stToken）を受け取ります。これにより、ステーキングに参加しつつ、トークンを他の DeFi 活動に活用することができます。リキッドステーキングプラットフォームを利用すれば 10,000 AC 未満でもステーキングが可能になり、より多くのユーザーが参加しやすくなります。
 
-Currently available liquid staking platforms:
+現在利用可能なリキッドステーキングプラットフォーム:
 - [Beta Staking](https://betastaking.com/)
 - [Staking.xyz](https://www.staking.xyz/)
 - [PONDO](https://www.pondo.xyz/)

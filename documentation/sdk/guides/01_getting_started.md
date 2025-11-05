@@ -1,13 +1,13 @@
 ---
 id: getting_started
-title: Getting Started
-sidebar_label: Getting Started
+title: はじめに
+sidebar_label: はじめに
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Installation
+## インストール
 
 <Tabs defaultValue="npm"
 values={[
@@ -26,8 +26,8 @@ yarn add @provablehq/sdk
 ```
 </TabItem>
 <TabItem value="source">
-1. Clone the [SDK repository](https://github.com/ProvableHQ/sdk)
-2. Navigate to `sdk/` and execute the following command:
+1. [SDK リポジトリ](https://github.com/ProvableHQ/sdk) をクローンします
+2. `sdk/` ディレクトリに移動し、次のコマンドを実行します:
 ```
 yarn build:all
 ```
@@ -36,19 +36,19 @@ yarn build:all
 
 
 
-## Configuration
+## 設定
 
-### Ensure Compatibility with ES Modules
-In your project's `package.json`, ensure that the following line is added above `scripts`:
+### ES Modules との互換性を確認する
+プロジェクトの `package.json` に、次の行が `scripts` の前に追加されていることを確認します。
 
 ```json
   "type": "module",
 ```
 
-### Top-Level Await
-Top level await is a feature that allows you to use the await keyword outside of an async function. This feature is necessary for the Provable SDK to function correctly.
+### トップレベル await
+トップレベル await は、async 関数の外側でも await キーワードを使用できる機能です。Provable SDK を正しく動作させるために必要です。
 
-In webpack this is enabled with the following options within `webpack.config.js`:
+webpack を使用する場合は、`webpack.config.js` で以下のオプションを設定します。
 ```typescript
 experiments: {
     asyncWebAssembly: true,
@@ -56,19 +56,19 @@ experiments: {
 },
 ```
 
-### Framework Specific Configuration
-The npm package [create-leo-app](https://www.npmjs.com/package/create-leo-app) offers several templates for building zero knowledge JavaScript apps using several popular frameworks including React, Next.js, and Node. Examining the configuration of these templates can provide additional guidance on how to configure your project.
+### フレームワーク固有の設定
+npm パッケージ [create-leo-app](https://www.npmjs.com/package/create-leo-app) には、React、Next.js、Node などの人気フレームワークでゼロ知識アプリを構築するためのテンプレートが用意されています。これらのテンプレートの設定を参考にすると、プロジェクトの設定方法のヒントが得られます。
 
 :::note
-If you are using `Node.js` as your framework, the Provable SDK requires a minimum of `Node.js `version 20 and recommends using version 22+ for best performance.
+フレームワークとして `Node.js` を使用する場合、Provable SDK を動かすには最低でも `Node.js` バージョン 20 が必要で、可能であれば 22 以上を推奨します。
 :::
 
 
 
-## Network Selection
-The Provable SDK contains modules for interacting with both the Mainnet and Testnet networks. The Mainnet and Testnet networks are **NOT** interoperable so it is required to explicitly select the desired network. Any transactions built for the Mainnet network will not be valid on the Testnet network and vice versa.
+## ネットワークの選択
+Provable SDK には Mainnet と Testnet の両方とやり取りするためのモジュールが含まれています。Mainnet と Testnet は互換性が **ない** ため、必ず使用するネットワークを明示的に選択してください。Mainnet 向けに作成したトランザクションは Testnet では無効であり、その逆も同様です。
 
-The following import syntax is used to select the desired network:
+ネットワークを選択するには、次のインポート構文を使用します。
 
 #### Mainnet
 ```typescript
@@ -79,22 +79,22 @@ import { ... } from '@provablehq/sdk/mainnet.js';
 import { ... } from '@provablehq/sdk/testnet.js';
 ```
 
-If no network is explicitly selected, the SDK defaults to the testnet network.
+ネットワークを明示的に指定しない場合、SDK は Testnet を既定として使用します。
 
-## WebAssembly Initialization
-When the SDK is imported, single-threaded WebAssembly is enabled by default. However, it is recommended to enable multithreaded WebAssembly as it is much more performant and eliminates the possibility of a computationally expensive operation blocking the main thread.
+## WebAssembly の初期化
+SDK をインポートすると、デフォルトでは単一スレッドの WebAssembly が有効になります。ただし、処理性能が大幅に向上し、重い計算がメインスレッドをブロックする可能性を排除できるため、マルチスレッド版を有効にすることを推奨します。
 
-Multi-threaded WebAssembly is enabled by calling the `initThreadPool()` function at the beginning of the application. This starts multiple WebWorker threads and provides access to the WebAssembly instance and memory to each thread.
+アプリケーションの冒頭で `initThreadPool()` 関数を呼び出すと、マルチスレッド WebAssembly が有効になります。これにより複数の WebWorker スレッドが起動し、それぞれが WebAssembly のインスタンスとメモリへアクセスできるようになります。
 
-**This function only needs to be called once and should be called before any other SDK functions.**
+**この関数は 1 度だけ呼び出せばよく、他の SDK 関数よりも前に呼び出してください。**
 
 ```typescript
 import { initThreadPool } from '@provablehq/sdk/mainnet.js';
 
-// Enables multithreading
+// マルチスレッドを有効化
 await initThreadPool();
 
-// Perform further program logic...
+// 以降にアプリケーションのロジックを記述
 ```
 
 

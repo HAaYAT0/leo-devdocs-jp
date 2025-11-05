@@ -1,9 +1,10 @@
 ---
 id: how_to_get_help
-title: How to Get Help
-sidebar_label: How to Get Help
+title: サポートの受け方
+sidebar_label: サポートの受け方
 ---
-Discord is our primary communication channel with the community. If you have a question that is not covered in this developer documentation, join our [Discord](https://discord.com/invite/aleo) and visit the engineering support channels for help. You can also join the community calls, which is open to everyone and hosted on Discord. To find the exact date and time of the calls, please check the Events section in our Discord server. Right now, there are 3 calls:
 
-- **Developers Calls**: Monthly meetings happening on the first and third Monday of each month at 7:30 AM PT - 8:30 AM PT for developers to discuss technical topics and updates.
-- **Community Call**: A monthly meeting happening on the last Monday of the month at 8:00 AM PT - 9:00 AM PT for the general community to learn about the latest developments on the Aleo ecosystem.
+コミュニティとの主な連絡手段は Discord です。開発者ドキュメントに載っていない疑問があれば、[Discord](https://discord.com/invite/aleo) に参加し、エンジニアリングサポート用のチャンネルで質問してください。また、誰でも参加できるコミュニティコールも Discord 上で開催しています。開催日時は Discord サーバーの Events セクションをご確認ください。現在は次の 3 つのコールがあります。
+
+- **Developers Calls**: 毎月第 1・第 3 月曜日の午前 7:30〜8:30（太平洋時間）に開催。開発者同士で技術的な話題や最新情報を共有します。
+- **Community Call**: 毎月最終月曜日の午前 8:00〜9:00（太平洋時間）に開催。Aleo エコシステム全体の最新動向をコミュニティ向けに紹介します。

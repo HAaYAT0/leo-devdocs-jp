@@ -1,25 +1,25 @@
 ---
 id: comparison-table
-title: Comparison Table
-description: Side-by-side comparison of Aleo's Leo language and Ethereum's Solidity
-sidebar_label: Comparison Table
+title: 比較表
+description: Aleo の Leo 言語と Ethereum の Solidity の比較
+sidebar_label: 比較表
 ---
 
-A side-by-side comparison between **Leo** (Aleo) and **Solidity** (Ethereum/EVM).  
+**Leo**（Aleo）と **Solidity**（Ethereum/EVM）の主要な違いを並べて比較します。
 
-| Feature              | **Leo** | **Solidity** |
-|----------------------|---------|--------------|
-| **Execution Model**  | Off-chain execution + on-chain proof verification and optional on-chain execution | Fully on-chain execution |
-| **State Model**      | Public key-value `mapping` and private `record` [storage](../../concepts/fundamentals/06_public_private.md#aleo-state-storage) | Key-value contract `storage`, temporary `transient` storage, temporary `memory` and read-only `calldata` |
-| **Privacy**          | Built-in privacy with private inputs (messages), private outputs (state changes) and private user | No privacy – all state and calldata are public |
-| **Execution Cost**   | Storage cost + finalize cost (on-chain compute based on instruction) | Gas based on opcode |
-| **Supported Types**  | `bool`, `u8…u128`, `i8…i128`, plus `field`, `group`, `scalar`; no `bytes`, dynamic arrays and `string` | `bool`, `(u)int8…256`, `bytes`, dynamic arrays, `string`, etc. |
-| **Tooling**          | [leo CLI](https://docs.leo-lang.org/cli/overview), [Leo debugger](https://docs.leo-lang.org/testing/debugging), [snarkVM CLI](../aleo/06_commands.md), [IDE plugins](https://docs.leo-lang.org/getting_started/ide#plugins), [DokoJS](https://github.com/venture23-aleo/doko-js), [Amareleo](https://github.com/kaxxa123/amareleo-chain) | Hardhat, Foundry, Remix, Truffle etc. |
-| **Randomness**       | [ChaCha random function](https://docs.leo-lang.org/language/operators#random) | Relies on 3rd party off-chain oracle (e.g. Chainlink VRF) |
-| **Error Handling**   | `assert`, `assert_eq`, `assert_neq` (no custom msg) | `assert`, `require`, `revert` with optional revert strings |
-| **Dispatch Type**    | Static dispatch (with dynamic dispatch in [roadmap](https://aleo.org/roadmap/)) | Dynamic dispatch |
-| **Built-in Functions** | `block.height`, `self.signer`, `self.caller`, `self.address`, `network.id`, `signature::verify`, `group::GEN`, BHP hashes and commits, Keccak hashes, Pedersen hashes and commits, Poseidon hashes, SHA3 hashes etc. | `keccak256`, `sha256`, `ripemd160`, `ecrecover`, address.(member functions), `abi.encode`, `abi.decode`, block.(metadata) etc. |
-| **Token Standard**   | [ARC-21](../standards/00_token_registry.md) | ERC20 |
-| **NFT Standard**     | [ARC-721](../standards/01_nft_standards.md) | ERC721 |
-| **Upgradability**    | Native upgradeability coming soon with [ARC-6](https://github.com/ProvableHQ/ARCs/discussions/94) | Via proxy patterns (Transparent, UUPS, Beacon) |
-| **Block Explorers**  | [Provable Explorer (Beta)](https://beta.explorer.provable.com/), [VXB.ai (Formerly Aleo123.io)](https://vxb.ai/), [Aleoscan](https://aleoscan.io/) etc. | Etherscan, Blockscout etc. |
+| 機能                   | **Leo** | **Solidity** |
+|------------------------|---------|--------------|
+| **実行モデル**         | オフチェーン実行 + オンチェーンでの証明検証、および必要に応じてオンチェーン実行 | 完全オンチェーン実行 |
+| **状態モデル**         | 公開マッピングと秘匿レコードによる[状態管理](../../concepts/fundamentals/06_public_private.md#aleo-state-storage) | コントラクトの `storage`（キー値）、一時的な `transient` ストレージ、`memory`（一時）、`calldata`（読み取り専用） |
+| **プライバシー**       | 秘匿入力（メッセージ）、秘匿出力（状態変更）、秘匿ユーザーをサポート | プライバシーなし（状態・calldata はすべて公開） |
+| **実行コスト**         | ストレージコスト + finalize コスト（命令に応じたオンチェーン計算） | opcode に基づくガスコスト |
+| **対応する型**         | `bool`、`u8…u128`、`i8…i128`、`field`、`group`、`scalar` など。`bytes` や可変長配列、`string` は非対応 | `bool`、`(u)int8…256`、`bytes`、動的配列、`string` など |
+| **ツールチェーン**     | [leo CLI](https://docs.leo-lang.org/cli/overview)、[Leo デバッガ](https://docs.leo-lang.org/testing/debugging)、[snarkVM CLI](../aleo/06_commands.md)、[IDE プラグイン](https://docs.leo-lang.org/getting_started/ide#plugins)、[DokoJS](https://github.com/venture23-aleo/doko-js)、[Amareleo](https://github.com/kaxxa123/amareleo-chain) | Hardhat、Foundry、Remix、Truffle など |
+| **乱数**               | [ChaCha 乱数関数](https://docs.leo-lang.org/language/operators#random) | Chainlink VRF など外部オラクルに依存 |
+| **エラー処理**         | `assert`、`assert_eq`、`assert_neq`（カスタムメッセージなし） | `assert`、`require`、`revert`（カスタムメッセージ可能） |
+| **ディスパッチ方式**   | 静的ディスパッチ（[ロードマップ](https://aleo.org/roadmap/)で動的ディスパッチを予定） | 動的ディスパッチ |
+| **ビルトイン関数**     | `block.height`、`self.signer`、`self.caller`、`self.address`、`network.id`、`signature::verify`、`group::GEN`、各種 BHP/Keccak/Pedersen/Poseidon/SHA3 ハッシュなど | `keccak256`、`sha256`、`ripemd160`、`ecrecover`、address.メンバー関数、`abi.encode` / `abi.decode`、block メタデータなど |
+| **トークン標準**       | [ARC-21](../standards/00_token_registry.md) | ERC-20 |
+| **NFT 標準**           | [ARC-721](../standards/01_nft_standards.md) | ERC-721 |
+| **アップグレード性**   | [ARC-6](https://github.com/ProvableHQ/ARCs/discussions/94) によりネイティブアップグレードを予定 | プロキシパターン（Transparent、UUPS、Beacon） |
+| **ブロックエクスプローラー** | [Provable Explorer (Beta)](https://beta.explorer.provable.com/)、[VXB.ai（旧 Aleo123.io）](https://vxb.ai/)、[Aleoscan](https://aleoscan.io/) など | Etherscan、Blockscout など |

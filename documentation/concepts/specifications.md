@@ -1,22 +1,22 @@
 ---
 id: specifications
-title: Specifications
+title: 仕様
 ---
 
-## Overview
+## 概要
 
-In the context of blockchain technology, specifications are detailed descriptions of the system's architecture, components, and operations. They serve as a blueprint for developers and engineers to understand and implement the system effectively. For Aleo, the specifications focus on two main areas: the consensus mechanism and the virtual machine.
+ブロックチェーン技術において仕様とは、システムのアーキテクチャ、構成要素、動作について詳述したものを指します。開発者やエンジニアがシステムを理解し、適切に実装するための設計図として機能します。Aleo の仕様は主にコンセンサスメカニズムと仮想マシンの 2 つの領域に焦点を当てています。
 
 
 ## [AleoBFT](https://developer.aleo.org/specs/aleobft.pdf)
 
-AleoBFT is the consensus algorithm that powers the Aleo blockchain. It is designed to ensure secure and reliable agreement among validators. AleoBFT builds on concepts from Narwhal and Bullshark, optimizing for dynamic validator committees and staking participation. Validators in AleoBFT collect transactions and submit proposals, which are then endorsed by others to form cryptographic certificates. These certificates are structured into a Directed Acyclic Graph (DAG), enabling efficient ordering of transactions and preventing forks, thus ensuring a robust and scalable consensus process.
+AleoBFT は Aleo ブロックチェーンを支えるコンセンサスアルゴリズムです。バリデータ間で安全かつ信頼性の高い合意形成を実現するよう設計されています。Narwhal と Bullshark のコンセプトを取り入れ、動的なバリデータ委員会やステーキング参加に最適化されています。AleoBFT ではバリデータがトランザクションを収集し、提案を提出します。提案は他のバリデータによる承認を経て暗号学的証明書となり、DAG（有向非巡回グラフ）に構造化されます。これによりトランザクションの効率的な順序付けとフォーク防止が実現し、堅牢でスケーラブルなコンセンサスプロセスが保証されます。
 
 ## [AleoBFT Syncing](https://developer.aleo.org/specs/aleobft_syncing.pdf)
 
-When a validator (re)joins the network it quickly learns what it’s missing by exchanging compact “checkpoint” and “recent” block summaries with peers via periodic pings. By comparing these locators, it detects any gaps in its local copy, then asks a rotating set of peers for the missing blocks in small batches. Each returned block is cross-checked against multiple peers and its embedded sub-DAG data is applied to rebuild the recent certificate graph. Once it has filled in all gaps, the validator is fully synced and can immediately take part in proposing and endorsing new blocks.
+バリデータがネットワークに（再）参加すると、定期的な ping を介して他のノードとコンパクトな「checkpoint」と「recent」ブロックサマリを交換し、欠落している情報を素早く把握します。これらのロケータを比較してローカルコピーの欠落を検出し、各ピアに小さなバッチで不足ブロックを順番に要求します。取得したブロックは複数のピアと照合され、埋め込まれたサブ DAG データを適用して最新の証明書グラフを再構築します。すべての欠落が埋まるとバリデータは完全に同期され、直ちに新しいブロックの提案と承認に参加できるようになります。
 
 ## [AleoVM](https://developer.aleo.org/specs/aleovm.pdf)
 
-The Aleo Virtual Machine (AVM) is a computational platform integral to the Aleo blockchain, designed to run privacy-focused applications. It operates as a stack machine that executes queued instructions. Its primary function is to construct arithmetic circuits described as Rank-1 Constraint System (R1CS) from each instruction in a function. After constructing the R1CS, corresponding proofs are generated using a variation of the Marlin algorithm called Varuna. This approach allows for succinct verification of arbitrary computations by leveraging a universal and updatable Structured Reference String (SRS).
-The AVM is crucial for maintaining privacy and scalability on the Aleo network. It ensures that transactions and contracts are executed while maintaining the confidentiality of the data involved, using zk-SNARKs to verify the correctness of computations without revealing the inputs or internal state.
+Aleo Virtual Machine（AVM）は、プライバシー重視のアプリケーションを実行するために Aleo ブロックチェーンへ組み込まれた計算プラットフォームです。スタックマシンとして動作し、キューに蓄えられた命令を順に実行します。主な役割は、関数内の命令からランク 1 制約システム（R1CS）で表される算術回路を構築することです。R1CS を構築すると、Varuna と呼ばれる Marlin アルゴリズムの派生版を使って対応する証明を生成します。汎用的で更新可能な構造化参照文字列（SRS）を活用することで、任意の計算を簡潔に検証できます。
+AVM は Aleo ネットワークでプライバシーとスケーラビリティを維持するうえで不可欠です。トランザクションやコントラクトを実行する際、関係するデータの機密性を保ちつつ、入力値や内部状態を公開することなく計算の正当性を zk-SNARK で検証します。

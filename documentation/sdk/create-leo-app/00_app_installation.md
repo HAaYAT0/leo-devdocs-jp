@@ -1,35 +1,34 @@
----
 id: installation
 title: Create Leo App
-sidebar_label: Installation
+sidebar_label: インストール
 ---
 
 <a href="https://www.npmjs.com/package/create-leo-app"> <img alt="Create Leo App" src="https://img.shields.io/npm/l/create-leo-app?label=NPM%20-%20Create-Leo-App&labelColor=green&color=blue" /></a>
 
-## Scaffolding Your First Aleo Project
+## 最初の Aleo プロジェクトをスキャフォールドする
 
 :::note
-**Compatibility:**
-[Node.js](https://nodejs.org/en/) version 18+
+**互換性:**
+[Node.js](https://nodejs.org/en/) バージョン 18 以上
 :::
 
-With NPM:
+NPM を使う場合:
 
 ```bash
 npm create leo-app@latest
 ```
 
-1. Enter the project name.
-2. This will prompt you to choose a preferred framework from the following options:
+1. プロジェクト名を入力します。
+2. 次の選択肢から好みのフレームワークを選びます。
     - `React`
     - `Node.js`
     - `Vanilla (JavaScript)`
 
-3. If you choose `React` as your framework, the supported templates are:
+3. フレームワークに `React` を選択した場合、利用できるテンプレートは以下のとおりです。
     - `JavaScript` + `Leo`
     - `TypeScript` + `Leo`
     - `TypeScript` + `Next.js`
 
-## More Information
+## 詳細情報
 
-Based on create-vite: https://github.com/vitejs/vite/tree/main/packages/create-vite
+create-vite をベースにしています: https://github.com/vitejs/vite/tree/main/packages/create-vite

@@ -1,70 +1,69 @@
 ---
 id: transaction_fees
-title: Transaction Fees
-sidebar_label: Transaction Fees
+title: トランザクション手数料
+sidebar_label: トランザクション手数料
 ---
 
-# Transaction Fees
+# トランザクション手数料
 
-A **transaction fee** is a fee that is required in order to process a transaction on the Aleo network. Below, we describe the way in which **Deploy** and **Execute** transactions are priced. At the time of writing, puzzle solutions are free.
+**トランザクション手数料**とは、Aleo ネットワークでトランザクションを処理するために必要な手数料です。以下では、**Deploy** トランザクションと **Execute** トランザクションの価格付けについて説明します。執筆時点では、パズルソリューションに対する手数料は無料です。
 
-## Aleo Credits Denomination Table
+## Aleo クレジットの単位表
 
-|Denomination|Size of Transaction|Value|Example|
+|単位|トランザクションサイズ|価値|例|
 |:-:|:-:|:-:|:-:|
-|`microcredit`|Byte|1|Smallest denomination|
-|`millicredit`|Kilobyte (KB)|1000 microcredits|Most transactions average between 3 and 10 millicredits|
-|`credit`|Megabyte (MB)|1000 millicredits|Largest denomination|
+|`microcredit`|バイト|1|最小単位|
+|`millicredit`|キロバイト (KB)|1000 microcredit|多くのトランザクションでは 3～10 millicredit が目安|
+|`credit`|メガバイト (MB)|1000 millicredit|最大の単位|
 
-## Types of Transaction Fees
-### Deployment Base Fee
-This is what you pay for deploying a program to the Aleo network. Deployment fees consist of the following parts:
+## トランザクション手数料の種類
+### デプロイベース手数料
+Aleo ネットワークへプログラムをデプロイする際に支払う手数料です。内訳は以下のとおりです。
 
-- There is a size cost, determined by the amount of raw bytes of your program.
-- There is a namespace cost, the smaller your program name the more you pay. There is no namespace cost if your program name is 10 characters or longer.
-- There is a synthesize cost to process your program. The more complicated operations which your program has, the more time it takes for the network to convert this to a circuit to create zero knowledge proofs for.
+- プログラムの生バイトサイズに応じたサイズコスト
+- ネームスペースコスト。プログラム名が短いほど高くなり、10 文字以上ならコストは発生しません
+- プログラムを処理する際の合成コスト。複雑な演算が多いほど、ネットワークがゼロ知識証明用の回路へ変換するのに時間がかかります
 
-### Execution Base Fee
-This is what you pay for executing program functions on the Aleo network.
+### 実行ベース手数料
+Aleo ネットワークでプログラム関数を実行する際に支払う手数料です。
 
-- There is a size cost, determined by the amount of raw bytes of your program. A quadratic fee kicks in above 5 KB.
-- There is a finalize cost, determined by the amount of operations in your function's finalize scope.
-- There is no execution cost, because verifying the associated zero knowledge proof is cheap.
+- プログラムの生バイト量に応じたサイズコスト（5 KB を超えると二次関数的に増加）
+- finalize スコープ内の処理量に応じた finalize コスト
+- 実行コストはありません。対応するゼロ知識証明の検証が軽量なためです
 
-### Priority Fee
-Priority fees are optional fees that allow users to bid for higher transaction priority in the mempool. With the approval of [ARC-0005](https://github.com/ProvableHQ/ARCs/discussions/92), priority fees are now supported and effectively created a fee market for transaction ordering.
+### 優先手数料
+優先手数料は任意の追加手数料で、メモリプール内でトランザクション優先度を上げるための入札に使われます。[ARC-0005](https://github.com/ProvableHQ/ARCs/discussions/92) が承認されたことで優先手数料が導入され、トランザクションの順序付けに関する手数料市場が形成されました。
 
-The network maintains a priority queue for transactions that include a nonzero priority fee. This priority queue is processed before the standard transaction queue when sending transactions to the BFT consensus layer.
+ネットワークは優先手数料が 0 でないトランザクションを対象に優先キューを管理します。この優先キューは、BFT コンセンサス層にトランザクションを送信する際に通常キューより先に処理されます。
 
 :::note[notes on current design]
-1.  Priority fees for transactions already in the mempool cannot be updated. 
-2.  There is no protection against starvation: if the priority pool stays full enough, 
-transmissions from the standard queue will not be sent to the BFT. 
-3.  Batch building is not atomic w.r.t. the memory pool. 
+1. メモリプール内にあるトランザクションの優先手数料は後から更新できません。 
+2. 飢餓状態を防ぐ仕組みはありません。優先キューが十分に埋まっている場合、通常キューのトランザクションは BFT に送信されません。 
+3. バッチ構築はメモリプールに対してアトミックではありません。 
 :::
 
 <!-- markdown-link-check-disable -->
-### Estimating fees
-The fee determination logic is defined in [a file called cost.rs](https://github.com/ProvableHQ/snarkVM/blob/mainnet/synthesizer/process/src/cost.rs#L26). If you want to quickly estimate fees using a website, [provable.tools](https://www.provable.tools/develop) has some limited support. Or you can also use `leo cli` to estimate the fees for your transaction. Example as below:
+### 手数料の見積もり
+手数料計算のロジックは [cost.rs](https://github.com/ProvableHQ/snarkVM/blob/mainnet/synthesizer/process/src/cost.rs#L26) で定義されています。Web サイトで簡易的に見積もりたい場合は [provable.tools](https://www.provable.tools/develop) のサポートを利用するか、`leo cli` を使ってトランザクション手数料を見積もることもできます。以下は一例です。
 <!-- markdown-link-check-enable -->
 
-First, generate a example program using `leo example`.
+まず `leo example` でサンプルプログラムを生成します。
 ```bash
 leo example lottery
 cd lottery
 ```
 
-Then use `leo deploy` to estimate the deployment fees for your transaction.
+続いて `leo deploy` を使ってトランザクションのデプロイ手数料を見積もります。
 ```bash
 leo deploy --network testnet --endpoint "https://api.explorer.provable.com/v1" --path .
 ```
 
-Or use `leo run` to estimate the execution fees for your transaction.
+または `leo run` で実行手数料を見積もれます。
 ```bash
 leo execute play --program lottery_test.aleo --endpoint https://api.explorer.provable.com/v1 --dry-run --broadcast
 ```
 
-This method works without needing to fund the private key in `.env` and it will look something like this:
+`.env` の秘密鍵に残高を用意する必要はなく、出力は次のようになります。
 ```bash
 Base execution cost for 'lottery_test' is 0.041048 credits.
 

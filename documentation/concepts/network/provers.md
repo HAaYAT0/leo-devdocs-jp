@@ -1,134 +1,132 @@
 ---
 id: provers 
-title: Provers
-sidebar_label: Provers
+title: プローバー
+sidebar_label: プローバー
 ---
 
-# Introduction
+# はじめに
 
-The Aleo blockchain introduces a computational puzzle aimed at incentivizing the acceleration of zkSNARKs and Aleo-specific program optimizations. Historically, puzzles on Aleo's test networks targeted the generation of entire proofs or focused on optimizing computationally intensive aspects of proof generation, such as Multi-Scalar Multiplications (MSM) and Number Theoretic Transforms (NTT). However, advancements in these areas have reduced their dominance in proof generation time, prompting a new focus for the next iteration.
+Aleo ブロックチェーンでは、zkSNARK の高速化や Aleo 特有のプログラム最適化を促進するための計算パズルが導入されています。これまで Aleo のテストネットワークで用いられてきたパズルは、証明全体の生成や、マルチスカラ乗算（MSM）、数論変換（NTT）といった計算量の多い処理の最適化に重点が置かれていました。しかし、これらの分野での進歩により証明生成時間に占める割合が低下したため、次のバージョンでは新たな焦点が当てられています。
 
-The puzzle sets its sights on enhancing synthesis, otherwise known as witness generation. This area is particularly crucial for Aleo, as it represents a significant portion of the time spent in generating proof for Aleo programs. By directing efforts towards synthesis, the puzzle aims to address a critical bottleneck specific to Aleo's ecosystem, ensuring a more streamlined and efficient process for developers and users alike. This strategic emphasis not only caters to the unique needs of Aleo's platform but also fosters innovation and optimizations in the broader ecosystem.
+今回のパズルは、シンセシス（別名ウィットネス生成）の強化に的を絞っています。Aleo プログラムの証明生成時間の大きな割合を占める重要な工程であるためです。シンセシスに集中的に取り組むことで、Aleo エコシステム固有のボトルネックを解消し、開発者とユーザー双方にとって、よりスムーズで効率的なプロセスを実現することを目指しています。この戦略的な重点化は、Aleo プラットフォームの特性に合致するだけでなく、エコシステム全体でのイノベーションや最適化も後押しします。
 
 :::info
-For more detailed information of the puzzle, please refer to the [specification](https://github.com/ProvableHQ/snarkVM/blob/staging/ledger/puzzle/epoch/docs/spec.md).
+パズルの詳細は [仕様書](https://github.com/ProvableHQ/snarkVM/blob/staging/ledger/puzzle/epoch/docs/spec.md) を参照してください。
 :::
 
 ### Role and Incentives of Provers
 
-Anyone can run a prover. Provers does not participate in Aleo's network consensus. They run specific algorithms to solve the `Puzzle` and obtain a `Solution` that satisfies the `proof_target`. This `Solution` is then broadcasted to the network. After the consensus network verifies and include the `Solution` in a block, the Prover receives `puzzle_reward` as incentives.
+プローバーは誰でも稼働させることができます。プローバーは Aleo のネットワークコンセンサスには参加しませんが、特定のアルゴリズムを実行して `Puzzle` を解き、`proof_target` を満たす `Solution` を得ます。得られた `Solution` はネットワークにブロードキャストされ、コンセンサスネットワークが検証してブロックに含めると、プローバーは `puzzle_reward` をインセンティブとして受け取ります。
 
-The economic incentive for Provers is similar to PoW in Bitcoin, but unlike Bitcoin, Aleo's network doesn't employ a winner-takes-all strategy. As long as the `Solution` satisfies `proof_target`, it is accepted by the network. The `puzzle_reward` incentivized Prover directly proportional to their computational power relative to the entire network in every epoch. This approach ensures fairer and more stable rewards for Provers. It's noteworthy that the `puzzle_reward` decreases gradually over 10 years time, until it reaches the minimum threshold in year 9 and becomes constant after that.
+プローバーへの経済的インセンティブは Bitcoin の PoW に近いものの、Aleo ネットワークは勝者総取りの方式を採用していません。`Solution` が `proof_target` を満たしていればネットワークに受け入れられ、各エポックにおいてネットワーク全体に対する計算リソースの割合に比例した `puzzle_reward` が与えられます。この仕組みにより、プローバーはより公平かつ安定した報酬を得られます。`puzzle_reward` は 10 年をかけて段階的に減少し、9 年目に最小値へ到達した後は一定となる点にも注意してください。
 
 ## Goals of the Puzzle
-The puzzle has been designed with the following goals in mind.
+このパズルは以下の目標を念頭に設計されています。
 
-**Hardness**: Ensure that no adversary can compute solutions to the puzzle faster than through random guessing. This requires the system to be memoryless, or non-amortizable, meaning that the probability of winning does not depend on the time spent computing a solution.
+**困難性**: ランダムな推測よりも速く解を計算できる敵対者が存在しないことを保証します。そのためにはシステムが無記憶（ノン・アモータイズ）であり、解を計算する時間に勝率が左右されない必要があります。
 
-**System Safety**: The design and its implementation must prevent attacker-controlled inputs from causing denial of service (DoS) attacks, crashes, code execution, or any other unexpected changes to the system.
+**システム安全性**: 設計および実装は、攻撃者が制御する入力によってサービス妨害（DoS）、クラッシュ、任意コード実行、その他の予期せぬシステム変更が起こらないようにしなければなりません。
 
-**Uniquely-Determined Circuits**: Maintain the soundness and uniqueness of opcode circuits in zero-knowledge proofs, preventing the existence of multiple valid assignments that could allow for cheaper puzzle attempts.
+**一意に決定される回路**: ゼロ知識証明における opcode 回路の健全性と一意性を保ち、格安なパズル試行を許す複数の有効割り当てが存在しないようにします。
 
-**Consistency in Resource Consumption**: Distribute the puzzle running time and resource consumption to minimize variance and the risk of extreme behaviors, aiming for a distribution that is more Gaussian-like than power-law-like.
+**リソース消費の一貫性**: パズルの実行時間とリソース消費を分散させ、分散の大きさや極端な振る舞いのリスクを最小化します。べき乗則よりもガウス分布に近い形を目指します。
 
-**Maximizing Usefulness**: The majority of the computation should focus on "useful" algorithms.
+**有用性の最大化**: 計算資源の大半が「有用な」アルゴリズムに費やされるべきです。
 
 ## Puzzle Design
 ### Overview
 Below is a high-level description of the puzzle:
 
-1.  Provers construct puzzle solutions and broadcast them to the network.
+1.  プローバーがパズルのソリューションを構築し、ネットワークにブロードキャストする。
 
-2.  Validators aggregate solutions and transactions into a set for the next block via the consensus mechanism.
-    -   The set of solutions cannot exceed the `MAX_SOLUTIONS` allowed in a block.
-    -   Validators are not required to verify solutions beforehand.
+2.  バリデータはコンセンサスメカニズムを通じてソリューションとトランザクションを集約し、次のブロック用の集合を作成する。
+    -   1 ブロックに含められるソリューション集合は `MAX_SOLUTIONS` を超えてはならない。
+    -   バリデータは事前にソリューションを検証する必要はない。
 
-3.  During block production, validators will process solutions in order, accepting up to `MAX_SOLUTIONS` valid solutions and aborting the rest. The ledger state is updated accordingly.
-    -   The validator maintains a ledger which stores the:
-        - `latest_epoch_hash`: The latest epoch hash.
-        - `latest_proof_target`: The minimum target a solution must reach to be accepted.
-        - `cumulative_proof_target`: The aggregated sum of proof targets for valid solutions in an epoch, from the previous block.
-        - `coinbase_target`: The expected sum of proof targets, which acts as a threshold for difficulty adjustment.
-    -   A solution is valid if its:
-        -  `epoch_hash` matches the ledger's `latest_epoch_hash`
-        - `proof_target`, computed for each solution, meets the `latest_proof_target`.
-        - Fewer than `MAX_SOLUTIONS` solutions have already been accepted for this block.
-    -   A valid solution is rewarded proportionally to its share of the sum of the `proof_target`s for the set of accepted solutions.
-    -   Each `proof_target` is added to `cumulative_proof_target`.
-    -   The `next_coinbase_target` and `next_proof_target` are updated according to the [ASERT retargeting algorithm](https://reference.cash/protocol/blockchain/proof-of-work/difficulty-adjustment-algorithm) in each block. The `next_coinbase_target` and `next_proof_target` are decreased if time between current `coinbase_timestamp` and `last_coinbase_timestamp` is longer than the `anchor_time` and remains the same if shorter or same.
-    -   If the updated `cumulative_proof_target` exceeds half of the `coinbase_target`, the `cumulative_proof_target` is reset and the latest `coinbase_target` and `coinbase_timestamp` become the new retargeting parameters to calculate next `coinbase_target`.
-    -   If the block height advances to the next epoch, the `latest_epoch_hash` is updated.
+3.  ブロック生成時、バリデータはソリューションを順番に処理し、有効なものを最大 `MAX_SOLUTIONS` 件まで受理し、それ以外は中断する。台帳状態もそれに応じて更新される。
+    -   バリデータは台帳に以下を保持する。
+        - `latest_epoch_hash`: 最新のエポックハッシュ。
+        - `latest_proof_target`: ソリューションが受け入れられるために満たすべき最小ターゲット。
+        - `cumulative_proof_target`: 前ブロック時点までに同一エポックで受理されたソリューションの proof target の累積値。
+        - `coinbase_target`: proof target の期待総和であり、難易度調整の閾値として機能する。
+    -   ソリューションが有効となる条件:
+        -  `epoch_hash` が台帳の `latest_epoch_hash` と一致している。
+        -  各ソリューションで計算される `proof_target` が `latest_proof_target` を満たしている。
+        -  当該ブロックで既に受理されたソリューションが `MAX_SOLUTIONS` 未満である。
+    -   有効なソリューションは、受理されたソリューション集合における `proof_target` の総和に対する自身の割合に応じて報酬を受け取る。
+    -   各 `proof_target` は `cumulative_proof_target` に加算される。
+    -   `next_coinbase_target` と `next_proof_target` は各ブロックで [ASERT リターゲットアルゴリズム](https://reference.cash/protocol/blockchain/proof-of-work/difficulty-adjustment-algorithm) に従って更新される。現在の `coinbase_timestamp` と `last_coinbase_timestamp` の間隔が `anchor_time` より長い場合は値を下げ、短い（または同じ）場合は維持する。
+    -   更新後の `cumulative_proof_target` が `coinbase_target` の半分を超えた場合、`cumulative_proof_target` をリセットし、最新の `coinbase_target` と `coinbase_timestamp` を新たなリターゲット計算パラメータとして利用する。
+    -   ブロック高が次のエポックに進んだ場合、`latest_epoch_hash` を更新する。
 
 ### Solution
 
-A `Solution` consists:
+`Solution` は以下の要素で構成されます。
 
--   `solution_id: SolutionID<N>` A unique identifier for a puzzle solution, which must be unique among all solutions submitted to the network. The protocol enforces uniqueness by rejecting any solution whose solution ID has already been recorded in the ledger. The solution ID is constructed from the 3-tuple `(address, epoch_hash, counter)`, which together form a per-attempt `nonce`. This nonce is then used to seed an RNG, ensuring that each puzzle attempt deterministically generates unique, random internal values.
--   `address: Address<N>` The address that is rewarded, if the puzzle solution is valid for the current proof target.
--   `epoch_hash: N::Blockhash` The current epoch block hash. A valid solution for the current epoch must use the current epoch hash. If any other epoch hash is used, the puzzle solution should always be invalid.
--   `counter: u64` A counter that is varied across multiple attempts of the puzzle for a given address and epoch hash.
--   `target: u64`  The proof target value that this solution claims to meet. A solution is only valid if its `target` is greater than or equal to the current `proof_target` required by the network. The higher the `target`, the greater the share of the reward the solution can earn.
+-   `solution_id: SolutionID<N>` パズルソリューションの一意識別子。ネットワークに提出された全ソリューションを通じてユニークである必要があります。台帳に既存の solution ID が記録されている場合、そのソリューションは拒否されるため、一意性が保証されます。solution ID は `(address, epoch_hash, counter)` の 3 つ組から構成され、試行ごとの `nonce` を形成します。このノンスで RNG をシードすることで、各試行が決定的かつランダムな内部値を生成します。
+-   `address: Address<N>` 現行の proof target に対してソリューションが有効だった場合に報酬を受け取るアドレス。
+-   `epoch_hash: N::Blockhash` 現在のエポックのブロックハッシュ。現在のエポックに対する有効なソリューションは必ずこのハッシュを使用しなければなりません。異なるエポックハッシュを用いた場合、そのソリューションは常に無効となります。
+-   `counter: u64` 同一アドレス・エポックハッシュで複数回の試行を行う際に変化させるカウンタ。
+-   `target: u64`  ソリューションが満たしていると主張する proof target の値。`target` がネットワークで要求される現在の `proof_target` 以上である場合にのみソリューションは有効です。`target` が大きいほど、得られる報酬の割合も大きくなります。
 
 ### K-ary Merkle Tree
 
-- The puzzle use a K-ary Merkle Tree of `DEPTH` 8 and `ARITY` 8.
-- The leaf and path hash functions is SHA-256.
-- The puzzle produce a Merkle root, which is converted into a solution `proof_target`. The target is compared against the `latest_proof_target` which determines whether or not the solution is valid.
+- パズルは `DEPTH` 8、`ARITY` 8 の K 分岐 Merkle 木を使用します。
+- 葉およびパスのハッシュ関数は SHA-256 です。
+- パズルは Merkle ルートを生成し、それをソリューション用の `proof_target` に変換します。このターゲットと `latest_proof_target` を比較し、ソリューションの有効性を判定します。
 
 ### Synthesis Puzzle
 
-The synthesis puzzle emphasizes synthesizing a valid R1CS assignment as the key computational element of the puzzle.
+シンセシスパズルは、有効な R1CS 割り当ての合成を主要な計算要素として重視します。
 
-The steps for constructing a solution for synthesis puzzle are given below:
+シンセシスパズルにおけるソリューション構築手順は以下のとおりです。
 
-1.  Construct an attempt-specific `nonce` (`SolutionID`) from the `address`, `epoch_hash`, and `counter`.
-2.  Sample an `EpochProgram` using the `epoch_hash`.
-3.  Sample an attempt-specific set of inputs using an RNG seeded by the `nonce` (`SolutionID`).
-4.  Synthesize the R1CS for the `EpochProgram` and puzzle inputs.
-5.  Convert the R1CS assignment into a sequence of Merkle leaves.
-6.  Compute the Merkle root and convert it into a `proof_target`.
-7.  If the `proof_target` meets the `latest_proof_target`, submit the `address`, `epoch_hash`, and `counter` as a solution. Otherwise, repeat the steps above.
+1.  `address`、`epoch_hash`、`counter` から試行固有の `nonce`（`SolutionID`）を構築する。
+2.  `epoch_hash` を用いて `EpochProgram` をサンプリングする。
+3.  ノンス（`SolutionID`）をシードとする RNG で試行固有の入力セットをサンプリングする。
+4.  `EpochProgram` とパズル入力に対する R1CS を合成する。
+5.  R1CS の割り当てを Merkle リーフ列へ変換する。
+6.  Merkle ルートを計算し、それを `proof_target` に変換する。
+7.  `proof_target` が `latest_proof_target` を満たしていれば、`address`、`epoch_hash`、`counter` をソリューションとして提出し、満たさない場合は手順を繰り返す。
 
-### Sampling Programs 
+### プログラムのサンプリング 
 
-Each epoch, an `EpochProgram` is sampled using the `epoch_hash`. The `epoch_hash` is used to seed an RNG, which selects a sequence of abstract instructions according to some fixed distribution. The abstract instructions are then concretized into a valid program using the `Register Table` to correctly track the active set of registers.
+各エポックで `epoch_hash` を用いて `EpochProgram` をサンプリングします。`epoch_hash` を RNG のシードとし、定められた分布に従って抽象命令の列を選択します。抽象命令は `Register Table` に基づいて具体化され、アクティブなレジスタ集合を正しく追跡しながら有効なプログラムへと変換されます。
 
-Instructions are sampled from a defined instruction set by weight. The weight is set according to the output entropy.
+命令は事前に定義された命令セットから重み付きでサンプリングされます。重みは出力エントロピーに基づいて設定されます。
 
-Each entry in the instruction set is a vector of at most `NUM_SEQUENCE_INSTRUCTIONS` is returned, each consisting of a tuple with:
+命令セット内の各エントリは最大 `NUM_SEQUENCE_INSTRUCTIONS` 個の命令列で構成され、それぞれが以下のタプルから成ります。
 
--   The instruction as [defined here](../../guides/aleo/04_opcodes.md).
--   The operands, which can be:
+-   [こちら](../../guides/aleo/04_opcodes.md)で定義されている命令
+-   オペランド（以下のいずれか）
     -   `Ephemeral`
     -   `Input`
     -   `Literal`
     -   `Register`
     -   `RegisterOffset`
--   The destinations:
+-   出力先
     -   `Ephemeral`
     -   `Register`
 
-#### Destinations
-`Ephemeral` destinations are locally available registers that are not added to the register table. They can be used later in the sequence, but are not available afterwards.
+#### 出力先
+`Ephemeral` 出力先はレジスタテーブルに追加されないローカルなレジスタです。同一シーケンス内で後続の命令から参照できますが、その後は利用できません。
 
-`Register` destinations are registers stored in the register table.
+`Register` 出力先はレジスタテーブルに保存されるレジスタです。
 
-#### Operands
-`Register` operands indicate that the register to be used must be the most recent element in the register table.
+#### オペランド
+`Register` オペランドは、レジスタテーブル内の直近の要素を使用することを意味します。
 
-`Ephemeral` operands are registers locally available to the sequence. They must be an ephemeral destination from a previous instruction in the sequence.
+`Ephemeral` オペランドはシーケンス内でローカルに利用できるレジスタであり、同じシーケンス内の前の命令で `Ephemeral` 出力として生成されている必要があります。
 
-`Input` operands reference the original inputs to the program.
+`Input` オペランドはプログラムへの元の入力を参照します。
 
-`Literal` operands specify constants to be used as operands.
+`Literal` オペランドはオペランドとして使用する定数を指定します。
 
-`Register offsets` indicate that the register to be used must be from the `RegisterTable`, offset by an index. That is, the 0-th index is the most recent element in the register table, the 1-st index is the second most recent and so on.
+`Register offsets` は、使用するレジスタが `RegisterTable` の指定されたオフセット位置（0 が最新、1 が次、その後も同様）であることを示します。
 
 ### Register Table
 
-The register table initializes and stores active registers while constructing the epoch program.
-The table contains a 2-deep stack of registers for each `LiteralType`.
-The table is initialized according to the preamble below.
+レジスタテーブルは、エポックプログラムの構築中にアクティブなレジスタを初期化して保持します。各 `LiteralType` に対して 2 段のスタックを用意し、以下の前文（Preamble）に従って初期化されます。
 
 **Preamble**
 
@@ -181,7 +179,7 @@ ternary r19 r34 r10 into r39;
 
 #### Instruction Variants
 
-Below are the all instruction variants in the puzzle and whether or not they are sampled.
+以下はパズルで使用される命令バリアントと、それぞれがサンプリング対象かどうかを示します。
 
 -   `Abs`: No
 -   `AbsWrapped`: Yes
@@ -248,26 +246,26 @@ Below are the all instruction variants in the puzzle and whether or not they are
 -   `Ternary`: Yes
 -   `Xor`: Yes
 
-### Epochs
+### エポック
 
-An epoch is a period of 360 blocks. At the start of each epoch, a new puzzle program is generated using a hash of the previous block. This program is the same for all provers during the epoch and changes every epoch to prevent precomputation and ensure fairness.
+エポックは 360 ブロックの期間です。各エポックの開始時に、前ブロックのハッシュから新しいパズルプログラムが生成されます。このプログラムはエポック期間中すべてのプローバーで共通であり、事前計算を防ぎ公正さを保つためにエポックごとに更新されます。
 
-Key points:
-- The `epoch_hash` is deterministically generated from the previous `block_hash` at the epoch start.
-- The `epoch_hash` seeds a random number generator to sample instructions for the new `EpochProgram`.
-- All `Solution`s in an epoch must use the current `epoch_hash` and `EpochProgram`.
-- The `EpochProgram` is cached and used for the entire epoch.
-- Targets update are completely independent of epochs and happen on every single block based on the `cumulative_proof_target` from `Solution`s.
+ポイント:
+- `epoch_hash` はエポック開始時の直前ブロック `block_hash` から決定的に生成される。
+- `epoch_hash` を RNG のシードとして、新しい `EpochProgram` の命令をサンプリングする。
+- エポック内のすべての `Solution` は現在の `epoch_hash` と `EpochProgram` を使用する必要がある。
+- `EpochProgram` はキャッシュされ、エポック期間中は同じものが使用される。
+- ターゲットの更新はエポックとは独立しており、各ブロックで `Solution` から得られる `cumulative_proof_target` に基づいて行われる。
 
-## Puzzle rewards
+## パズル報酬
 
-Aleo issues new ALEO tokens as coinbase rewards whenever valid puzzle solutions are submitted. The coinbase reward is distributed between provers and validators according to a fixed ratio, with the total reward calculated based on network parameters and proof targets.
+有効なパズルソリューションが提出されると、Aleo はコインベース報酬として新しい ALEO トークンを発行します。コインベース報酬は固定比率でプローバーとバリデータに分配され、総額はネットワークパラメータと proof target に基づいて算出されます。
 
-The total coinbase reward is split as follows:
-- **2/3 to provers**: Paid to the puzzle solvers who submitted valid solutions
-- **1/3 to validators**: Included in the block reward and distributed to active stakers
+コインベース報酬の分配は以下のとおりです。
+- **2/3 をプローバーへ**: 有効なソリューションを提出したパズル解決者に支払われます。
+- **1/3 をバリデータへ**: ブロック報酬に含められ、アクティブなステーカーへ分配されます。
 
-This distribution is implemented in the `puzzle_reward()` function:
+この分配は `puzzle_reward()` 関数で実装されています。
 
 ```rust
 pub const fn puzzle_reward(coinbase_reward: u64) -> u64 {
@@ -275,113 +273,113 @@ pub const fn puzzle_reward(coinbase_reward: u64) -> u64 {
 }
 ```
 
-### Coinbase Reward
+### コインベース報酬
 
-The coinbase reward is calculated using the formula:
+コインベース報酬は次の式で計算されます。
 
 ```
 R_coinbase = R_anchor * min(P, C_R) / C
 ```
 
-Where:
-- **R_anchor**: Anchor block reward (maximum possible coinbase reward for a given block before any adjustments are made based on the actual proof targets submitted)
-- **P**: Combined proof target from all solutions in the current epoch
-- **C_R**: Remaining coinbase target (coinbase target minus cumulative proof target)
-- **C**: Current coinbase target
+ここで:
+- **R_anchor**: アンカーブロック報酬（実際の proof target に基づく調整前における、そのブロックの最大コインベース報酬）
+- **P**: 現在のエポックで提出されたソリューションの proof target 合計
+- **C_R**: 残りのコインベースターゲット（コインベースターゲットから累積 proof target を差し引いたもの）
+- **C**: 現在のコインベースターゲット
 
 :::note
-The remaining proof target is the minimum of:
-- Combined proof target from current solutions
-- Remaining coinbase target (coinbase target minus cumulative proof target from the same epoch)
+残りの proof target は以下の最小値として定義されます。
+- 現在のソリューションによる proof target の合計
+- 同一エポックにおけるコインベースターゲットから累積 proof target を差し引いた値
 
-This ensures that rewards cannot exceed the available coinbase target for the epoch.
+これにより、エポックのコインベースターゲットを超えて報酬が支払われることがないよう保証されます。
 :::
 
-### Anchor Block Reward
+### アンカーブロック報酬
 
-The anchor block reward serves as the maximum possible coinbase reward for a given block. It is calculated using timestamps to combat block time volatility and better align with human timescales:
+アンカーブロック報酬は、そのブロックで得られるコインベース報酬の上限です。ブロック時間の変動を抑え、人間の時間感覚に近づけるためにタイムスタンプを用いて次の式で計算されます。
 
 ```
 R_anchor = max(floor((2 * S * T_A * T_R) / (T_Y10 * (T_Y10 + 1))), R_Y9)
 ```
 
-Where:
-- **S**: Starting supply (1.5 billion ALEO)
-- **T_A**: Anchor time (25 seconds)
-- **T_R**: Remaining seconds until year 10
-- **T_Y10**: Number of seconds elapsed in 10 years
-- **R_Y9**: Minimum reward at year 9
+ここで:
+- **S**: 初期供給量（15 億 ALEO）
+- **T_A**: アンカー時間（25 秒）
+- **T_R**: 10 年目までの残り秒数
+- **T_Y10**: 10 年間に相当する秒数
+- **R_Y9**: 9 年目の最小報酬
 
-The anchor reward decreases over time until year 9, after which it remains fixed at the year 9 baseline.
+アンカー報酬は 9 年目までは時間とともに減少し、9 年目以降はその時点の基準値で固定されます。
 
-### Coinbase Target
+### コインベースターゲット
 
-The coinbase target is calculated using the [ASERT](https://reference.cash/protocol/blockchain/proof-of-work/difficulty-adjustment-algorithm) retarget algorithm:
+コインベースターゲットは [ASERT](https://reference.cash/protocol/blockchain/proof-of-work/difficulty-adjustment-algorithm) リターゲットアルゴリズムを用いて計算されます。
 
 ```
 T_{i+1} = T_i * 2^(INV * (D - A) / TAU)
 ```
 
-Where:
-- **T_i**: Current target
-- **D**: Drift (actual time elapsed)
-- **A**: Anchor time (expected time elapsed)
-- **TAU**: Half-life in seconds
-- **INV**: Inverse flag (-1 for increasing difficulty, 1 for decreasing)
+ここで:
+- **T_i**: 現在のターゲット
+- **D**: ドリフト（実際に経過した時間）
+- **A**: アンカー時間（期待される経過時間）
+- **TAU**: 半減期（秒）
+- **INV**: 反転フラグ（難易度を上げるときは -1、下げるときは 1）
 
-The algorithm adjusts the target based on how quickly the current epoch advances compared to the expected half-epoch time.
+このアルゴリズムは、現在のエポックの進行速度が期待値（半エポック時間）と比べてどれほど速いかを基にターゲットを調整します。
 
-### Target Updates
+### ターゲットの更新
 
-The coinbase target and proof target are both updated on every block to ensure the puzzle remains fair and adapts to network conditions.
+パズルの公平性とネットワーク状況への適応性を保つため、コインベースターゲットと proof target は毎ブロック更新されます。
 
-- **Coinbase Target:**  
-  The coinbase target is recalculated every block using the ASERT algorithm, which takes into account the previous coinbase target, timestamps, anchor time, and the number of blocks. The formula is:  
+- **コインベースターゲット:**  
+  コインベースターゲットは ASERT アルゴリズムを用いて毎ブロック再計算されます。直前のコインベースターゲットやタイムスタンプ、アンカー時間、ブロック数が考慮され、次の式で求められます。  
 ```
 next_coinbase_target = ASERT(last_coinbase_target, last_timestamp, current_timestamp, anchor_time, blocks_per_epoch)
 ```
 
-- **Proof Target:**  
-  After updating the coinbase target, the proof target is set based on the new coinbase target, which is 1/4 of the coinbase target:  
+- **proof target:**  
+  コインベースターゲット更新後、proof target は新たなコインベースターゲットの 1/4 を基準に次のように設定されます。  
 ```
 proof_target = (coinbase_target >> 2) + 1
 ```
 
-When the cumulative proof target reaches at least half of the coinbase target (`cumulative_proof_target >= coinbase_target / 2`), the following steps occur:
-1. The cumulative proof target is reset to zero.
-2. The coinbase target is updated with new `last_coinbase_target` and new `last_timestamp`.
-3. The proof target is recalculated based on the new coinbase target.
+累積 proof target がコインベースターゲットの半分以上（`cumulative_proof_target >= coinbase_target / 2`）に達した場合、以下の処理が行われます。
+1. 累積 proof target を 0 にリセットする。
+2. 新しい `last_coinbase_target` と `last_timestamp` を用いてコインベースターゲットを更新する。
+3. 新しいコインベースターゲットに基づいて proof target を再計算する。
 
-### Individual Prover Rewards
+### プローバー個別報酬
 
-Each prover receives a portion of the puzzle reward proportional to their contribution:
+各プローバーは、自身の貢献度に比例したパズル報酬を受け取ります。
 
 ```
 Individual Reward = Puzzle Reward * (Individual Proof Target / Combined Proof Target)
 ```
 
-This approach avoids a winner-takes-all outcome by distributing rewards more equitably among provers, based on the proportion of their individual contributions.
+この方式により、個別の貢献割合に応じて報酬が配分され、勝者総取りとは異なる公平な分配が実現します。
 
-## ARC-46 Staking for Puzzle Solution Submissions
-As the Aleo Network grows, ensuring long-term security, stability, and fair participation is critical to the success of the ecosystem. The ARC-46 is [voted and accepted](https://vote.aleo.org/p/46) by the Aleo community. The goal of this ARC is to align prover incentives with the overall network’s health, and gradually adjust up economic requirements for provers as the network matures.
+## ARC-46: パズルソリューション提出におけるステーキング
+Aleo ネットワークが成長するにつれ、長期的なセキュリティ、安定性、公平な参加を確保することがエコシステム成功の鍵となります。ARC-46 は Aleo コミュニティによって[投票・可決](https://vote.aleo.org/p/46)された提案であり、プローバーのインセンティブをネットワーク全体の健全性と一致させ、ネットワークの成熟に合わせてプローバーに求められる経済的要件を段階的に引き上げることを目的としています。
 
-This ARC proposes a mechanism requiring provers on the Aleo Network to stake a specific amount of Aleo credits to be eligible to submit a specific number of solutions per epoch. This feature is programmatic, with a stepwise increase in the required amount of stake over a two-year period following the activation of this ARC.
+本 ARC は、Aleo ネットワーク上でプローバーがエポックごとに提出できるソリューション数に応じて所定の Aleo クレジットをステークする仕組みを提案しています。ARC 発効後 2 年間にわたってステーキング要件を段階的に引き上げるプログラム的な仕組みです。
 
-Before ARC-46, provers are able to participate in Proof of Succinct Work and earn puzzle rewards without any entry or exit requirements. This ARC contemplates introducing entry requirements for provers, and while exit requirements are desirable, they are out of scope for this ARC at this time.
+ARC-46 以前は、プローバーは参加・退出の要件なく Proof of Succinct Work に参加し、パズル報酬を得ることができました。本 ARC ではプローバーに参入要件を導入することを想定しており、退出要件も望ましいものの現時点での検討範囲には含まれていません。
 
-To participate as a prover on the Aleo network, this ARC proposes requiring the prover to stake a minimum number of Aleo Credits (X) to submit 1 solution per epoch. As such, if the prover wishes to submit 2 solutions per epoch, they must stake 2*X Aleo credits on the Aleo network. This approach ensures that pools do not gain any advantage over individual provers, ensuring fairness for all parties submitting solutions. As expected, once the prover submits their allotment of solutions per epoch, all subsequent solutions submitted by the prover will be rejected.
+Aleo ネットワークでプローバーとして活動するには、エポックごとに 1 つのソリューションを提出するために最低 `X` Aleo クレジットをステークする必要があると提案しています。つまり、エポックあたり 2 つのソリューションを提出したい場合は 2×`X` をステークしなければなりません。この仕組みにより、プールが独立したプローバーより優位に立つことがなく、ソリューション提出者全員に公平性が担保されます。また、プローバーがエポックごとの割当数を提出し終えた後は、それ以降のソリューションが拒否される想定です。
 
-There is no requirement that the prover must stake to any specific validator. Rather, in consensus, the protocol will enforce that the prover submitting solutions has an adequate amount of stake that is bonded to a validator on the Aleo Network.
+プローバーが特定のバリデータにステークしなければならないという要件はありません。コンセンサスにおいて、ソリューションを提出するプローバーが Aleo ネットワーク上のいずれかのバリデータに十分なステークを結び付けていることをプロトコルが強制します。
 
-### Key Objectives
-- **Sybil Resistance** - Aligning stake with number of solutions per epoch ensures that provers cannot bypass this new cryptoeconomic mechanism by creating new identities on-chain. In addition, this new cryptoeconomic mechanism makes it economically costly for malicious actors to create numerous identities (Sybil attacks) to flood the network with malformed solutions.
-- **BFT Security** - The proposed timetable ensures that provers gradually increase their stake participation to achieve at least the availability threshold of the Aleo Network within 2 years. This ensures that provers contribute to the underlying security of the Aleo Network.
-- **Economic Growth** - A transparent schedule increase in the staking requirement allows the network to adapt to its growing value and security needs without introducing sudden economic impacts or shocks. By ensuring provers contribute to staking, this ensures that their earned rewards are then directly utilized by the Aleo Network itself.
+### 主要目的
+- **Sybil 耐性** — エポックごとの提出数とステーク量を連動させることで、プローバーがオンチェーンで新しいアイデンティティを作成してこの新しい暗号経済的仕組みを迂回することを防ぎます。さらに、この仕組みにより、不正なソリューションでネットワークを氾濫させようとする悪意ある攻撃者（シビル攻撃）に高いコストを課します。
+- **BFT セキュリティ** — 提案されたスケジュールに従ってプローバーが段階的にステーク参加を増やすことで、2 年以内に Aleo ネットワークの可用性閾値を達成するよう促します。これにより、プローバーが基盤となるネットワークセキュリティへ貢献することが保証されます。
+- **経済成長** — ステーキング要件の増加を透明なスケジュールで進めることで、突発的な経済的影響やショックを招くことなく、ネットワークの価値とセキュリティ需要の成長に対応できます。プローバーがステーキングに貢献することで、獲得した報酬がネットワークそのものに再投資される仕組みを整えます。
 
-### Specification
-The staking requirement will increase in a stepwise function over 2 years on a quarterly basis. Namely, each quarter, the amount of stake required to submit 1 solution per epoch will increase for provers.
+### 仕様
+ステーキング要件は 2 年間にわたり四半期ごとに段階的に引き上げられます。すなわち、エポックごとに 1 件のソリューションを提出するために必要なステーク量が四半期ごとに増加します。
 
-The following outlines the timetable for introducing the stepwise staking requirements for provers to continue participating on the Aleo Network:
+以下は、プローバーが Aleo ネットワークで活動を続けるための段階的ステーキング要件のスケジュールです。
 
 | Effective Date         | Quarter | Stake Required Per Solution Per Epoch |
 |-----------------------|---------|---------------------------------------|
@@ -395,29 +393,29 @@ The following outlines the timetable for introducing the stepwise staking requir
 | Month 21              | Q7      | 2,000,000                             |
 | Month 24              | Q8      | 2,500,000                             |
 
-### Benefits
+### 利点
 
-This ARC benefits three main parties: **validators**, **provers**, and **long-term holders** of Aleo Credits.
+この ARC は主に **バリデータ**、**プローバー**、そして Aleo クレジットの**長期保有者**の 3 者に恩恵をもたらします。
 
-**Validators** are likely to receive increased delegations from provers as the staking requirements are rolled out over the next two years, enhancing their participation and rewards. **Provers** benefit by earning additional staking yield on their token rewards through the staking process, further aligning their incentives with the network’s security and long-term growth. **Long-term token holders** gain increased confidence that Aleo Credits are being actively used to secure the network and are delegated appropriately, supporting the network’s health.
+**バリデータ**は今後 2 年間でステーキング要件が実施されるにつれ、プローバーからの委任が増え、参加度と報酬が向上する可能性があります。**プローバー**は、ステーキングを通じて獲得トークンに追加利回りを得られ、ネットワークのセキュリティと長期的成長とインセンティブが一層整合します。**長期保有者**は、Aleo クレジットがネットワーク保護のために積極的に活用され適切に委任されていることを確認でき、ネットワークの健全性に対する信頼が高まります。
 
-## Future Plans
-### ARC-43: Extending the Puzzle to a Full SNARK
+## 今後の計画
+### ARC-43: パズルを完全な SNARK へ拡張
 
-ARC-43 proposes extending the current synthesis-focused puzzle to a full Succinct Non-interactive Argument of Knowledge (SNARK). This extension aims to address current bottlenecks and leverage recent hardware advancements. The full proposal can be found [here](https://github.com/ProvableHQ/ARCs/discussions/77).
+ARC-43 は、現在のシンセシス中心のパズルを完全な SNARK（Succinct Non-Interactive Argument of Knowledge）へ拡張する提案です。この拡張は現行のボトルネックに対処し、最新ハードウェアの進歩を活用することを目指しています。提案全文は[こちら](https://github.com/ProvableHQ/ARCs/discussions/77)から確認できます。
 
-**Key Changes:**
-- **Increased Instruction Count**: Expand the puzzle by orders of magnitude beyond current consensus verification limits
-- **Expanded Instruction Set**: Include richer opcodes with larger operands for greater complexity
-- **zkSNARK Verification**: Implement succinct puzzle proof verification to improve block verification times
+**主な変更点:**
+- **命令数の増加**: 現在のコンセンサス検証の制限を大幅に超える規模へ拡張
+- **命令セットの拡張**: より複雑な処理が可能な命令を追加し、オペランドも大型化
+- **zkSNARK 検証**: パズル証明の簡潔な検証を導入し、ブロック検証時間を短縮
 
-**Benefits:**
-- Incentivizes dedicated hardware development for full SNARK acceleration
-- Significantly improves block verification performance
-- Enhances puzzle complexity and security through larger instruction sets
-- Leverages recent GPU and FPGA acceleration advancements
+**利点:**
+- 完全 SNARK の高速化に向けた専用ハードウェア開発へのインセンティブを付与
+- ブロック検証性能を大幅に向上
+- 命令セット拡張によりパズルの複雑性とセキュリティを強化
+- 最新の GPU / FPGA による高速化技術を活用
 
-**Technical Approach:**
-- Built on existing proof system and elliptic curve to minimize technical risk
-- Extends to SNARK (not zkSNARK) to maintain non-malleability and prevent grindability
-- Phased implementation to allow gradual hardware upgrades
+**技術的アプローチ:**
+- 既存の証明システムと楕円曲線に基づき、技術的リスクを最小化
+- 変更不可性の維持とグラインド攻撃の防止のため zkSNARK ではなく SNARK へ拡張
+- 段階的な実装でハードウェアのアップグレードを徐々に進められるよう設計

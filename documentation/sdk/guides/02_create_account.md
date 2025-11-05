@@ -1,39 +1,34 @@
 ---
 id: create_account
-title: Creating Aleo Accounts
-sidebar_label: Creating Accounts
+title: Aleo アカウントの作成
+sidebar_label: アカウントの作成
 ---
-## Account Keys
-The first step in operating a zero knowledge web application is creating a cryptographic identity for a user. In the
-context of Aleo, this process starts by generating a private key. From this private key, several keys that enable a user
-to interact with Aleo programs can be derived.
+## アカウントキー
+ゼロ知識 Web アプリケーションを扱う最初のステップは、ユーザーの暗号学的なアイデンティティを作成することです。Aleo では、このプロセスは秘密鍵を生成することから始まり、その秘密鍵から Aleo プログラムとやり取りするためのさまざまな鍵を派生させます。
 
-These keys include:
-### Private Key
-The key used to represent an identity of an individual user. This key is used to authorize zero
-knowledge program execution.
-### View Key
-This key is derived from the private key and can be used to identify all records and transaction data that
-belongs to an individual user.
-### Compute Key
-A key that can be used to trustlessly run applications and generate transactions on a user's behalf.
-### Address
-A public address that can be used to trustlessly identify a user in order for that user to receive official
-Aleo credits or unique data defined by other zero-knowledge Aleo programs.
+主な鍵は次のとおりです。
+### 秘密鍵
+個々のユーザーのアイデンティティを表す鍵です。ゼロ知識プログラムの実行を承認する際に使用します。
+### ビューキー
+秘密鍵から派生し、ユーザーに属するすべてのレコードやトランザクションデータを識別するために使用します。
+### コンピュートキー
+ユーザーに代わってアプリケーションを信頼不要で実行し、トランザクションを生成するために使用します。
+### アドレス
+公式の Aleo クレジットや、他のゼロ知識 Aleo プログラムで定義された独自データを受け取るために、ユーザーを信頼不要で識別する公開アドレスです。
 
 :::warning
-All keys are considered sensitive information and should be stored securely!
+いずれの鍵も機微な情報なので、安全に保管してください！
 :::
 
-## Creating an Account
-All keys can be created using the `Account` object:
+## アカウントを作成する
+`Account` オブジェクトを使えば、これらの鍵をまとめて生成できます。
 
 ```typescript
 import { Account } from '@provablehq/sdk';
 
 const account = new Account();
 
-// Individual keys can then be accessed through the following methods
+// 個々の鍵は以下のメソッドで取得できます
 const privateKey = account.privateKey();
 const viewKey = account.viewKey();
 const computeKey = account.computeKey();
@@ -41,7 +36,7 @@ const address = account.address();
 ```
 
 
-Alternatively, if you already having an existing account, then an `Account` object can be initialized with its private key:
+すでにアカウントをお持ちの場合は、秘密鍵を使って `Account` オブジェクトを初期化できます。
 
 ```typescript
 import { Account } from '@provablehq/sdk';
@@ -51,17 +46,17 @@ const account = new Account({
 });
 ```
 
-The SDK also provides a feature to encrypt your private key with a plaintext password, as well as a shortcut to initialize an `Account` object with the private key ciphertext and the corresponding password:
+SDK には、秘密鍵を任意のパスワードで暗号化する機能と、暗号化された秘密鍵とパスワードから `Account` オブジェクトを初期化するショートカットも用意されています。
 
 ```typescript
 import { Account, PrivateKey } from '@provablehq/sdk';
 
-// From a newly generated encrypted private key
+// 新しく暗号化した秘密鍵を利用する場合
 const password = 'password';
 const ciphertext = PrivateKey.newEncrypted(password);
 const account = Account.fromCiphertext(ciphertext, password);
 
-// From the encryption of an existing private key
+// 既存の秘密鍵を暗号化した場合
 const privateKey = PrivateKey.from_string('APrivateKey1...');
 const existingPassword = 'existingPassword';
 const existingCiphertext = privateKey.toCiphertext(existingPassword);

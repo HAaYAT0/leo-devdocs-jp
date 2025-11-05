@@ -1,24 +1,24 @@
 ---
 id: async 
-title: Async Programming Model
-sidebar_label: Async Programming Model
+title: 非同期プログラミングモデル
+sidebar_label: 非同期プログラミングモデル
 ---
-The `finalize` model was introduced to naturally enable a novel hybrid programming model, where the first part of a program is executed off-chain and the second part is executed on-chain. However, this model had its shortcomings, mainly that it was not possible define the ordering in which code was finalized.
+`finalize` モデルは、プログラムの前半をオフチェーンで、後半をオンチェーンで実行する新しいハイブリッド型プログラミングモデルとして導入されました。しかしこのモデルには、コードの finalize 順序を制御できないなどの課題がありました。
 
-For example, suppose we have a function `A` first calls `B` and then calls `C`. The finalization order would be the order in which the off-chain components of the function finished, e.g `B`, `C`, `A`.
+たとえば関数 `A` が `B` を呼び、その後 `C` を呼ぶ場合、実際の finalize 順序はオフチェーン側の処理完了順 (`B`, `C`, `A` など) に依存してしまいます。
 
-To enable more expressive programs, the `finalize` model was deprecated in favor of the `async/await` model. This model borrows heavily from asynchronous programming models in other programming languages, but has some restrictions that are specific to the Aleo blockchain. Users familiar with asynchronous programming should find its instantiation in Leo familiar.
+より表現力の高いプログラムを実現するために、`finalize` モデルは廃止され、代わりに `async/await` モデルが導入されました。このモデルは他プログラミング言語の非同期モデルを踏襲しつつ、Aleo ブロックチェーン特有の制約を備えています。非同期プログラミングに慣れた開発者であれば、Leo における実装も直感的に理解できるでしょう。
 
-More information about `async/await` model can be found [here](https://docs.leo-lang.org/guides/async).
+`async/await` モデルの詳細は[こちら](https://docs.leo-lang.org/guides/async)に掲載されています。
 
-At a high-level, on-chain code is asynchronous code that does not return a value. Instead it returns a `Future`. Futures can be composed to execute simply one after another or through complex control flow.
+大まかには、オンチェーンで実行されるコードは値を直接返さない非同期コードであり、代わりに `Future` を返します。`Future` は直列実行はもちろん、より複雑な制御フローにも組み合わせ可能です。
 
-The rules in the `async/await` model are:
-- Async functions can only be called from an `async transition`.
-- Async functions cannot return values.
-- Async transitions cannot be called inside a conditional block.
-- An async function call, returns a `Future`, which is code to be executed later.
-- An async transition call, returns an optional value, and must return a single `Future`, which is code to be executed later.
-- A `Future` produced by an async transition call cannot be returned.
-- A `Future` can be passed into an async function call and must be `await`ed.
-- All `Future`s must either be consumed by an async function call or returned as an output.
+`async/await` モデルのルールは以下のとおりです。
+- 非同期関数は `async transition` からのみ呼び出せます。
+- 非同期関数は値を返せません。
+- 非同期トランジションは条件分岐ブロック内から呼び出せません。
+- 非同期関数呼び出しは、後で実行されるコードを表す `Future` を返します。
+- 非同期トランジション呼び出しはオプションの値と、後で実行されるコードを表す 1 つの `Future` を返さなければなりません。
+- 非同期トランジション呼び出しで生成された `Future` をそのまま返すことはできません。
+- `Future` は非同期関数呼び出しへ渡すことができ、必ず `await` する必要があります。
+- 生成されたすべての `Future` は、非同期関数で消費するか、出力として返却する必要があります。

@@ -1,23 +1,23 @@
 ---
 id: get_transaction
-title: Get Transaction
-sidebar_label: Get Transaction
+title: トランザクションを取得
+sidebar_label: トランザクションを取得
 ---
 
 ```bash title=ENDPOINT
 GET /{network}/transaction/{ID}
 ```
 
-Returns the transaction for the given transaction ID.
+指定したトランザクション ID に対応するトランザクションを返します。
 
-### Arguments
+### 引数
 
-| Parameter       |  Type  | Required | Description                                         |
+| パラメーター       |  型  | 必須 | 説明                                         |
 |:----------------|:------:|:--------:|:----------------------------------------------------|
-| `ID` | string |   Yes    | The transaction id of the requested transaction hex |
+| `ID` | string |   Yes    | 取得したいトランザクションのトランザクション ID（16 進表現） |
 
-### Response
+### レスポンス
 
-| Parameter |                    Type                     |        Description        |
+| パラメーター |                    型                     |        説明        |
 |:---------:|:-------------------------------------------:|:-------------------------:|
-| `result`  | [object](../concepts/fundamentals/03_transactions.md) | The requested transaction |
+| `result`  | [object](../concepts/fundamentals/03_transactions.md) | 要求されたトランザクション |

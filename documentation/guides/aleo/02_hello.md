@@ -3,21 +3,21 @@ id: hello
 title: Hello Aleo Instructions
 sidebar_label: Hello Aleo
 ---
-## 1. Create and build a new project
+## 1. 新しいプロジェクトを作成してビルドする
 
-To create a new project, we'll use the `new` command. Our project:
+新しいプロジェクトを作成するには `new` コマンドを使用します。今回は次のように進めます。
 
 ``` bash
 snarkvm new foo
 ```
 
-This will create **foo** directory and the files with the basic structure of the project:
+これで **foo** というディレクトリと、基本的なプロジェクト構成を持つファイルが生成されます。
 
-- **README.md** having the skeleton of a README with instructions on how to compile.
-- **main.aleo** the main file of the source code.
-- **program.json** containing the identification of the project in JSON format. Particularly, a dev address and its private key for the program.
+- **README.md** — コンパイル手順などを記した README のテンプレート
+- **main.aleo** — ソースコードのメインファイル
+- **program.json** — プロジェクトを識別する JSON ファイル。特に開発用アドレスとプログラム用秘密鍵を含みます。
 
-The main.aleo file should have contents like this:
+`main.aleo` ファイルには次のような内容が記述されています。
 
 ```aleo showLineNumbers
 // The 'foo.aleo' program.
@@ -30,13 +30,13 @@ function hello:
     output r2 as u32.private;
 ```
 
-You can run a program with the `snarkvm run` command, followed by the function name you want to run and its input parameters:
+プログラムは `snarkvm run` コマンドに続けて実行したい関数名と入力パラメータを渡すことで実行できます。
 
 ``` bash
 snarkvm run hello 2u32 3u32
 ```
 
-You will see output like this:
+次のような出力が表示されます。
 
 ```bash
  • Loaded universal setup (in 1478 ms)
@@ -52,17 +52,17 @@ You will see output like this:
 ✅ Finished 'foo.aleo/hello' (in "/Users/collin/code/snarkVM/foo")
 ```
 
-As you can see, the output has the `5u32` value, representing the sum of the inputs.
+見てのとおり、出力には入力の合計である `5u32` が表示されます。
 
-## 2. Executing a program
+## 2. プログラムを実行する
 
-You can execute a program with the `snarkvm execute` command, followed by the function name you want to execute and its input parameters:
+`snarkvm execute` コマンドでも、関数名と入力パラメータを指定してプログラムを実行できます。
 
 ``` bash
 snarkvm execute hello 2u32 3u32
 ```
 
-When the execution is finished, you should see the following output:
+実行が完了すると、次のような出力が表示されます。
 
 ```bash
  • Loaded universal setup (in 1478 ms)
@@ -80,21 +80,21 @@ When the execution is finished, you should see the following output:
 ✅ Executed 'foo.aleo/hello' (in "/Users/collin/code/snarkVM/foo")
 ```
 
-As you can see, the output has the `5u32` value, representing the sum of the inputs.
+こちらも入力の合計である `5u32` が出力されています。
 
-A "universal setup" is loaded into your environment. You can read more about this in the [Marlin paper](https://eprint.iacr.org/2019/1047.pdf).
+実行時には「ユニバーサルセットアップ」が読み込まれます。詳細は [Marlin 論文](https://eprint.iacr.org/2019/1047.pdf) を参照してください。
 
-Once the universal setup is ready, every function in your `main.aleo` file is built, generating this in the output folder:
+ユニバーサルセットアップが準備できると `main.aleo` 内のすべての関数がビルドされ、出力フォルダに以下のファイルが生成されます。
 
-- **hello.prover** the prover for the `hello` function.
-- **hello.verifier** the verifier for the `hello` function.
-- **main.avm** the bytecode of your aleo program to be run by the VM.
+- **hello.prover** — `hello` 関数のプローバー
+- **hello.verifier** — `hello` 関数のベリファイア
+- **main.avm** — Aleo プログラムを実行する VM 用のバイトコード
 
-As you can already guess, we have only one `.avm` file for the whole program, but a prover and verifier for every function.
+推測できるとおり、プログラム全体に対して `.avm` ファイルは 1 つですが、各関数ごとにプローバーとベリファイアが生成されます。
 
-## 3. Overview of a program
+## 3. プログラムの概要
 
-Let's examine the foo program inside the `main.aleo` file:
+`main.aleo` にある foo プログラムを見ていきましょう。
 
 ```aleo showLineNumbers
 // The 'foo.aleo' program.
@@ -107,55 +107,55 @@ function hello:
     output r2 as u32.private;
 ```
 
-First, we need to declare the program as the following:
+まず次のようにプログラムを宣言します。
 
 ```aleo
 program foo.aleo;
 ```
 
-Afterwards, we can start writing its functions (or other Aleo structures such as structs, records, closures, as we will see later).
+その後、関数（後述する struct、record、closure などの Aleo 構造体も含む）を記述できます。
 
-In the case of functions we have it very easy:
+関数は次のように記述します。
 
 ```aleo
 function [function_name]:
 ```
 
-The functions are composed of three main parts:
+関数は主に 3 つの部分で構成されています。
 
-- **The input section**
+- **入力セクション**
 
-  Here we declare its input parameters:
+  入力パラメータを宣言します。
   ```aleo
       input r0 as u32.public;
       input r1 as u32.private;
   ```
-  Everything in Aleo instructions are declared/stored inside a register with a type (`i8`,`field`,`bool`, etc.) and a visibility option (`public` or `private`), registers are named as `r0`, `r1`, ..., `rn`.
+  Aleo instructions ではすべての値がレジスタに格納され、型（`i8`、`field`、`bool` など）と可視性（`public` または `private`）を持ちます。レジスタは `r0`, `r1`, ..., `rn` のように命名されます。
 
-  In this case we use `r0` and `r1` to store the inputs passed in sequential order to a program as `u32` values, where we can store 32-bit unsigned integers to perform our sum operation.
+  この例では 32 ビットの符号なし整数である `u32` の値を、順番に `r0` と `r1` に格納して加算処理を行います。
 
-- **The instructions section**
+- **命令セクション**
 
-  The next section consists of the core of our function: here we call the Aleo Instructions we need to make our program do what we want. For example, performing an addition operation:
+  関数の中心となる部分で、ここで必要な Aleo instruction を呼び出します。例えば加算を行うには次のように記述します。
   ```aleo
       add r0 r1 into r2;
   ```
-  Every aleo instruction is followed by its input parameters with its specific types, and the result is stored in the register specified after `into`.
+  各命令は特定の型を持つ入力パラメータを取り、`into` の後に指定したレジスタに結果を格納します。
 
-  You can find all the available Aleo instruction opcodes [here](./04_opcodes.md).
+  利用可能な Aleo instruction opcode は [こちら](./04_opcodes.md) で確認できます。
 
-- **The output section**
+- **出力セクション**
 
-  Similar to the input section, the output section does the same for the output of the program. It's the return of the function.
+  入力セクションと同様に、関数の戻り値を宣言します。
   ```aleo
       output r2 as u32.private;
   ```
 
-## 4. Types
+## 4. 型
 
-Aleo uses a strongly-typed syntax. The language supports 16 primitive types, and allows users to define custom types.
+Aleo は強い型付けの文法を採用しており、16 個のプリミティブ型に加えてユーザー定義型も利用できます。
 
-The Aleo primitive types include:
+Aleo のプリミティブ型は次のとおりです。
 ```aleo
 address
 boolean
@@ -174,17 +174,17 @@ u128
 scalar
 ```
 
-Users can define custom types using the `struct` or `record` keywords. We will explore these in the next few sections.
+`struct` や `record` キーワードを使うとユーザー定義型を作成できます。次のセクションで詳しく見ていきます。
 
-### 4.1 Registers
+### 4.1 レジスタ
 
-Registers are the places where you store data to then be able to modify it.
+レジスタはデータを格納し、後で操作するための領域です。
 
-### 4.2 Structs
+### 4.2 Struct
 
-Structs are user-defined data structures. They are very much like traditional structs in conventional programming languages. You can store structs into registers, like with any other Aleo data types.
+Struct はユーザー定義のデータ構造で、他のプログラミング言語における構造体とほぼ同じです。Struct も他の Aleo データ型と同様にレジスタに格納できます。
 
-For example, let's build a struct representing a fixed-size array of 3 elements. Add this at the bottom of the `main.aleo` file:
+例として、3 要素の固定長配列を表す struct を `main.aleo` の末尾に追加してみましょう。
 
 ```aleo showLineNumbers
 struct array3:
@@ -193,7 +193,7 @@ struct array3:
     a2 as u32;
 ```
 
-Now, just for example purposes, let's code a function that adds one to each element of a register with an `array3` data type stored in it.
+例として、`array3` 型のレジスタに格納された各要素に 1 を加算する関数を実装します。
 
 ```aleo showLineNumbers
 function sum_one_to_array3:
@@ -205,21 +205,21 @@ function sum_one_to_array3:
     output r4 as array3.private;
 ```
 
-As you can see, we can input a struct into register `r0` and access struct elements with the `.` syntax. We perform the `add` instruction on every element, storing the results in registers `r1`, `r2` and `r3` and, finally, we make use of the cast command to create a new `array3` struct into `r4`.
+このように、struct を `r0` に入力し、`.` 構文で要素にアクセスできます。各要素に `add` 命令を適用し、`r1`, `r2`, `r3` に結果を格納した後、`cast` 命令で新しい `array3` struct を `r4` に生成します。
 
-Now, let's run it. In this case, the only new thing you need to know is that structs are passed to the cli in the following format:
+それでは実行してみましょう。今回新しく覚えておく必要があるのは、CLI で struct を渡す際のフォーマットです。
 
 ```bash
 "{a0: 1u32, a1: 2u32, a2: 3u32}"
 ```
 
-Now we can execute the `snarkvm run` command. We will clean the project to pick up the new code:
+`snarkvm run` コマンドを実行します。新しいコードを反映させるため、まずクリーンしてから実行しましょう。
 
 ```bash
 snarkvm clean && snarkvm run sum_one_to_array3 "{a0: 0u32, a1: 1u32, a2: 2u32}"
 ```
 
-And we get the new `array3` element as output:
+すると次のように新しい `array3` が出力されます。
 
 ```bash
 ➡️  Output
@@ -231,22 +231,22 @@ And we get the new `array3` element as output:
 ✅ Executed 'foo.aleo/sum_one_to_array3' (in "[...]/foo")
 ```
 
-### 4.3 Records
+### 4.3 Record
 
-A record is a fundamental data structure for encoding user assets and application state. Records are very similar to structs, but they have one required component:
+Record はユーザー資産やアプリケーションステートを表現する基本的なデータ構造です。Struct と非常によく似ていますが、必須の要素が 1 つあります。
 
 ```aleo showLineNumbers
 record token:
     owner as address.private
 ```
 
-The `owner` refers to the Aleo address that owns the record.
+`owner` はその Record を所有する Aleo アドレスを表します。
 
-Records are important because they represent the basic Aleo structure to handle state in your application.
+Record はアプリケーション内でステートを扱うための基本的な構造であるため重要です。
 
-When running an Aleo function, only registers that belong to the application address can be passed as input registers. Otherwise, an error is raised and the application doesn't run.
+Aleo の関数を実行する際、アプリケーションアドレスに属するレジスタのみが入力として渡せます。そうでない場合はエラーが発生し、アプリケーションは実行されません。
 
-You can find your development application address inside the `.env` file:
+開発用アプリケーションアドレスは `.env` ファイルに記載されています。
 
 ```json
 {
@@ -255,15 +255,15 @@ You can find your development application address inside the `.env` file:
 }
 ```
 
-### 4.4 Aleo State
+### 4.4 Aleo のステート
 
-In Aleo, the state of an application is managed through records. An Aleo account can create a transaction to consume a record and produce a new record in its place. Records in Aleo are encrypted to the record owner address, ensuring that all records in Aleo are fully private.
-
-
-## 5. Your first Aleo Program: Making a transfer
+Aleo ではアプリケーションのステートは Record を通じて管理されます。Aleo アカウントはトランザクションを作成し、既存の Record を消費して新しい Record を生成できます。Record は所有者アドレスに対して暗号化されているため、Aleo の Record はすべて完全にプライベートです。
 
 
-Consider this program:
+## 5. 初めての Aleo プログラム: トークンの送金
+
+
+次のプログラムを見てみましょう。
 ```aleo showLineNumbers
 // The 'foo.aleo' program.
 program foo.aleo;
@@ -297,11 +297,11 @@ function transfer_amount:
     // receiver new token record
     output r6 as token.record;
 ```
-First, we define our own record data type called `token`, that has the required parameter `owner` and a user-defined parameter called `amount`, representing the amount of tokens we have.
+まず必須フィールド `owner` と、保有トークン量を表す `amount` を持つ独自の Record 型 `token` を定義します。
 
-This `transfer_amount` function receives 3 input parameters (`sender` record, `receiver` record and `amount`) and stores them in 3 registers (`r0`, `r1` and `r2`). After that, it computes the final balance for both of them and stores it in `r3` and `r4` (using **sub** and **add** instructions to compute the subtraction and addition respectively). With those final amounts, it creates the output records for sender and receiver, storing them in `r5` and `r6`. Finally, both records are sent out of the function with the **output** instruction.
+`transfer_amount` 関数は 3 つの入力パラメータ（送信者レコード、受信者アドレス、送金額）を受け取り、それぞれを `r0`, `r1`, `r2` に格納します。その後、送信者と受信者それぞれの最終残高を計算して `r3`, `r4` に格納します（**sub** と **add** 命令で減算・加算を計算）。その結果を元に送信者・受信者の新しい Record を `r5`, `r6` に生成し、**output** 命令で関数の戻り値として出力します。
 
-To run this function, the first parameter is the input record of the program. The format of this parameter is the same as for struct types:
+この関数を実行する際、最初のパラメータにはプログラムの入力 Record を渡します。フォーマットは struct と同様です。
 
 ```json
 {
@@ -310,12 +310,12 @@ To run this function, the first parameter is the input record of the program. Th
 }
 ```
 
-Where:
+ここで:
 
-- owner: the public address of the program, as found in the `PRIVATE_KEY` of the `.env` file.
-- other parameters: depending on the program itself (in this example, we used the parameter _amount_ with the value 50).
+- owner: `.env` の `PRIVATE_KEY` に対応するプログラムの公開アドレス
+- その他のパラメータ: プログラムに応じて指定（この例では `amount` に 50 を指定）
 
-Let's run the `transfer_amount` function (if you are following along, remember to use the address found in the program.json for the owner field):
+それでは `transfer_amount` 関数を実行しましょう（実際に試す場合は `owner` に `program.json` にあるアドレスを使用してください）。
 
 ``` bash
 snarkvm clean && snarkvm run transfer_amount "{
@@ -325,7 +325,7 @@ _nonce: 0group.public
 }" aleo1h3gu7fky36y8r7v2x9phc434fgf20g8qd7c7u45v269jfw6vmugqjegcvp 10u64
 ```
 
-We get the following output records:
+次のような出力レコードが得られます。
 
 ```bash
 
@@ -347,6 +347,6 @@ We get the following output records:
 ✅ Finished 'foo.aleo/transfer_amount' (in "[...]/foo")
 ```
 
-And that's it. You have transferred your first owner-defined tokens in Aleo!
+これで Aleo 上で独自トークンの送金が完了しました。
 
-Note: the `_nonce` is not written in Aleo instructions. The compiler outputs the `_nonce` in record outputs. The user needs to provide it as input when using a record.
+注意: `_nonce` は Aleo instructions には記述されません。コンパイラがレコード出力に `_nonce` を含めるため、レコードを入力として使用する際はユーザーが `_nonce` を指定する必要があります。

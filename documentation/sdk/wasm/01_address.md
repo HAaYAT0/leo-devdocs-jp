@@ -1,23 +1,23 @@
 ---
-title: Address
-sidebar_label: Address
+title: アドレス
+sidebar_label: アドレス
 ---
 
 <a name="Address"></a>
 
-## Overview
+## 概要
 
-<p>Represents a public address of an Aleo account. The Address class provides methods for creating addresses from various sources (private keys, view keys, compute keys), converting between different formats (bytes, bits, fields, groups), and verifying signatures.</p>
+<p>Address クラスは Aleo アカウントの公開アドレスを表します。秘密鍵・ビューキー・コンピュートキーなどのさまざまな情報源からアドレスを生成したり、バイト列・ビット列・フィールド・グループといった複数の形式を相互に変換したり、署名を検証したりするメソッドを提供します。</p>
 
 
 
-## Methods
+## メソッド
 
 <a name="Address.from_private_key"></a>
 
 ### from_private_key
 
-<p>Derive an Aleo address from a private key</p>
+<p>秘密鍵から Aleo アドレスを導出します。</p>
 
 ```javascript
 from_private_key(private_key) ► Address
@@ -25,10 +25,10 @@ from_private_key(private_key) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| private_key | <code>PrivateKey</code> | The private key to derive the address from |
-| *return* | <code>Address</code> | Address corresponding to the private key |
+| private_key | <code>PrivateKey</code> | アドレスを導出する元の秘密鍵 |
+| *return* | <code>Address</code> | 秘密鍵に対応するアドレス |
 
 ---
 
@@ -36,7 +36,7 @@ from_private_key(private_key) ► Address
 
 ### from_view_key
 
-<p>Derive an Aleo address from a view key</p>
+<p>ビューキーから Aleo アドレスを導出します。</p>
 
 ```javascript
 from_view_key(view_key) ► Address
@@ -44,10 +44,10 @@ from_view_key(view_key) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| view_key | <code>ViewKey</code> | The view key to derive the address from |
-| *return* | <code>Address</code> | Address corresponding to the view key |
+| view_key | <code>ViewKey</code> | アドレスを導出する元のビューキー |
+| *return* | <code>Address</code> | ビューキーに対応するアドレス |
 
 ---
 
@@ -55,7 +55,7 @@ from_view_key(view_key) ► Address
 
 ### from_compute_key
 
-<p>Derive an Aleo address from a compute key</p>
+<p>コンピュートキーから Aleo アドレスを導出します。</p>
 
 ```javascript
 from_compute_key(compute_key) ► Address
@@ -63,10 +63,10 @@ from_compute_key(compute_key) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| compute_key | <code>ComputeKey</code> | The compute key to derive the address from |
-| *return* | <code>Address</code> | Address corresponding to the compute key |
+| compute_key | <code>ComputeKey</code> | アドレスを導出する元のコンピュートキー |
+| *return* | <code>Address</code> | コンピュートキーに対応するアドレス |
 
 ---
 
@@ -74,7 +74,7 @@ from_compute_key(compute_key) ► Address
 
 ### fromBytesLe
 
-<p>Get an address from a series of bytes</p>
+<p>リトルエンディアンのバイト列からアドレスを生成します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Address
@@ -82,10 +82,10 @@ fromBytesLe(bytes) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | A left endian byte array representing the address |
-| *return* | <code>Address</code> | The address object |
+| bytes | <code>Uint8Array</code> | アドレスを表すリトルエンディアンのバイト配列 |
+| *return* | <code>Address</code> | 生成されたアドレスオブジェクト |
 
 ---
 
@@ -93,7 +93,7 @@ fromBytesLe(bytes) ► Address
 
 ### toBytesLe
 
-<p>Get the left endian byte array representation of the address</p>
+<p>アドレスをリトルエンディアンのバイト配列に変換します。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
@@ -101,7 +101,7 @@ toBytesLe() ► Uint8Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -111,7 +111,7 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Get an address from a series of bits represented as a boolean array</p>
+<p>リトルエンディアンのビット列（真偽値配列）からアドレスを生成します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Address
@@ -119,10 +119,10 @@ fromBitsLe(bits) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bits | <code>Array</code> | A left endian boolean array representing the bits of the address |
-| *return* | <code>Address</code> | The address object |
+| bits | <code>Array</code> | アドレスのビット列を表すリトルエンディアンの真偽値配列 |
+| *return* | <code>Address</code> | 生成されたアドレスオブジェクト |
 
 ---
 
@@ -130,7 +130,7 @@ fromBitsLe(bits) ► Address
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the bits of the address</p>
+<p>アドレスをリトルエンディアンのビット配列に変換します。</p>
 
 ```javascript
 toBitsLe() ► Array.<any>
@@ -138,7 +138,7 @@ toBitsLe() ► Array.<any>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -148,7 +148,7 @@ toBitsLe() ► Array.<any>
 
 ### fromFields
 
-<p>Get an address object from an array of fields</p>
+<p>フィールド配列からアドレスオブジェクトを生成します。</p>
 
 ```javascript
 fromFields(fields) ► Plaintext
@@ -156,10 +156,10 @@ fromFields(fields) ► Plaintext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| fields | <code>Array</code> | An array of fields |
-| *return* | <code>Plaintext</code> | The address object |
+| fields | <code>Array</code> | フィールド値の配列 |
+| *return* | <code>Plaintext</code> | 生成されたアドレスオブジェクト |
 
 ---
 
@@ -167,7 +167,7 @@ fromFields(fields) ► Plaintext
 
 ### toFields
 
-<p>Get the field array representation of the address</p>
+<p>アドレスをフィールド値の配列に変換します。</p>
 
 ```javascript
 toFields() ► Array.<any>
@@ -175,7 +175,7 @@ toFields() ► Array.<any>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -185,7 +185,7 @@ toFields() ► Array.<any>
 
 ### fromGroup
 
-<p>Get an address object from a group</p>
+<p>グループ要素からアドレスオブジェクトを生成します。</p>
 
 ```javascript
 fromGroup(group) ► Address
@@ -193,10 +193,10 @@ fromGroup(group) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| group | <code>Group</code> | The group object |
-| *return* | <code>Address</code> | The address object |
+| group | <code>Group</code> | 入力となるグループ要素 |
+| *return* | <code>Address</code> | 生成されたアドレスオブジェクト |
 
 ---
 
@@ -204,7 +204,7 @@ fromGroup(group) ► Address
 
 ### toGroup
 
-<p>Get the group representation of the address object</p>
+<p>アドレスオブジェクトをグループ要素に変換します。</p>
 
 ```javascript
 toGroup() ► Group
@@ -212,7 +212,7 @@ toGroup() ► Group
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Group</code> |
 
@@ -222,7 +222,7 @@ toGroup() ► Group
 
 ### from_string
 
-<p>Create an aleo address object from a string representation of an address</p>
+<p>文字列表現から Aleo アドレスオブジェクトを生成します。</p>
 
 ```javascript
 from_string(address) ► Address
@@ -230,10 +230,10 @@ from_string(address) ► Address
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| address | <code>string</code> | String representation of an address |
-| *return* | <code>Address</code> | Address object |
+| address | <code>string</code> | アドレスの文字列表現 |
+| *return* | <code>Address</code> | 生成されたアドレスオブジェクト |
 
 ---
 
@@ -241,7 +241,7 @@ from_string(address) ► Address
 
 ### to_string
 
-<p>Get a string representation of an Aleo address object</p>
+<p>Aleo アドレスオブジェクトを文字列表現に変換します。</p>
 
 ```javascript
 to_string(Address) ► string
@@ -249,10 +249,10 @@ to_string(Address) ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | Address | <code>Address</code> |
-| *return* | <code>string</code> | String representation of the address |
+| *return* | <code>string</code> | アドレスの文字列表現 |
 
 ---
 
@@ -260,7 +260,7 @@ to_string(Address) ► string
 
 ### toPlaintext
 
-<p>Get the plaintext representation of the address</p>
+<p>アドレスの平文表現を取得します。</p>
 
 ```javascript
 toPlaintext() ► Plaintext
@@ -268,7 +268,7 @@ toPlaintext() ► Plaintext
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Plaintext</code> |
 
@@ -278,7 +278,7 @@ toPlaintext() ► Plaintext
 
 ### verify
 
-<p>Verify a signature for a message signed by the address</p>
+<p>このアドレスによって署名されたメッセージの署名を検証します。</p>
 
 ```javascript
 verify(Byte) ► boolean
@@ -286,9 +286,9 @@ verify(Byte) ► boolean
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| Byte | <code>Uint8Array</code> | array representing a message signed by the address |
-| *return* | <code>boolean</code> | Boolean representing whether or not the signature is valid |
+| Byte | <code>Uint8Array</code> | アドレスが署名したメッセージを表すバイト配列 |
+| *return* | <code>boolean</code> | 署名が有効かどうかを示す真偽値 |
 
 ---

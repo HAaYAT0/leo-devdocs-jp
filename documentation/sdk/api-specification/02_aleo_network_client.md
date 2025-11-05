@@ -1,14 +1,14 @@
 ---
-title: Aleo Network Client
-sidebar_label: Aleo Network Client
+title: Aleo ネットワーククライアント
+sidebar_label: Aleo ネットワーククライアント
 ---
 
 <a name="AleoNetworkClient"></a>
 
-## Overview
-Client library that encapsulates REST calls to publicly exposed endpoints of Aleo nodes. The methods provided in this allow users to query public information from the Aleo blockchain and submit transactions to the network.
+## 概要
+Aleo ノードが公開しているエンドポイントへの REST 呼び出しをまとめたクライアントライブラリです。ここで提供されるメソッドを使うと、Aleo ブロックチェーンの公開情報を取得し、ネットワークへトランザクションを送信できます。
 
-**Kind**: global class  
+**種類**: グローバルクラス  
 
 * AleoNetworkClient
     * [new AleoNetworkClient(host)](#new_AleoNetworkClient_new)
@@ -43,7 +43,7 @@ Client library that encapsulates REST calls to publicly exposed endpoints of Ale
     * [.submitTransaction(transaction)](#submittransaction)
     * [.submitSolution(solution)](#submitsolution)
 
-## Constructor
+## コンストラクター
 
 <a name="new_AleoNetworkClient_new"></a>
 
@@ -53,38 +53,38 @@ Client library that encapsulates REST calls to publicly exposed endpoints of Ale
 new AleoNetworkClient(host)
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | host | <code>string</code> | 
 
 **Example**  
 ```js
-// Connection to a local node
+// ローカルノードに接続します
 let local_connection = new AleoNetworkClient("http://localhost:3030");
 
-// Connection to a public beacon node
+// 公開ビーコンノードに接続します
 let public_connection = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 ```
 
 <a name="AleoNetworkClient+setHost"></a>
 
-## Methods
+## メソッド
 
 ### setHost {#AleoNetworkClient+setHost}
 
-<p>Set a new host for the networkClient</p>
+<p>networkClient のホストを設定します。</p>
 
 ```javascript
 networkClient.setHost(host)
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | host | <code>string</code> | 
 
 **Example**  
 ```js
-// New connection to a public beacon node
+// 公開ビーコンノードへ新しく接続します
 let public_connection = AleoNetworkClient.setHost("https://api.explorer.provable.com/v1");
 ```
 
@@ -96,13 +96,13 @@ let public_connection = AleoNetworkClient.setHost("https://api.explorer.provable
 
 ### setAccount {#AleoNetworkClient+setAccount}
 
-<p>Set an account to use in networkClient calls</p>
+<p>networkClient の呼び出しに使用するアカウントを設定します。</p>
 
 ```javascript
 networkClient.setAccount(account)
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | account | <code>Account</code> | 
 
@@ -120,13 +120,13 @@ networkClient.setAccount(account);
 
 ### getAccount {#AleoNetworkClient+getAccount}
 
-<p>Return the Aleo account used in the networkClient</p>
+<p>networkClient で使用している Aleo アカウントを返します。</p>
 
 ```javascript
 networkClient.getAccount() ⇒ Account
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Account</code> | 
 
@@ -143,13 +143,13 @@ let account = networkClient.getAccount();
 
 ### fetchData {#AleoNetworkClient+fetchData}
 
-<p>Fetches data from the Aleo network and returns it as a JSON object.</p>
+<p>Aleo ネットワークからデータを取得し、JSON オブジェクトとして返します。</p>
 
 ```javascript
 networkClient.fetchData(url) ⇒ Promise.<Type>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | url | <code>undefined</code> | 
 | *return* | <code>Promise.&lt;Type&gt;</code> | 
@@ -160,13 +160,13 @@ networkClient.fetchData(url) ⇒ Promise.<Type>
 
 ### fetchRaw {#AleoNetworkClient+fetchRaw}
 
-<p>Fetches data from the Aleo network and returns it as an unparsed string. This method should be used when it is desired to reconstitute data returned from the network into a WASM object.</p>
+<p>Aleo ネットワークからデータを取得し、未解析の文字列として返します。ネットワークから返されたデータを WASM オブジェクトへ再構築したい場合に使用します。</p>
 
 ```javascript
 networkClient.fetchRaw(url) ⇒ Promise.<string>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | url | <code>undefined</code> | 
 | *return* | <code>Promise.&lt;string&gt;</code> | 
@@ -177,32 +177,32 @@ networkClient.fetchRaw(url) ⇒ Promise.<string>
 
 ### findRecords {#AleoNetworkClient+findRecords}
 
-<p>Attempt to find records in the Aleo blockchain.</p>
+<p>Aleo ブロックチェーン上でレコードの検索を試みます。</p>
 
 ```javascript
 networkClient.findRecords(startHeight, endHeight, unspent, programs, amounts, maxMicrocredits, nonces, privateKey) ⇒ Promise.<Array.<RecordPlaintext>>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| startHeight | <code>number</code> | The height at which to start searching for unspent records |
-| endHeight | <code>number</code> | The height at which to stop searching for unspent records |
-| unspent | <code>boolean</code> | Whether to search for unspent records only |
-| programs | <code>Array.&lt;string&gt;</code> | The program(s) to search for unspent records in |
-| amounts | <code>Array.&lt;number&gt;</code> | The amounts (in microcredits) to search for (eg. [100, 200, 3000]) |
-| maxMicrocredits | <code>number</code> | The maximum number of microcredits to search for |
-| nonces | <code>Array.&lt;string&gt;</code> | The nonces of already found records to exclude from the search |
-| privateKey | <code>string</code> | An optional private key to use to find unspent records. |
+| startHeight | <code>number</code> | 未使用レコードの検索を開始する高さです |
+| endHeight | <code>number</code> | 未使用レコードの検索を終了する高さです |
+| unspent | <code>boolean</code> | 未使用レコードのみを検索するかどうかを指定します |
+| programs | <code>Array.&lt;string&gt;</code> | 未使用レコードを検索する対象プログラムです |
+| amounts | <code>Array.&lt;number&gt;</code> | 探したい金額（マイクロクレジット単位）です（例: [100, 200, 3000]） |
+| maxMicrocredits | <code>number</code> | 合計マイクロクレジットの上限です |
+| nonces | <code>Array.&lt;string&gt;</code> | すでに見つかったレコードのノンスです。検索対象から除外します |
+| privateKey | <code>string</code> | 未使用レコードを検索する際に使う任意の秘密鍵です |
 | *return* | <code>Promise.&lt;Array.&lt;RecordPlaintext&gt;&gt;</code> | 
 
 **Example**  
 ```js
-// Find specific amounts
+// 特定の金額を検索します
 const startHeight = 500000;
 const amounts = [600000, 1000000];
 const records = await networkClient.findRecords(startHeight, undefined, true, ["credits.aleo"], amounts);
 
-// Find specific amounts with a maximum number of cumulative microcredits
+// 合計マイクロクレジットの上限を指定して特定の金額を検索します
 const maxMicrocredits = 100000;
 const records = await networkClient.findRecords(startHeight, undefined, true, ["credits.aleo"], undefined, maxMicrocredits);
 ```
@@ -213,32 +213,32 @@ const records = await networkClient.findRecords(startHeight, undefined, true, ["
 
 ### findUnspentRecords {#AleoNetworkClient+findUnspentRecords}
 
-<p>Attempts to find unspent records in the Aleo blockchain.</p>
+<p>Aleo ブロックチェーン上で未使用レコードの検索を試みます。</p>
 
 ```javascript
 networkClient.findUnspentRecords(startHeight, endHeight, programs, amounts, maxMicrocredits, nonces, privateKey) ⇒ Promise.<Array.<RecordPlaintext>>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| startHeight | <code>number</code> | The height at which to start searching for unspent records |
-| endHeight | <code>number</code> | The height at which to stop searching for unspent records |
-| programs | <code>Array.&lt;string&gt;</code> | The program(s) to search for unspent records in |
-| amounts | <code>Array.&lt;number&gt;</code> | The amounts (in microcredits) to search for (eg. [100, 200, 3000]) |
-| maxMicrocredits | <code>number</code> | The maximum number of microcredits to search for |
-| nonces | <code>Array.&lt;string&gt;</code> | The nonces of already found records to exclude from the search |
-| privateKey | <code>string</code> | An optional private key to use to find unspent records. |
+| startHeight | <code>number</code> | 未使用レコードの検索を開始する高さです |
+| endHeight | <code>number</code> | 未使用レコードの検索を終了する高さです |
+| programs | <code>Array.&lt;string&gt;</code> | 未使用レコードを検索する対象プログラムです |
+| amounts | <code>Array.&lt;number&gt;</code> | 探したい金額（マイクロクレジット単位）です（例: [100, 200, 3000]） |
+| maxMicrocredits | <code>number</code> | 合計マイクロクレジットの上限です |
+| nonces | <code>Array.&lt;string&gt;</code> | すでに見つかったレコードのノンスです。検索対象から除外します |
+| privateKey | <code>string</code> | 未使用レコードを検索する際に使う任意の秘密鍵です |
 | *return* | <code>Promise.&lt;Array.&lt;RecordPlaintext&gt;&gt;</code> | 
 
 **Example**  
 ```js
-// Find specific amounts
+// 特定の金額を検索します
 const startHeight = 500000;
 const endHeight = 550000;
 const amounts = [600000, 1000000];
 const records = await networkClient.findUnspentRecords(startHeight, endHeight, ["credits.aleo"], amounts);
 
-// Find specific amounts with a maximum number of cumulative microcredits
+// 合計マイクロクレジットの上限を指定して特定の金額を検索します
 const maxMicrocredits = 100000;
 const records = await networkClient.findUnspentRecords(startHeight, undefined, ["credits.aleo"], undefined, maxMicrocredits);
 ```
@@ -249,13 +249,13 @@ const records = await networkClient.findUnspentRecords(startHeight, undefined, [
 
 ### getBlock {#AleoNetworkClient+getBlock}
 
-<p>Returns the contents of the block at the specified block height.</p>
+<p>指定したブロック高にあるブロックの内容を返します。</p>
 
 ```javascript
 networkClient.getBlock(height) ⇒ Promise.<BlockJSON>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | height | <code>number</code> | 
 | *return* | <code>Promise.&lt;BlockJSON&gt;</code> | 
@@ -271,13 +271,13 @@ let block = await networkClient.getBlock(1234);
 
 ### getBlockRange {#AleoNetworkClient+getBlockRange}
 
-<p>Returns a range of blocks between the specified block heights.</p>
+<p>指定したブロック高の範囲にあるブロックを返します。</p>
 
 ```javascript
 networkClient.getBlockRange(start, end) ⇒ Promise.<Array.<BlockJSON>>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | start | <code>number</code> | 
 | end | <code>number</code> | 
@@ -294,15 +294,15 @@ let blockRange = await networkClient.getBlockRange(2050, 2100);
 
 ### getProgram
 
-<p>Returns the source code of a program given a program ID.</p>
+<p>プログラム ID を指定してプログラムのソースコードを返します。</p>
 
 ```javascript
 networkClient.getProgram(programId) ⇒ Promise.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| programId | <code>string</code> | The program ID of a program deployed to the Aleo Network |
+| programId | <code>string</code> | Aleo ネットワークにデプロイ済みのプログラム ID です |
 | *return* | <code>Promise.&lt;string&gt;</code> | 
 
 **Example**  
@@ -318,15 +318,15 @@ assert.equal(program, expectedSource);
 
 ### getProgramObject
 
-<p>Returns a program object from a program ID or program source code.</p>
+<p>プログラム ID またはプログラムのソースコードからプログラムオブジェクトを返します。</p>
 
 ```javascript
 networkClient.getProgramObject(inputProgram) ⇒ Promise.<Program>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| inputProgram | <code>string</code> | The program ID or program source code of a program deployed to the Aleo Network |
+| inputProgram | <code>string</code> | Aleo ネットワークにデプロイ済みのプログラム ID またはソースコードです |
 | *return* | <code>Promise.&lt;Program&gt;</code> | 
 
 **Example**  
@@ -348,15 +348,15 @@ assert.equal(programObjectFromID.to_string(), programObjectFromSource.to_string(
 
 ### getProgramImports
 
-<p>Returns an object containing the source code of a program and the source code of all programs it imports</p>
+<p>プログラムのソースコードと、そのプログラムがインポートしているすべてのプログラムのソースコードを含むオブジェクトを返します。</p>
 
 ```javascript
 networkClient.getProgramImports(inputProgram) ⇒ Promise.<ProgramImports>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| inputProgram | <code>Program</code> | The program ID or program source code of a program deployed to the Aleo Network |
+| inputProgram | <code>Program</code> | Aleo ネットワークにデプロイ済みのプログラム ID またはソースコードです |
 | *return* | <code>Promise.&lt;ProgramImports&gt;</code> | 
 
 **Example**  
@@ -387,15 +387,15 @@ assert.deepStrictEqual(programImports, expectedImports);
 
 ### getProgramImportNames
 
-<p>Get a list of the program names that a program imports.</p>
+<p>プログラムがインポートしているプログラム名の一覧を取得します。</p>
 
 ```javascript
 networkClient.getProgramImportNames(inputProgram) ⇒ Array.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| inputProgram | <code>Program</code> | The program id or program source code to get the imports of |
+| inputProgram | <code>Program</code> | インポートを取得したいプログラム ID またはソースコードです |
 | *return* | <code>Array.&lt;string&gt;</code> | 
 
 **Example**  
@@ -411,13 +411,13 @@ assert.deepStrictEqual(programImportsNames, expectedImportsNames);
 
 ### getDeploymentTransactionIDForProgram
 
-<p>Returns the deployment transaction id associated with the specified program.</p>
+<p>指定したプログラムに紐づくデプロイトランザクション ID を返します。</p>
 
 ```javascript
 networkClient.getDeploymentTransactionIDForProgram(program) ⇒ TransactionJSON
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | program | <code>Program</code> | 
 | *return* | <code>TransactionJSON</code> | 
@@ -433,13 +433,13 @@ let program = networkClient.getDeploymentTransactionIDForProgram("foo.aleo");
 
 ### getDeploymentTransactionForProgram
 
-<p>Returns the deployment transaction associated with a specified program.</p>
+<p>指定したプログラムに紐づくデプロイトランザクションを返します。</p>
 
 ```javascript
 networkClient.getDeploymentTransactionForProgram(program) ⇒ TransactionJSON
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | program | <code>Program</code> | 
 | *return* | <code>TransactionJSON</code> | 
@@ -455,13 +455,13 @@ let program = networkClient.getDeploymentTransactionForProgram("foo.aleo");
 
 ### getDeploymentTransactionObjectForProgram
 
-<p>Returns the deployment transaction associated with a specified program as a wasm object.</p>
+<p>指定したプログラムに紐づくデプロイトランザクションを WASM オブジェクトとして返します。</p>
 
 ```javascript
 networkClient.getDeploymentTransactionObjectForProgram(program) ⇒ TransactionJSON
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | program | <code>Program</code> | 
 | *return* | <code>TransactionJSON</code> | 
@@ -472,15 +472,15 @@ networkClient.getDeploymentTransactionObjectForProgram(program) ⇒ TransactionJ
 
 ### getProgramMappingNames
 
-<p>Returns the names of the mappings of a program.</p>
+<p>プログラムが持つマッピング名を返します。</p>
 
 ```javascript
 networkClient.getProgramMappingNames(programId) ⇒ Promise.<Array.<string>>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| programId | <code>string</code> | The program ID to get the mappings of (e.g. "credits.aleo") |
+| programId | <code>string</code> | マッピングを取得したいプログラム ID です（例: "credits.aleo"） |
 | *return* | <code>Promise.&lt;Array.&lt;string&gt;&gt;</code> | 
 
 **Example**  
@@ -504,22 +504,22 @@ assert.deepStrictEqual(mappings, expectedMappings);
 
 ### getProgramMappingValue
 
-<p>Returns the value of a program's mapping for a specific key.</p>
+<p>プログラムのマッピングに対して特定のキーの値を返します。</p>
 
 ```javascript
 networkClient.getProgramMappingValue(programId, mappingName, key) ⇒ Promise.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| programId | <code>string</code> | The program ID to get the mapping value of (e.g. "credits.aleo") |
-| mappingName | <code>string</code> | The name of the mapping to get the value of (e.g. "account") |
-| key | <code>string</code> | The key of the mapping to get the value of (e.g. "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px") |
+| programId | <code>string</code> | マッピング値を取得したいプログラム ID です（例: "credits.aleo"） |
+| mappingName | <code>string</code> | 値を取得したいマッピング名です（例: "account"） |
+| key | <code>string</code> | 値を取得したいマッピングのキーです（例: "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px"） |
 | *return* | <code>Promise.&lt;string&gt;</code> | 
 
 **Example**  
 ```js
-// Get public balance of an account
+// アカウントの公開残高を取得します
 let mappingValue = await networkClient.getProgramMappingValue("credits.aleo", "account", "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px");
 const expectedValue = "0u64";
 assert.equal(mappingValue, expectedValue);
@@ -531,33 +531,33 @@ assert.equal(mappingValue, expectedValue);
 
 ### getProgramMappingPlaintext
 
-<p>Returns the value of a mapping as a wasm Plaintext object. Returning an object in this format allows it to be converted to a Js type and for its internal members to be inspected if it's a struct or array.</p>
+<p>マッピングの値を WASM の Plaintext オブジェクトとして返します。この形式で返すことで、JS の型へ変換したり、構造体や配列であれば内部メンバーを検査したりできます。</p>
 
 ```javascript
 networkClient.getProgramMappingPlaintext(programId, mappingName, key) ⇒ Promise.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| programId | <code>string</code> | The program ID to get the mapping value of (e.g. "credits.aleo") |
-| mappingName | <code>string</code> | The name of the mapping to get the value of (e.g. "account") |
-| key | <code>string</code> | The key of the mapping to get the value of (e.g. "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px") |
+| programId | <code>string</code> | マッピング値を取得したいプログラム ID です（例: "credits.aleo"） |
+| mappingName | <code>string</code> | 値を取得したいマッピング名です（例: "account"） |
+| key | <code>string</code> | 値を取得したいマッピングのキーです（例: "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px"） |
 | *return* | <code>Promise.&lt;string&gt;</code> | 
 
 **Example**  
 ```js
-// Get the bond state as an account.
+// bond 状態をアカウントとして取得します
 const unbondedState = await networkClient.getProgramMappingPlaintext("credits.aleo", "bonded", "aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px");
 
-// Get the two members of the object individually.
+// オブジェクトの 2 つのメンバーを個別に取得します
 const validator = unbondedState.getMember("validator");
 const microcredits = unbondedState.getMember("microcredits");
 
-// Ensure the expected values are correct.
+// 期待する値が正しいことを確認します
 assert.equal(validator, "aleo1u6940v5m0fzud859xx2c9tj2gjg6m5qrd28n636e6fdd2akvfcgqs34mfd");
 assert.equal(microcredits, BigInt("9007199254740991"));
 
-// Get a JS object representation of the unbonded state.
+// unbonded 状態を JS オブジェクトとして取得します
 const unbondedStateObject = unbondedState.toObject();
 
 const expectedState = {
@@ -573,13 +573,13 @@ assert.equal(unbondedState, expectedState);
 
 ### getLatestBlock
 
-<p>Returns the contents of the latest block.</p>
+<p>最新のブロックの内容を返します。</p>
 
 ```javascript
 networkClient.getLatestBlock() ⇒ Promise.<BlockJSON>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Promise.&lt;BlockJSON&gt;</code> | 
 
@@ -594,13 +594,13 @@ let latestHeight = await networkClient.getLatestBlock();
 
 ### getLatestHeight
 
-<p>Returns the latest block height.</p>
+<p>最新のブロック高を返します。</p>
 
 ```javascript
 networkClient.getLatestHeight() ⇒ Promise.<number>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Promise.&lt;number&gt;</code> | 
 
@@ -615,13 +615,13 @@ let latestHeight = await networkClient.getLatestHeight();
 
 ### getLatestCommittee
 
-<p>Returns the latest committee.</p>
+<p>最新の委員会情報を返します。</p>
 
 ```javascript
 networkClient.getLatestCommittee() ⇒ Promise.<object>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Promise.&lt;object&gt;</code> | 
 
@@ -636,13 +636,13 @@ let latestCommittee = await networkClient.getLatestCommittee();
 
 ### getStateRoot
 
-<p>Returns the latest state/merkle root of the Aleo blockchain.</p>
+<p>Aleo ブロックチェーンの最新のステート（マークル）ルートを返します。</p>
 
 ```javascript
 networkClient.getStateRoot() ⇒ Promise.<string>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Promise.&lt;string&gt;</code> | 
 
@@ -657,13 +657,13 @@ let stateRoot = await networkClient.getStateRoot();
 
 ### getTransaction
 
-<p>Returns a transaction by its unique identifier.</p>
+<p>一意の識別子でトランザクションを取得します。</p>
 
 ```javascript
 networkClient.getTransaction(id) ⇒ Promise.<TransactionJSON>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | id | <code>string</code> | 
 | *return* | <code>Promise.&lt;TransactionJSON&gt;</code> | 
@@ -679,13 +679,13 @@ let transaction = await networkClient.getTransaction("at1handz9xjrqeynjrr0xay4pc
 
 ### getTransactionObject
 
-<p>Returns a transaction as a wasm object. Getting a transaction of this type will allow the ability for the inputs, outputs, and records to be searched for and displayed.</p>
+<p>トランザクションを WASM オブジェクトとして返します。この型で取得すると、入力・出力・レコードを検索して表示できます。</p>
 
 ```javascript
 networkClient.getTransactionObject(transactionId) ⇒ Promise.<Transaction>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | transactionId | <code>string</code> | 
 | *return* | <code>Promise.&lt;Transaction&gt;</code> | 
@@ -693,20 +693,20 @@ networkClient.getTransactionObject(transactionId) ⇒ Promise.<Transaction>
 **Example**  
 ```js
 const transactionObject = await networkClient.getTransactionObject("at1handz9xjrqeynjrr0xay4pcsgtnczdksz3e584vfsgaz0dh0lyxq43a4wj");
-// Get the transaction inputs as a JS array.
+// トランザクション入力を JS 配列として取得します
 const transactionOutputs = transactionObject.inputs(true);
 
-// Get the transaction outputs as a JS object.
+// トランザクション出力を JS オブジェクトとして取得します
 const transactionInputs = transactionObject.outputs(true);
 
-// Get any records generated in transitions in the transaction as a JS object.
+// トランザクション内のトランジションで生成されたレコードを JS オブジェクトとして取得します
 const records = transactionObject.records();
 
-// Get the transaction type.
+// トランザクションタイプを取得します
 const transactionType = transactionObject.transactionType();
 assert.equal(transactionType, "Execute");
 
-// Get a JS representation of all inputs, outputs, and transaction metadata.
+// 全入力・出力・トランザクションメタデータの JS 形式を取得します
 const transactionSummary = transactionObject.summary();
 ```
 
@@ -716,13 +716,13 @@ const transactionSummary = transactionObject.summary();
 
 ### getTransactions
 
-<p>Returns the transactions present at the specified block height.</p>
+<p>指定したブロック高に含まれるトランザクションを返します。</p>
 
 ```javascript
 networkClient.getTransactions(height) ⇒ Promise.<Array.<ConfirmedTransactionJSON>>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | height | <code>number</code> | 
 | *return* | <code>Promise.&lt;Array.&lt;ConfirmedTransactionJSON&gt;&gt;</code> | 
@@ -738,13 +738,13 @@ let transactions = await networkClient.getTransactions(654);
 
 ### getTransactionsInMempool
 
-<p>Returns the transactions in the memory pool. This method requires access to a validator's REST API.</p>
+<p>メモリプール内のトランザクションを返します。このメソッドを利用するにはバリデータの REST API へのアクセスが必要です。</p>
 
 ```javascript
 networkClient.getTransactionsInMempool() ⇒ Promise.<Array.<TransactionJSON>>
 ```
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Promise.&lt;Array.&lt;TransactionJSON&gt;&gt;</code> | 
 
@@ -759,15 +759,15 @@ let transactions = await networkClient.getTransactionsInMempool();
 
 ### getTransitionId
 
-<p>Returns the transition ID of the transition corresponding to the ID of the input or output.</p>
+<p>入力または出力の ID に対応するトランジションのトランジション ID を返します。</p>
 
 ```javascript
 networkClient.getTransitionId(inputOrOutputID) ⇒ Promise.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| inputOrOutputID | <code>string</code> | ID of the input or output. |
+| inputOrOutputID | <code>string</code> | 入力または出力の ID です |
 | *return* | <code>Promise.&lt;string&gt;</code> | 
 
 **Example**  
@@ -781,15 +781,15 @@ let transition = await networkClient.getTransitionId("24292328552368309261443563
 
 ### submitTransaction
 
-<p>Submit an execute or deployment transaction to the Aleo network.</p>
+<p>実行またはデプロイトランザクションを Aleo ネットワークに送信します。</p>
 
 ```javascript
 networkClient.submitTransaction(transaction) ⇒ string
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| transaction | <code>Transaction</code> | The transaction to submit to the network |
+| transaction | <code>Transaction</code> | ネットワークに送信するトランザクションです |
 | *return* | <code>string</code> | 
 
 <a name="AleoNetworkClient+submitSolution"></a>
@@ -798,13 +798,13 @@ networkClient.submitTransaction(transaction) ⇒ string
 
 ### submitSolution
 
-<p>Submit a solution to the Aleo network.</p>
+<p>ソリューションを Aleo ネットワークに送信します。</p>
 
 ```javascript
 networkClient.submitSolution(solution) ⇒ Promise.<string>
 ```
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| solution | <code>string</code> | The string representation of the solution desired to be submitted to the network. |
+| solution | <code>string</code> | ネットワークに送信したいソリューションの文字列表現です |
 | *return* | <code>Promise.&lt;string&gt;</code> |

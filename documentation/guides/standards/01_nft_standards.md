@@ -1,45 +1,41 @@
 ---
 id: nft_standards
-title: NFT Standards
-sidebar_label: NFT Standards
+title: NFT 標準
+sidebar_label: NFT 標準
 ---
 
-## Overview
+## 概要
 
-The NFT Standards document outlines the specifications for implementing Non-Fungible Tokens (NFTs) on the Aleo blockchain. This standard emerged from the [ARC-0721 proposal](https://github.com/ProvableHQ/ARCs/discussions/79) and was officially approved through community voting on [Aleo Governance](https://vote.aleo.org/p/721).
+本ドキュメントでは、Aleo ブロックチェーン上で非代替性トークン（NFT）を実装するための仕様をまとめます。この標準は [ARC-0721 提案](https://github.com/ProvableHQ/ARCs/discussions/79) を起源とし、[Aleo Governance](https://vote.aleo.org/p/721) によるコミュニティ投票で正式に承認されました。
 
-Similar to the Token Registry Program, the NFT standard faces challenges with program composability due to Aleo's current limitations on dynamic cross-program calls. To address this, an [NFT Registry Program (ARC-722)](https://github.com/ProvableHQ/ARCs/discussions/80) has been proposed, which would serve as a central hub for NFT collections and enable better interoperability between NFTs and DeFi applications.
+トークンレジストリプログラムと同様に、Aleo では動的なクロスプログラム呼び出しが未サポートであることから、プログラムの合成（composability）に課題があります。この問題を解決するため、NFT コレクションを一元管理し DeFi アプリとの連携を容易にする [NFT Registry Program (ARC-722)](https://github.com/ProvableHQ/ARCs/discussions/80) が提案されています。
 
-## Key Features
+## 主な特徴
 
-The standard leverages Aleo's unique privacy features to provide:
-- Private or public token owner visibility
-- Private or public data associated with the token
-- Flexible on-chain and off-chain data storage options
+この標準は Aleo 特有のプライバシー機能を活かし、以下を実現します。
+- トークン所有者の公開・秘匿を選択可能
+- トークンデータの公開・秘匿を選択可能
+- オンチェーン / オフチェーン両方の柔軟なデータ保管
 
-## Data Storage Options
+## データ保管の選択肢
 
-### On-chain vs Off-chain Data
+### オンチェーン vs オフチェーン
 
-The standard allows for NFT data to be stored in three ways:
+標準では、NFT データを次の 3 通りで管理できます。
 
-1. **On-chain Data**
-   - Direct storage of data on the blockchain
-   - Can be either the complete data or a hash of the data
+1. **オンチェーンデータ**
+   - データをそのまま、またはハッシュとしてチェーン上に保存
+2. **オフチェーンデータ**
+   - チェーン上の保存コストを抑制
+   - 外部メタデータへの URI として管理するケースが一般的
+   - オンチェーンと組み合わせてハイブリッドにすることも可能
+3. **ハイブリッド**
+   - オンチェーンとオフチェーンを組み合わせた方式
+   - 例: 所有者情報はオンチェーンで公開、データ本体はオフチェーンで秘匿
 
-2. **Off-chain Data**
-   - Reduces storage fees on the network
-   - Typically stored as URIs pointing to external metadata
-   - Can be combined with on-chain data for hybrid approaches
+## データ構造
 
-3. **Hybrid Approach**
-   - Combination of on-chain and off-chain storage
-   - Data can be public is stored on-chain (NFT ownership for example)
-   - Private data is stored off-chain (NFT data for example)
-
-## Data Structures
-
-### NFT Record
+### NFT レコード
 
 ```leo
 record NFT {
@@ -49,12 +45,12 @@ record NFT {
 }
 ```
 
-#### NFT Record Fields
-- `owner`: The private address of the NFT owner
-- `data`: The private data associated with the NFT
-- `edition`: A scalar value used for uniqueness and privacy
+#### NFT レコードのフィールド
+- `owner`: NFT 所有者の秘匿アドレス
+- `data`: NFT に紐づく秘匿データ
+- `edition`: 一意性とプライバシーのためのスカラー値
 
-### NFT View Record
+### NFT View レコード
 
 ```leo
 record NFTView {
@@ -65,13 +61,13 @@ record NFTView {
 }
 ```
 
-#### NFT View Record Fields
-- `owner`: The private address of the NFT owner
-- `data`: The private data associated with the NFT
-- `edition`: A scalar value used for uniqueness and privacy
-- `is_view`: A boolean flag to differentiate NFTView from NFT (always true)
+#### NFT View レコードのフィールド
+- `owner`: NFT 所有者の秘匿アドレス
+- `data`: NFT に紐づく秘匿データ
+- `edition`: 一意性とプライバシーのためのスカラー値
+- `is_view`: NFTView と NFT を識別するためのブール値（常に true）
 
-### Data Structure
+### Data 構造体
 
 ```leo
 struct attribute {
@@ -80,23 +76,22 @@ struct attribute {
 }
 
 struct data {
-    metadata: [field; 4], // URI of offchain metadata JSON
-    // (optional) name: [field; 4],
-    // (optional) image: [field; 16],
-    // (optional) attributes: [attribute; 4],
-    // (optional) ...
+    metadata: [field; 4], // オフチェーンメタデータ JSON への URI
+    // （任意）name: [field; 4],
+    // （任意）image: [field; 16],
+    // （任意）attributes: [attribute; 4],
 }
 ```
 
-#### Data Structure Fields
-- `metadata`: URI pointing to off-chain metadata JSON
-- `name`: Optional name of the NFT
-- `image`: Optional image data
-- `attributes`: Optional array of attributes
+#### Data 構造体のフィールド
+- `metadata`: オフチェーンメタデータ JSON を指す URI
+- `name`: 任意の NFT 名称
+- `image`: 任意の画像データ
+- `attributes`: 任意の属性配列
 
-An example of such an off-chain metadata JSON can be found [here](https://aleo-public.s3.us-west-2.amazonaws.com/testnet3/privacy-pride/1.json).
+オフチェーンメタデータ JSON の例は [こちら](https://aleo-public.s3.us-west-2.amazonaws.com/testnet3/privacy-pride/1.json) にあります。
 
-### NFT Content Struct
+### NFT Content 構造体
 
 ```leo
 struct nft_content {
@@ -105,103 +100,104 @@ struct nft_content {
 }
 ```
 
-#### NFT Content Struct Fields
-- `data`: The data associated with the NFT
-- `edition`: The edition number of the NFT
+#### NFT Content 構造体のフィールド
+- `data`: NFT に紐づくデータ
+- `edition`: NFT のエディション番号
 
-## Mappings
+## マッピング
 
 `mapping nft_commits: field => bool;`  
-Mapping of NFT commits to their existence status.
+NFT コミットメントの存在状態を保持します。
 
 `mapping nft_owners: field => address;`  
-Mapping of NFT commits to their public owners.
+NFT コミットメントと公開所有者を紐づけます。
 
 `mapping nft_contents: field => nft_content;`  
-Mapping of NFT commits to their public content.
+NFT コミットメントと公開コンテンツを紐づけます。
 
-## Functions
+## 関数
 
 ### `commit_nft()`
-#### Description
-Creates a unique identifier for an NFT by committing its data and edition to a field.
+#### 説明
+データとエディションから NFT のコミットメント（識別子）を生成します。
 
-#### Parameters
-- `nft_data: data`: The data of the NFT
-- `nft_edition: scalar`: The edition number of the NFT
+#### パラメータ
+- `nft_data: data`
+- `nft_edition: scalar`
 
-#### Returns
-- `field`: The NFT commit identifier
+#### 戻り値
+- `field`: NFT コミットメント
 
 ### `transfer_private_to_public()`
-#### Description
-Converts a privately owned NFT to public ownership.
+#### 説明
+秘匿所有 NFT を公開所有へ変換します。
 
-#### Parameters
-- `private nft: NFT`: The NFT record to convert
-- `public to: address`: The public recipient address
+#### パラメータ
+- `private nft: NFT`
+- `public to: address`
 
-#### Returns
-- `NFTView`: The NFT view record
-- `Future`: A Future to finalize the transfer
+#### 戻り値
+- `NFTView`
+- `Future`
 
 ### `publish_nft_content()`
-#### Description
-Publishes NFT content to make it publicly accessible.
+#### 説明
+NFT コンテンツを公開状態にします。
 
-#### Parameters
-- `public nft_data: data`: The NFT data to publish
-- `public nft_edition: scalar`: The edition number to publish
+#### パラメータ
+- `public nft_data: data`
+- `public nft_edition: scalar`
 
-#### Returns
-- `Future`: A Future to finalize the publication
+#### 戻り値
+- `Future`
 
 ### `update_edition_private()`
-#### Description
-Updates the edition of a private NFT to re-obfuscate its content.
+#### 説明
+秘匿 NFT のエディションを更新し、再難読化します。
 
-#### Parameters
-- `private nft: NFT`: The NFT record to update
-- `private new_edition: scalar`: The new edition number
+#### パラメータ
+- `private nft: NFT`
+- `private new_edition: scalar`
 
-#### Returns
-- `NFT`: The updated NFT record
-- `Future`: A Future to finalize the update
+#### 戻り値
+- `NFT`
+- `Future`
 
-## String Encoding
+## 文字列のエンコード
 
-NFTs heavily rely on the use of strings, either for URL to off-chain data or for data itself. The standard specifies the following encoding for strings:
+NFT は URL や属性情報などで文字列を多用します。本標準では以下のエンコード方式を推奨しています。
 
 ```leo
-// Leo
+// Leo での表現
 string: [field; 4],
 
-// Aleo instructions
+// Aleo instructions での表現
 string as [field; 4u32];
 ```
 
-The length of the array can be freely adapted to match the maximum amount of characters required by the collection. The choice of fields type is motivated by the fact that they offer close to twice the amount of data for the same constraints as u128.
+配列長はコレクションで必要な最大文字数に応じて調整してください。`field` 型を用いることで `u128` の約 2 倍に相当するデータ量を扱える点が利点です。
 
-For JavaScript/TypeScript applications, an example for converting between JavaScript strings and Aleo plaintexts is available in the [ARC-721 implementation](https://github.com/zsociety-io/aleo-standard-programs/blob/main/arc721/utils/strings.js).
+JavaScript / TypeScript アプリケーション向けには、文字列と Aleo plaintext を相互変換するユーティリティが [ARC-721 実装](https://github.com/zsociety-io/aleo-standard-programs/blob/main/arc721/utils/strings.js) に用意されています。
 
-## Privacy Features
+## プライバシー機能
 
-The standard implements privacy through several mechanisms:
+本標準ではプライバシーを以下の仕組みで実現します。
 
-### Ownership Privacy
-- Private ownership is achieved through Aleo records
-- Public ownership can be enabled via the `nft_owners` mapping
-- Programs can own NFTs without revealing their data
+### 所有権のプライバシー
+- Aleo のレコードによって秘匿所有が可能
+- `nft_owners` マッピングを使えば公開所有に切り替え可能
+- プログラムが NFT を保有する場合でも、データを公開する必要はありません
 
-### Data Privacy
-- NFT data is kept private by default in records
-- The `edition` scalar ensures uniqueness without revealing data
-- NFT commits serve as unique identifiers without exposing underlying data
+### データのプライバシー
+- データはデフォルトでレコード内に秘匿
+- `edition` スカラーにより公開情報を増やさず一意性を確保
+- NFT コミットメントはデータを公開せずに識別子として機能します
 
-### Re-obfuscation
-NFTs can be re-obfuscated through a two-step process:
-1. Transfer back to private ownership
-2. Update the edition using `update_edition_private()`
+### 再難読化
+
+NFT は次の手順で再難読化できます。
+1. 所有状態を秘匿に戻す
+2. `update_edition_private()` でエディションを更新
 
 ```leo
 async transition update_edition_private(
@@ -229,13 +225,14 @@ async function finalize_update_edition_private(
 }
 ```
 
-Important privacy considerations:
-- Previous NFT commits remain in the mapping to prevent revealing data relationships
-- New editions must be unique
-- Process maintains data privacy while creating new public identifiers
+プライバシーに関する注意点:
+- 以前の NFT コミットメントはマッピングに保持され、データの関連性を推測されないようにします。
+- 新しいエディションは一意である必要があります。
+- データを再度公開することなく新しい公開識別子を得られます。
 
-## Approvals
-The standard includes an approval mechanism that allows designated addresses to transfer NFTs on behalf of the owner. The approval system supports both collection-wide and individual NFT approvals:
+## 承認機能
+
+所有者が第三者に NFTs の転送を委任できる承認機構を備えています。コレクション全体と個別 NFT の両方をサポートします。
 
 ```leo
 struct approval {
@@ -243,43 +240,35 @@ struct approval {
     spender: address
 }
 
-mapping for_all_approvals: field => bool; 
-// Approval hash => Is approved
-
+mapping for_all_approvals: field => bool;
 mapping nft_approvals: field => field;
-// NFT commit => Approval hash
 ```
 
-The approval system provides two main functions:
-1. `set_for_all_approval`: Allows an owner to approve a spender for all NFTs in the collection
-2. `approve_public`: Allows an owner to approve a spender for a specific NFT
+主な関数:
+1. `set_for_all_approval`: コレクション全体を対象に承認する
+2. `approve_public`: 特定の NFT を承認する
 
-Once approved, the spender can use `transfer_from_public` to transfer the NFT from the approver to a recipient address.
+承認後、承認されたアドレスは `transfer_from_public` を利用して転送できます。
 
-## Settings
-Collection-level settings are managed through a mapping:
+## 設定
+
+コレクション単位の設定は次のマッピングで管理します。
 
 ```leo
 mapping general_settings: u8 => field;
-// Setting index => Setting value
 ```
 
-Available settings indices and their purposes:
-- `0u8`: Amount of mintable NFTs (all editions)
-- `1u8`: Number of total NFTs (first-editions) that can be minted
-- `2u8`: Symbol for the NFT
-- `3u8`: Base URI for NFT, part 1
-- `4u8`: Base URI for NFT, part 2
-- `5u8`: Base URI for NFT, part 3
-- `6u8`: Base URI for NFT, part 4
-- `7u8`: Admin address hash
+設定インデックスの例:
+- `0u8`: ミント可能な NFT 総数（全エディション）
+- `1u8`: ミント可能な初期エディション数（ユニーク NFT）
+- `2u8`: シンボル
+- `3u8`〜`6u8`: ベース URI（最大 4 分割）
+- `7u8`: 管理者アドレスのハッシュ
 
-These settings allow for fine-grained control over the NFT collection's properties, including minting limits, metadata location, and administrative controls.
+これにより、ミント上限やメタデータ URI、管理権限などを細かく制御できます。
 
-## Implementation Notes
+## 実装上の注意点
 
-1. The standard is compatible with ARC21 standard for name and symbol of fungible tokens.
-
-2. For collections where data can become public ("publishable collections"), the standard provides mechanisms to publish and manage public content while maintaining the option to re-obfuscate data when needed.
-
-3. The [NFT Registry Program (ARC-722)](https://github.com/ProvableHQ/ARCs/discussions/80) is proposed to address program composability challenges, similar to how the [Token Registry Program](./00_token_registry.md) works for fungible tokens. This registry would allow multiple implementations with different data structures, identified by the unique pair (registry_program_id, collection_id).
+1. 本標準は、ファンジブルトークンの名前・シンボルを定める ARC-21 と互換性があります。
+2. データが公開され得るコレクション（publishable collections）では、公開・再難読化の両方に対応する仕組みを提供します。
+3. [NFT Registry Program (ARC-722)](https://github.com/ProvableHQ/ARCs/discussions/80) は、[トークンレジストリ](./00_token_registry.md) と同様にプログラム合成の課題を解消するための提案です。`(registry_program_id, collection_id)` の組み合わせで複数実装を扱えるよう設計されています。

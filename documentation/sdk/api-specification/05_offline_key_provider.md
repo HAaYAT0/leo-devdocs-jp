@@ -1,16 +1,14 @@
 ---
 id: offline_key_provider
-title: Offline Key Provider
-sidebar_label: Offline Key Provider
+title: オフラインキー プロバイダー
+sidebar_label: オフラインキー プロバイダー
 ---
 
-## Overview
+## 概要
 
-A key provider meant for building transactions offline on devices such as hardware wallets. This key provider is not
-able to contact the internet for key material and instead relies on the user to insert Aleo function proving &amp;
-verifying keys from local storage prior to usage.
+ハードウェアウォレットのようなデバイスで、オフライン環境でトランザクションを構築するためのキー プロバイダーです。インターネット越しに鍵素材へアクセスすることはできず、ユーザーが事前にローカルストレージから Aleo の関数用証明鍵・検証鍵を読み込むことを前提としています。
 
-**Kind**: global class
+**種類**: グローバルクラス
 
 * OfflineKeyProvider
     * _instance_
@@ -42,14 +40,14 @@ verifying keys from local storage prior to usage.
 ## Example
 
 ```javascript
-// Create an offline program manager
+// オフライン用の ProgramManager を作成します
 const programManager = new ProgramManager();
 
-// Create a temporary account for the execution of the program
+// プログラム実行用に一時的なアカウントを作成します
 const account = new Account();
 programManager.setAccount(account);
 
-// Create the proving keys from the key bytes on the offline machine
+// オフライン環境にある鍵バイト列から証明鍵を作成します
 console.log("Creating proving keys from local key files");
 const program = "program hello_hello.aleo; function hello: input r0 as u32.public; input r1 as u32.private; add r0 r1 into r2; output r2 as u32.private;";
 const myFunctionProver = await getLocalKey("/path/to/my/function/hello_hello.prover");
@@ -60,30 +58,30 @@ myFunctionProvingKey = ProvingKey.fromBytes(myFunctionProver);
 myFunctionVerifyingKey = VerifyingKey.fromBytes(myFunctionVerifier);
 const feePublicProvingKey = ProvingKey.fromBytes(feePublicKeyBytes);
 
-// Create an offline key provider
+// オフラインキー プロバイダーを作成します
 console.log("Creating offline key provider");
 const offlineKeyProvider = new OfflineKeyProvider();
 
-// Cache the keys
-// Cache the proving and verifying keys for the custom hello function
+// 鍵をキャッシュします
+// カスタム hello 関数の証明鍵と検証鍵をキャッシュします
 OfflineKeyProvider.cacheKeys("hello_hello.aleo/hello", myFunctionProvingKey, myFunctionVerifyingKey);
 
-// Cache the proving key for the fee_public function (the verifying key is automatically cached)
+// fee_public 関数の証明鍵をキャッシュします（検証鍵は自動的にキャッシュされます）
 OfflineKeyProvider.insertFeePublicKey(feePublicProvingKey);
 
-// Create an offline query using the latest state root in order to create the inclusion proof
+// 最新のステートルートを使用してインクルージョン証明を生成するためのオフラインクエリを作成します
 const offlineQuery = new OfflineQuery("latestStateRoot");
 
-// Insert the key provider into the program manager
+// ProgramManager にキー プロバイダーを設定します
 programManager.setKeyProvider(offlineKeyProvider);
 
-// Create the offline search params
+// オフライン検索パラメーターを作成します
 const offlineSearchParams = new OfflineSearchParams("hello_hello.aleo/hello");
 
-// Create the offline transaction
+// オフラインでトランザクションを作成します
 const offlineExecuteTx = <Transaction>await this.buildExecutionTransaction("hello_hello.aleo", "hello", 1, false, ["5u32", "5u32"], undefined, offlineSearchParams, undefined, undefined, undefined, undefined, offlineQuery, program);
 
-// Broadcast the transaction later on a machine with internet access
+// インターネット接続があるマシンで後からトランザクションをブロードキャストします
 const networkClient = new AleoNetworkClient("https://api.explorer.provable.com/v1");
 const txId = await networkClient.broadcastTransaction(offlineExecuteTx);
 ```
@@ -92,96 +90,92 @@ const txId = await networkClient.broadcastTransaction(offlineExecuteTx);
 
 ### bondPublicKeys
 
-Get bond_public function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから bond_public 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 bondPublicKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the bond_public function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *bond_public 関数の証明鍵と検証鍵*
 
 ---
 
 ### bondValidatorKeys
 
-Get bond_validator function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから bond_validator 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 bondValidatorKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the bond_public function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *bond_public 関数の証明鍵と検証鍵*
 
 ---
 
 ### cacheKeys
 
-Cache a set of keys. This will overwrite any existing keys with the same keyId. The user can check if a keyId
-exists in the cache using the containsKeys method prior to calling this method if overwriting is not desired.
+鍵のセットをキャッシュします。同じ keyId が既に存在する場合は上書きされます。上書きを避けたい場合は、containsKeys メソッドで事前に存在を確認してください。
 
 ```javascript
 cacheKeys(keyId, keys)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__keyId__ | `string` | *access key for the cache*
-__keys__ | `FunctionKeyPair` | *keys to cache*
+__keyId__ | `string` | *キャッシュを識別するキー*
+__keys__ | `FunctionKeyPair` | *キャッシュする鍵*
 
 ---
 
 ### claimUnbondPublicKeys
 
-Get unbond_public function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから unbond_public 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 claimUnbondPublicKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the unbond_public function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *unbond_public 関数の証明鍵と検証鍵*
 
 ---
 
 ### functionKeys
 
-Get arbitrary function key from the offline key provider cache.
+オフラインキー プロバイダーのキャッシュから任意の関数鍵を取得します。
 
 ```javascript
 functionKeys(params)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__params__ | `KeySearchParams` | *Optional search parameters for the key provider*
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the specified program*
+__params__ | `KeySearchParams` | *キー プロバイダー用の任意検索パラメーター*
+__*return*__ | `Promise.<FunctionKeyPair>` | *指定プログラムの証明鍵と検証鍵*
 
 #### Examples
 
 ```javascript
-/// First cache the keys from local offline resources
+/// まずローカルのオフラインリソースから鍵をキャッシュします
 const offlineKeyProvider = new OfflineKeyProvider();
 const myFunctionVerifyingKey = VerifyingKey.fromString("verifier...");
 const myFunctionProvingKeyBytes = await readBinaryFile('./resources/myfunction.prover');
 const myFunctionProvingKey = ProvingKey.fromBytes(myFunctionProvingKeyBytes);
 
-/// Cache the keys for future use with a memorable locator
+/// 後で呼び出しやすいように覚えやすいロケータで鍵をキャッシュします
 offlineKeyProvider.cacheKeys("myprogram.aleo/myfunction", [myFunctionProvingKey, myFunctionVerifyingKey]);
 
-/// When they're needed, retrieve the keys from the cache
+/// 必要になったらキャッシュから鍵を取り出します
 
-/// First create a search parameter object with the same locator used to cache the keys
+/// まず鍵をキャッシュした際と同じロケータで検索パラメーターを作成します
 const keyParams = new OfflineSearchParams("myprogram.aleo/myfunction");
 
-/// Then retrieve the keys
+/// その後、鍵を取得します
 const [myFunctionProver, myFunctionVerifier] = await offlineKeyProvider.functionKeys(keyParams);
 ```
 
@@ -189,106 +183,102 @@ const [myFunctionProver, myFunctionVerifier] = await offlineKeyProvider.function
 
 ### verifyCreditsKeys
 
-Determines if the keys for a given credits function match the expected keys.
+指定した credits 関数の鍵が期待される鍵と一致するかを検証します。
 
 ```javascript
 verifyCreditsKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `boolean` | *Whether the keys match the expected keys*
+__*return*__ | `boolean` | *鍵が期待したものと一致するかどうか*
 
 ---
 
 ### feePrivateKeys
 
-Get fee_private function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから fee_private 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 feePrivateKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *fee_private 関数の証明鍵と検証鍵*
 
 ---
 
 ### feePublicKeys
 
-Get fee_public function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから fee_public 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 feePublicKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *fee_public 関数の証明鍵と検証鍵*
 
 ---
 
 ### joinKeys
 
-Get join function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから join 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 joinKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *join 関数の証明鍵と検証鍵*
 
 ---
 
 ### splitKeys
 
-Get split function keys from the credits.aleo program. The keys must be cached prior to calling this
-method for it to work.
+credits.aleo プログラムから split 関数の鍵を取得します。事前に鍵をキャッシュしておく必要があります。
 
 ```javascript
 splitKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *split 関数の証明鍵と検証鍵*
 
 ---
 
 ### transferKeys
 
-Get keys for a variant of the transfer function from the credits.aleo program.
+credits.aleo プログラムから transfer 関数の各バリアントに対応する鍵を取得します。
 
 ```javascript
 transferKeys(visibility)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__visibility__ | `string` | *Visibility of the transfer function (private, public, privateToPublic, publicToPrivate)*
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the specified transfer function*
+__visibility__ | `string` | *transfer 関数の可視性（private、public、privateToPublic、publicToPrivate）*
+__*return*__ | `Promise.<FunctionKeyPair>` | *指定した transfer 関数の証明鍵と検証鍵*
 
 #### Examples
 
 ```javascript
-// Create a new OfflineKeyProvider
+// 新しい OfflineKeyProvider を作成します
 const offlineKeyProvider = new OfflineKeyProvider();
 
-// Cache the keys for future use with the official locator
+// 公式のロケータを利用して、将来の利用のために鍵をキャッシュします
 const transferPublicProvingKeyBytes = await readBinaryFile('./resources/transfer_public.prover.a74565e');
 const transferPublicProvingKey = ProvingKey.fromBytes(transferPublicProvingKeyBytes);
 
-// Cache the transfer_public keys for future use with the OfflinKeyProvider's convenience method for
-// transfer_public (the verifying key will be cached automatically)
+// OfflineKeyProvider の補助メソッドを使って transfer_public の鍵をキャッシュします
+// （検証鍵は自動的にキャッシュされます）
 offlineKeyProvider.insertTransferPublicKeys(transferPublicProvingKey);
 
-/// When they're needed, retrieve the keys from the cache
+/// 必要になったらキャッシュから鍵を取得します
 const [transferPublicProvingKey, transferPublicVerifyingKey] = await keyProvider.transferKeys("public");
 ```
 
@@ -296,29 +286,28 @@ const [transferPublicProvingKey, transferPublicVerifyingKey] = await keyProvider
 
 ### unBondPublicKeys
 
-Get unbond_public function keys from the credits.aleo program
+credits.aleo プログラムから unbond_public 関数の鍵を取得します。
 
 ```javascript
 unBondPublicKeys()
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
-__*return*__ | `Promise.<FunctionKeyPair>` | *Proving and verifying keys for the join function*
+__*return*__ | `Promise.<FunctionKeyPair>` | *unbond_public 関数の証明鍵と検証鍵*
 
 ---
 
 ### insertBondPublicKeys
 
-Insert the proving and verifying keys for the bond_public function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for bond_public before inserting them into the cache.
+bond_public 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が bond_public 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertBondPublicKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -326,15 +315,14 @@ __provingKey__ | `undefined` | **
 
 ### insertClaimUnbondPublicKeys
 
-Insert the proving and verifying keys for the claim_unbond_public function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for claim_unbond_public before inserting them into the cache.
+claim_unbond_public 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が claim_unbond_public 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertClaimUnbondPublicKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -342,15 +330,14 @@ __provingKey__ | `undefined` | **
 
 ### insertFeePrivateKeys
 
-Insert the proving and verifying keys for the fee_private function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for fee_private before inserting them into the cache.
+fee_private 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が fee_private 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertFeePrivateKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -358,15 +345,14 @@ __provingKey__ | `undefined` | **
 
 ### insertFeePublicKeys
 
-Insert the proving and verifying keys for the fee_public function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for fee_public before inserting them into the cache.
+fee_public 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が fee_public 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertFeePublicKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -374,15 +360,14 @@ __provingKey__ | `undefined` | **
 
 ### insertJoinKeys
 
-Insert the proving and verifying keys for the join function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for join before inserting them into the cache.
+join 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が join 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertJoinKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -390,15 +375,14 @@ __provingKey__ | `undefined` | **
 
 ### insertSetValidatorStateKeys
 
-Insert the proving and verifying keys for the set_validator_state function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for set_validator_state before inserting them into the cache.
+set_validator_state 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が set_validator_state 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertSetValidatorStateKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -406,15 +390,14 @@ __provingKey__ | `undefined` | **
 
 ### insertSplitKeys
 
-Insert the proving and verifying keys for the split function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for split before inserting them into the cache.
+split 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が split 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertSplitKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -422,15 +405,14 @@ __provingKey__ | `undefined` | **
 
 ### insertTransferPrivateKeys
 
-Insert the proving and verifying keys for the transfer_private function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for transfer_private before inserting them into the cache.
+transfer_private 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が transfer_private 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertTransferPrivateKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -438,15 +420,14 @@ __provingKey__ | `undefined` | **
 
 ### insertTransferPrivateToPublicKeys
 
-Insert the proving and verifying keys for the transfer_private_to_public function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for transfer_private_to_public before inserting them into the cache.
+transfer_private_to_public 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が transfer_private_to_public 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertTransferPrivateToPublicKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -454,15 +435,14 @@ __provingKey__ | `undefined` | **
 
 ### insertTransferPublicKeys
 
-Insert the proving and verifying keys for the transfer_public function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for transfer_public before inserting them into the cache.
+transfer_public 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が transfer_public 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertTransferPublicKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
 
@@ -470,15 +450,13 @@ __provingKey__ | `undefined` | **
 
 ### insertTransferPublicToPrivateKeys
 
-Insert the proving and verifying keys for the transfer_public_to_private function into the cache. Only the proving key needs
-to be inserted, the verifying key is automatically inserted by the SDK. This function will automatically check
-that the keys match the expected checksum for transfer_public_to_private before inserting them into the cache.
+transfer_public_to_private 関数の証明鍵と検証鍵をキャッシュに挿入します。証明鍵のみ指定すれば、検証鍵は SDK が自動的に挿入します。
+キャッシュへ保存する前に、鍵が transfer_public_to_private 用のチェックサムと一致するか自動で確認します。
 
 ```javascript
 insertTransferPublicToPrivateKeys(provingKey)
 ```
 
-Parameters | Type | Description
+パラメーター | 型 | 説明
 --- | --- | ---
 __provingKey__ | `undefined` | **
-

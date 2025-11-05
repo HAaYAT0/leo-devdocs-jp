@@ -3,16 +3,16 @@ id: snarkvm
 title: SnarkVM
 sidebar_label: SnarkVM
 ---
-The snarkVM library allows users to write and execute transactions in an efficient, yet privacy-preserving manner by leveraging zero-knowledge succinct non-interactive arguments of knowledge (zk-SNARKs) and encryption.
+SnarkVM ライブラリは、ゼロ知識簡潔非対話型知識証明（zk-SNARK）と暗号化を活用し、効率的でありながらプライバシーを確保した形でトランザクションを記述・実行できるようにします。
 
-This creates an off-chain, trustless computing environment, where programs are executed privately, securely and with unlimited runtime.
+これにより、オフチェーンで信頼不要な計算環境が実現され、プログラムはプライベートかつ安全に、さらに実行時間の制約なく処理されます。
 
-## Who uses snarkVM ?
-- `Developers` - Leverage snarkVM to create aleo programs that power private dApps.
-- `Users` - Gain privacy from the ability to compute zk-SNARKs and encrypt off-chain.
-- `Validators` - Verify transactions submitted by users using Varuna.
+## SnarkVM を利用するのは誰か
+- `開発者` — SnarkVM を利用して、プライベート dApp を支える Aleo プログラムを作成します。
+- `ユーザー` — オフチェーンで zk-SNARK を計算し暗号化できることでプライバシーを確保します。
+- `バリデータ` — Varuna を用いてユーザーが提出したトランザクションを検証します。
 
-## Architectural Components
-- `snarkVM synthesizer` - used to translate code into circuits that are compatible with the underlying zk-SNARK cryptographic proof system (Varuna).
-- `snarkVM algorithms` - the implementation and execution of the proof system and the primitives that support it
-- `snarkVM ledger` - data structures and methods that enable storage and interaction with the Aleo blockchain.
+## アーキテクチャ構成要素
+- `snarkVM synthesizer` — コードを基盤となる zk-SNARK 暗号証明システム（Varuna）に対応する回路へ変換します。
+- `snarkVM algorithms` — 証明システム本体と、それを支える各種プリミティブの実装と実行を担います。
+- `snarkVM ledger` — Aleo ブロックチェーンとやり取りし、データを保存するためのデータ構造とメソッド群です。

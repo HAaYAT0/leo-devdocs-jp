@@ -1,23 +1,23 @@
 ---
-title: Ciphertext
-sidebar_label: Ciphertext
+title: 暗号文
+sidebar_label: 暗号文
 ---
 
 <a name="Ciphertext"></a>
 
-## Overview
+## 概要
 
-<p>SnarkVM Ciphertext object. A Ciphertext represents a symmetrically encrypted plaintext. This object provides decryption methods to recover the plaintext from the ciphertext given the proper decryption materials like view keys, transition keys, or nonces.</p>
+<p>SnarkVM の Ciphertext オブジェクトです。Ciphertext は対称鍵で暗号化された平文を表します。適切な復号素材（ビューキー、トランジションキー、ノンスなど）があれば、暗号文から平文を復元するための復号メソッドを提供します。</p>
 
 
 
-## Methods
+## メソッド
 
 <a name="Ciphertext+decrypt"></a>
 
 ### decrypt
 
-<p>Decrypt the ciphertext using the given view key</p>
+<p>指定したビューキーを使って暗号文を復号します。</p>
 
 ```javascript
 decrypt(viewKey, nonce) ► Plaintext
@@ -25,11 +25,11 @@ decrypt(viewKey, nonce) ► Plaintext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| viewKey | <code>ViewKey</code> | The view key of the account that encrypted the ciphertext |
-| nonce | <code>Group</code> | The nonce used to encrypt the ciphertext |
-| *return* | <code>Plaintext</code> | The decrypted plaintext |
+| viewKey | <code>ViewKey</code> | 暗号化に使用したアカウントのビューキー |
+| nonce | <code>Group</code> | 暗号化に使用したノンス |
+| *return* | <code>Plaintext</code> | 復号された平文 |
 
 ---
 
@@ -37,7 +37,7 @@ decrypt(viewKey, nonce) ► Plaintext
 
 ### decryptWithTransitionInfo
 
-<p>Decrypt a ciphertext using the view key of the transition signer, transition public key, and (program, function, index) tuple</p>
+<p>トランジション署名者のビューキー、トランジション公開鍵、および (program, function, index) の組を使って暗号文を復号します。</p>
 
 ```javascript
 decryptWithTransitionInfo(view_key, transition_public_key, program, function_name, index) ► Plaintext
@@ -45,14 +45,14 @@ decryptWithTransitionInfo(view_key, transition_public_key, program, function_nam
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| view_key | <code>ViewKey</code> | The view key of the transition signer |
-| transition_public_key | <code>Group</code> | The transition public key used to encrypt the ciphertext |
-| program | <code>string</code> | The program ID associated with the ciphertext |
-| function_name | <code>string</code> | The name of the function associated with the encrypted inputs and outputs |
-| index | <code>u16</code> | The index of the input or output parameter that was encrypted |
-| *return* | <code>Plaintext</code> | The decrypted plaintext |
+| view_key | <code>ViewKey</code> | トランジション署名者のビューキー |
+| transition_public_key | <code>Group</code> | 暗号化に使用したトランジション公開鍵 |
+| program | <code>string</code> | 暗号文に関連付けられたプログラム ID |
+| function_name | <code>string</code> | 暗号化された入出力に対応する関数名 |
+| index | <code>u16</code> | 暗号化された入力または出力パラメーターのインデックス |
+| *return* | <code>Plaintext</code> | 復号された平文 |
 
 ---
 
@@ -60,7 +60,7 @@ decryptWithTransitionInfo(view_key, transition_public_key, program, function_nam
 
 ### decryptWithTransitionViewKey
 
-<p>Decrypt a ciphertext using the transition view key and a (program, function, index) tuple</p>
+<p>トランジションビューキーと (program, function, index) の組を使って暗号文を復号します。</p>
 
 ```javascript
 decryptWithTransitionViewKey(transition_view_key, program, function_name, index) ► Plaintext
@@ -68,13 +68,13 @@ decryptWithTransitionViewKey(transition_view_key, program, function_name, index)
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| transition_view_key | <code>Field</code> | The transition view key that was used to encrypt the ciphertext |
-| program | <code>string</code> | The program ID associated with the ciphertext |
-| function_name | <code>string</code> | The name of the function associated with the encrypted inputs and outputs |
-| index | <code>u16</code> | The index of the input or output parameter that was encrypted |
-| *return* | <code>Plaintext</code> | The decrypted plaintext |
+| transition_view_key | <code>Field</code> | 暗号化に使用したトランジションビューキー |
+| program | <code>string</code> | 暗号文に関連付けられたプログラム ID |
+| function_name | <code>string</code> | 暗号化された入出力に対応する関数名 |
+| index | <code>u16</code> | 暗号化された入力または出力パラメーターのインデックス |
+| *return* | <code>Plaintext</code> | 復号された平文 |
 
 ---
 
@@ -82,7 +82,7 @@ decryptWithTransitionViewKey(transition_view_key, program, function_name, index)
 
 ### decryptSymmetric
 
-<p>Decrypts a ciphertext into plaintext using the given ciphertext view key</p>
+<p>指定したトランジションビューキーを使用して暗号文を対称復号し、平文を得ます。</p>
 
 ```javascript
 decryptSymmetric(transition_view_key) ► Plaintext
@@ -90,10 +90,10 @@ decryptSymmetric(transition_view_key) ► Plaintext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| transition_view_key | <code>Field</code> | The transition view key that was used to encrypt the ciphertext |
-| *return* | <code>Plaintext</code> | The decrypted plaintext |
+| transition_view_key | <code>Field</code> | 暗号化に使用したトランジションビューキー |
+| *return* | <code>Plaintext</code> | 復号された平文 |
 
 ---
 
@@ -101,7 +101,7 @@ decryptSymmetric(transition_view_key) ► Plaintext
 
 ### fromBytesLe
 
-<p>Deserialize a left endian byte array into a Ciphertext</p>
+<p>リトルエンディアンのバイト配列から Ciphertext を復元します。</p>
 
 ```javascript
 fromBytesLe(bytes) ► Ciphertext
@@ -109,10 +109,10 @@ fromBytesLe(bytes) ► Ciphertext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bytes | <code>Uint8Array</code> | The byte array representing the Ciphertext |
-| *return* | <code>Ciphertext</code> | The Ciphertext object |
+| bytes | <code>Uint8Array</code> | Ciphertext を表すバイト配列 |
+| *return* | <code>Ciphertext</code> | 復元された Ciphertext オブジェクト |
 
 ---
 
@@ -120,7 +120,7 @@ fromBytesLe(bytes) ► Ciphertext
 
 ### toBytesLe
 
-<p>Get the left endian byte array representation of the ciphertext</p>
+<p>Ciphertext のリトルエンディアンのバイト配列表現を取得します。</p>
 
 ```javascript
 toBytesLe() ► Uint8Array
@@ -128,7 +128,7 @@ toBytesLe() ► Uint8Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Uint8Array</code> |
 
@@ -138,7 +138,7 @@ toBytesLe() ► Uint8Array
 
 ### fromBitsLe
 
-<p>Get a ciphertext object from a series of bits represented as a boolean array</p>
+<p>リトルエンディアンの真偽値配列から Ciphertext オブジェクトを生成します。</p>
 
 ```javascript
 fromBitsLe(bits) ► Ciphertext
@@ -146,10 +146,10 @@ fromBitsLe(bits) ► Ciphertext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| bits | <code>Array</code> | A left endian boolean array representing the bits of the ciphertext |
-| *return* | <code>Ciphertext</code> | The ciphertext object |
+| bits | <code>Array</code> | 暗号文のビット列を表すリトルエンディアンの真偽値配列 |
+| *return* | <code>Ciphertext</code> | 生成された Ciphertext オブジェクト |
 
 ---
 
@@ -157,7 +157,7 @@ fromBitsLe(bits) ► Ciphertext
 
 ### toBitsLe
 
-<p>Get the left endian boolean array representation of the bits of the ciphertext</p>
+<p>Ciphertext のビット列をリトルエンディアンの真偽値配列として取得します。</p>
 
 ```javascript
 toBitsLe() ► Array.<any>
@@ -165,7 +165,7 @@ toBitsLe() ► Array.<any>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -175,7 +175,7 @@ toBitsLe() ► Array.<any>
 
 ### fromFields
 
-<p>Get a ciphertext object from an array of fields</p>
+<p>フィールド値の配列から Ciphertext オブジェクトを生成します。</p>
 
 ```javascript
 fromFields(fields) ► Ciphertext
@@ -183,10 +183,10 @@ fromFields(fields) ► Ciphertext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| fields | <code>Array</code> | An array of fields |
-| *return* | <code>Ciphertext</code> | The ciphertext object |
+| fields | <code>Array</code> | フィールド値の配列 |
+| *return* | <code>Ciphertext</code> | 生成された Ciphertext オブジェクト |
 
 ---
 
@@ -194,7 +194,7 @@ fromFields(fields) ► Ciphertext
 
 ### toFields
 
-<p>Get the field array representation of the ciphertext</p>
+<p>Ciphertext をフィールド値の配列として取得します。</p>
 
 ```javascript
 toFields() ► Array.<any>
@@ -202,7 +202,7 @@ toFields() ► Array.<any>
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
 | *return* | <code>Array.&lt;any&gt;</code> |
 
@@ -212,7 +212,7 @@ toFields() ► Array.<any>
 
 ### fromString
 
-<p>Deserialize a Ciphertext string into a Ciphertext object</p>
+<p>Ciphertext の文字列表現から Ciphertext オブジェクトを復元します。</p>
 
 ```javascript
 fromString(ciphertext) ► Ciphertext
@@ -220,10 +220,10 @@ fromString(ciphertext) ► Ciphertext
 
 
 
-| Param | Type | Description |
+| パラメーター | 型 | 説明 |
 | --- | --- | --- |
-| ciphertext | <code>string</code> | A string representation of the ciphertext |
-| *return* | <code>Ciphertext</code> | The Ciphertext object |
+| ciphertext | <code>string</code> | Ciphertext の文字列表現 |
+| *return* | <code>Ciphertext</code> | 復元された Ciphertext オブジェクト |
 
 ---
 
@@ -231,7 +231,7 @@ fromString(ciphertext) ► Ciphertext
 
 ### toBytes
 
-<p>Serialize a Ciphertext object into a byte array</p>
+<p>Ciphertext オブジェクトをバイト配列にシリアライズします。</p>
 
 ```javascript
 toBytes() ► Uint8Array
@@ -239,9 +239,9 @@ toBytes() ► Uint8Array
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>Uint8Array</code> | The serialized Ciphertext |
+| *return* | <code>Uint8Array</code> | シリアライズされた Ciphertext |
 
 ---
 
@@ -249,7 +249,7 @@ toBytes() ► Uint8Array
 
 ### toString
 
-<p>Serialize a Ciphertext into a js string</p>
+<p>Ciphertext を JavaScript の文字列にシリアライズします。</p>
 
 ```javascript
 toString() ► string
@@ -257,8 +257,8 @@ toString() ► string
 
 
 
-| Param | Type |
+| パラメーター | 型 |
 | --- | --- |
-| *return* | <code>string</code> | The serialized Ciphertext |
+| *return* | <code>string</code> | シリアライズされた Ciphertext |
 
 ---
