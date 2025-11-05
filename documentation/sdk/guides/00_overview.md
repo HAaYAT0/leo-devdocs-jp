@@ -1,8 +1,3 @@
-id: overview
-title: 概要
-sidebar_label: 概要
----
-
 コアとなる `sdk/` ライブラリは、アカウント管理、プログラムのデプロイ、関数の実行、Aleo クレジットの送金、プログラム状態の管理、ネットワークへの問い合わせなど、Aleo 上での開発を効率化する多彩な機能を提供します。
 
 ## 目次
@@ -24,5 +19,3 @@ sidebar_label: 概要
 ## さらに詳しく
 
 SDK の API ドキュメントは [API Specification](../../category/api-specification) セクションでご覧いただけます。
-
-Additi

@@ -1,6 +1,6 @@
 ---
-title: ExecutionResponse
-sidebar_label: ExecutionResponse
+title: 実行のレスポンス
+sidebar_label: 実行のレスポンス
 ---
 
 <a name="ExecutionResponse"></a>

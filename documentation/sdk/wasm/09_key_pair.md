@@ -1,6 +1,6 @@
 ---
-title: KeyPair
-sidebar_label: KeyPair
+title: 鍵のペア
+sidebar_label: 鍵のペア
 ---
 
 <a name="KeyPair"></a>

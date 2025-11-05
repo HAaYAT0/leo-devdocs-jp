@@ -1,7 +1,7 @@
 ---
 id: signature
-title: Signature
-sidebar_label: Signature
+title: 署名
+sidebar_label: 署名
 ---
 
 ## クラス `Signature`

@@ -1,6 +1,6 @@
 ---
-title: PrivateKey
-sidebar_label: PrivateKey
+title: 秘密鍵
+sidebar_label: 秘密鍵
 ---
 
 <a name="PrivateKey"></a>
@@ -18,12 +18,12 @@ sidebar_label: PrivateKey
 <p>暗号学的に安全な乱数生成器を使って新しい秘密鍵を生成します。</p>
 
 ```javascript
-PrivateKey()
+PrivateKey();
 ```
 
-| パラメーター | 型 |
-| --- | --- |
-| *return* | <code>PrivateKey</code> |
+| パラメーター | 型                      |
+| ------------ | ----------------------- |
+| _return_     | <code>PrivateKey</code> |
 
 ---
 
@@ -39,10 +39,10 @@ PrivateKey()
 from_seed_unchecked(seed) ► PrivateKey
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| seed | <code>Uint8Array</code> | 32 バイトの未検証 Uint8Array。秘密鍵導出のシードとして扱います |
-| *return* | <code>PrivateKey</code> | シードから導出された秘密鍵 |
+| パラメーター | 型                      | 説明                                                           |
+| ------------ | ----------------------- | -------------------------------------------------------------- |
+| seed         | <code>Uint8Array</code> | 32 バイトの未検証 Uint8Array。秘密鍵導出のシードとして扱います |
+| _return_     | <code>PrivateKey</code> | シードから導出された秘密鍵                                     |
 
 ---
 
@@ -56,10 +56,10 @@ from_seed_unchecked(seed) ► PrivateKey
 from_string(seed) ► PrivateKey
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| seed | <code>string</code> | 秘密鍵の文字列表現 |
-| *return* | <code>PrivateKey</code> | 秘密鍵オブジェクト |
+| パラメーター | 型                      | 説明               |
+| ------------ | ----------------------- | ------------------ |
+| seed         | <code>string</code>     | 秘密鍵の文字列表現 |
+| _return_     | <code>PrivateKey</code> | 秘密鍵オブジェクト |
 
 ---
 
@@ -73,9 +73,9 @@ from_string(seed) ► PrivateKey
 to_string() ► string
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| *return* | <code>string</code> | 秘密鍵の文字列表現 |
+| パラメーター | 型                  | 説明               |
+| ------------ | ------------------- | ------------------ |
+| _return_     | <code>string</code> | 秘密鍵の文字列表現 |
 
 ---
 
@@ -89,9 +89,9 @@ to_string() ► string
 to_view_key() ► ViewKey
 ```
 
-| パラメーター | 型 |
-| --- | --- |
-| *return* | <code>ViewKey</code> |
+| パラメーター | 型                   |
+| ------------ | -------------------- |
+| _return_     | <code>ViewKey</code> |
 
 ---
 
@@ -105,9 +105,9 @@ to_view_key() ► ViewKey
 to_address() ► Address
 ```
 
-| パラメーター | 型 |
-| --- | --- |
-| *return* | <code>Address</code> |
+| パラメーター | 型                   |
+| ------------ | -------------------- |
+| _return_     | <code>Address</code> |
 
 ---
 
@@ -121,10 +121,10 @@ to_address() ► Address
 sign(Byte) ► Signature
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| Byte | <code>Uint8Array</code> | アドレスで署名したメッセージを表す配列 |
-| *return* | <code>Signature</code> | メッセージへ署名した結果の署名 |
+| パラメーター | 型                      | 説明                                   |
+| ------------ | ----------------------- | -------------------------------------- |
+| Byte         | <code>Uint8Array</code> | アドレスで署名したメッセージを表す配列 |
+| _return_     | <code>Signature</code>  | メッセージへ署名した結果の署名         |
 
 ---
 
@@ -138,10 +138,10 @@ sign(Byte) ► Signature
 newEncrypted(secret) ► PrivateKeyCiphertext
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| secret | <code>string</code> | 秘密鍵の暗号化に使用するシークレット |
-| *return* | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文 |
+| パラメーター | 型                                | 説明                                 |
+| ------------ | --------------------------------- | ------------------------------------ |
+| secret       | <code>string</code>               | 秘密鍵の暗号化に使用するシークレット |
+| _return_     | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文                       |
 
 ---
 
@@ -155,10 +155,10 @@ newEncrypted(secret) ► PrivateKeyCiphertext
 toCiphertext(secret) ► PrivateKeyCiphertext
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| secret | <code>string</code> | 秘密鍵の暗号化に使用するシークレット |
-| *return* | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文 |
+| パラメーター | 型                                | 説明                                 |
+| ------------ | --------------------------------- | ------------------------------------ |
+| secret       | <code>string</code>               | 秘密鍵の暗号化に使用するシークレット |
+| _return_     | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文                       |
 
 ---
 
@@ -172,10 +172,10 @@ toCiphertext(secret) ► PrivateKeyCiphertext
 fromPrivateKeyCiphertext(ciphertext, secret) ► PrivateKey
 ```
 
-| パラメーター | 型 | 説明 |
-| --- | --- | --- |
-| ciphertext | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文 |
-| secret | <code>string</code> | 暗号化に使用したシークレット |
-| *return* | <code>PrivateKey</code> | 復元された秘密鍵 |
+| パラメーター | 型                                | 説明                         |
+| ------------ | --------------------------------- | ---------------------------- |
+| ciphertext   | <code>PrivateKeyCiphertext</code> | 秘密鍵の暗号文               |
+| secret       | <code>string</code>               | 暗号化に使用したシークレット |
+| _return_     | <code>PrivateKey</code>           | 復元された秘密鍵             |
 
 ---

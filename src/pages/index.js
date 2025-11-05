@@ -1,109 +1,127 @@
 import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import Layout from '@theme/Layout';
+
 import styles from './index.module.css';
 
-const quickLinks = [
+import AleoProtocolImg from '@site/static/img/aleo-protocol.png';
+import ZeroKnowledgeImg from '@site/static/img/zero_knowledge-applications.png';
+import LeoLanguageImg from '@site/static/img/leo-programming-language.png';
+import FullStackImg from '@site/static/img/full-stuck-developer-resources.png';
+import AleoBftImg from '@site/static/img/aleobft-consensus.png';
+import ContributeImg from '@site/static/img/contribute-to-aleo.png';
+
+const FEATURE_BLOCKS = [
   {
-    title: '概念を理解する',
-    description: 'Aleo と Leo の基盤設計・ネットワーク仕組みを把握して、プライバシーファーストな dApp の土台を築きます。',
-    href: '/docs/concepts',
-    badge: 'Concepts',
+    title: 'Aleo Protocol',
+    description: 'Aleoの詳細',
+    image: AleoProtocolImg,
+    alt: 'Aleo protocol overview illustration',
+    links: [
+      {label: 'Aleoとは？', to: '/docs/concepts/network/core_architecture'},
+      {label: 'Aleo Virtual Machine', to: '/docs/concepts/advanced/overview'},
+      {label: '公開 vs 秘匿状態', to: '/docs/concepts/fundamentals/public_private'},
+      {label: 'Aleoでのスマートコントラクト', to: '/docs/concepts/fundamentals/programs'},
+    ],
   },
   {
-    title: 'API & CLI リファレンス',
-    description: 'REST API、CLI、エンドポイントの動作例を素早く参照。開発や検証で迷ったらここから。',
-    href: '/docs/apis',
-    badge: 'Reference',
+    title: 'ゼロ知識を用いたアプリケーション',
+    description: 'Aleo上でのプライバシーを保護するアプリケーションの構築',
+    image: ZeroKnowledgeImg,
+    alt: 'Zero knowledge application diagram',
+    links: [
+      {label: '開発を始める', to: '/docs/guides/introduction/getting_started'},
+      {label: 'クイックスタート', to: '/docs/guides/introduction/quick_start'},
+      {label: 'Leoアプリを作成する', to: '/docs/sdk/create-leo-app/tutorial'},
+      {label: 'Provable SDK、JS/TS library', to: '/docs/sdk/overview'},
+    ],
   },
   {
-    title: 'Leo チュートリアル',
-    description: '言語仕様から実践的なトランジション、レコード操作まで。コードサンプルと共に習得しましょう。',
-    href: '/docs/guides/aleo',
-    badge: 'Guides',
+    title: 'Leo言語',
+    description: 'Aleoの開発言語であるLeoの詳細',
+    image: LeoLanguageImg,
+    alt: 'Leo language logo',
+    links: [
+      {label: 'Leo言語のドキュメント', href: 'https://leo-docs-jp.vercel.app/'},
+      {label: 'Leoプログラムの構成', href: 'https://leo-docs-jp.vercel.app/docs/language/layout'},
+      {label: 'Leoコマンドライン', href: 'https://leo-docs-jp.vercel.app/docs/cli_overview'},
+      {label: 'Leo Playground', href: 'https://play.leo-lang.org/'},
+    ],
   },
   {
-    title: 'Provable SDK',
-    description: 'Provable SDK のセットアップや各種メソッドを解説。ウォレット連携やトランザクション送信もカバーします。',
-    href: '/docs/sdk',
-    badge: 'SDK',
+    title: 'フルスタック開発のためのリソース',
+    description: 'ツールやガイド',
+    image: FullStackImg,
+    alt: 'Full stack developer resources illustration',
+    links: [
+      {label: 'Provable SDK', to: '/docs/sdk/overview'},
+      {label: 'API エンドポイント', to: '/docs/apis-old/public_api'},
+      {label: 'プログラムのアップデート機能', to: '/docs/guides/program_upgradability'},
+      {label: 'Awesome Aleo', href: 'https://github.com/howardwu/awesome-aleo'},
+    ],
+  },
+  {
+    title: 'AleoBFT コンセンサス',
+    description: 'Aleoのピザンチン・フォールト・トレランス(BFT)コンセンサスメカニズムの詳細',
+    image: AleoBftImg,
+    alt: 'AleoBFT consensus visualization',
+    links: [
+      {label: 'AleoBFTの概要', to: '/docs/concepts/network/consensus'},
+      {label: 'バリデーター', to: '/docs/concepts/network/validators'},
+      {label: 'ステーキング', to: '/docs/concepts/network/staking'},
+      {label: '証明者 (provers)', to: '/docs/concepts/network/provers'},
+    ],
+  },
+  {
+    title: 'Aleoに貢献するには？',
+    description: 'Aleoのコミュニティに参加しプライバシーが保護された未来を一緒に作りましょう',
+    image: ContributeImg,
+    alt: 'Contribute to Aleo community illustration',
+    links: [
+      {label: 'ガイドライン', to: '/docs/guides/contribute/contribution_guidelines'},
+      {label: 'ドキュメント作成および改善', to: '/docs/guides/contribute/documentation_contribute'},
+      {label: 'SnarkOSへの貢献', to: '/docs/guides/contribute/snarkos_contribute'},
+      {label: 'SnarkVMへの貢献', to: '/docs/guides/contribute/snarkvm_contribute'},
+    ],
   },
 ];
 
-const getStartedSteps = [
-  {
-    number: '01',
-    title: '環境を整える',
-    description:
-      'CLI と Leo コンパイラをインストールし、アカウントと鍵管理の基本を押さえます。',
-    href: '/docs/guides/aleo/01_installation',
-  },
-  {
-    number: '02',
-    title: '最初のプログラムをデプロイ',
-    description:
-      'hello_world から始めて、トランジションと記録のライフサイクルを体験しましょう。',
-    href: '/docs/guides/aleo/02_hello',
-  },
-  {
-    number: '03',
-    title: 'Aleo Network と対話',
-    description:
-      'REST API や SDK を使い、実際のトランザクションをブロードキャストして結果を検証します。',
-    href: '/docs/apis',
-  },
-];
-
-const resourceHighlights = [
-  {
-    title: 'ネットワークアーキテクチャ',
-    description: 'Aleo のコンセンサスと P2P ネットワークの構造、各ノードの役割を俯瞰できます。',
-    href: '/docs/concepts/network/aleo-network',
-  },
-  {
-    title: 'ゼロ知識証明の基礎',
-    description: 'zkSNARK や R1CS、Varuna など Aleo で用いられる暗号技術を丁寧に解説しています。',
-    href: '/docs/concepts/advanced/00_intro_to_zksnark',
-  },
-  {
-    title: 'コミュニティリソース',
-    description: 'フォーラムや Discord で最新動向をキャッチアップし、質問やフィードバックを共有しましょう。',
-    href: 'https://discord.gg/aleo',
-  },
-];
-
-function QuickLinkCard({title, description, href, badge}) {
+function ResourceCard({title, description, image, alt, links}) {
   return (
-    <Link className={styles.quickLinkCard} to={href}>
-      <span className={styles.quickLinkBadge}>{badge}</span>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <span className={styles.quickLinkCta}>詳しく見る →</span>
-    </Link>
-  );
-}
-
-function StepCard({number, title, description, href}) {
-  return (
-    <Link className={styles.stepCard} to={href}>
-      <span className={styles.stepNumber}>{number}</span>
-      <div className={styles.stepBody}>
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <div className={styles.resourceCard}>
+      <div className={styles.resourceImageFrame}>
+        <img src={image} alt={alt} className={styles.resourceImage} />
       </div>
-      <span className={styles.stepCta}>ガイドへ進む</span>
-    </Link>
-  );
-}
+      <div className={styles.resourceBody}>
+        <h3 className={styles.resourceTitle}>{title}</h3>
+        <p className={styles.resourceDescription}>{description}</p>
+        <ul className={styles.resourceLinks}>
+          {links.map(link => {
+            if (link.href) {
+              return (
+                <li key={link.label}>
+                  <a
+                    className={styles.resourceLink}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                </li>
+              );
+            }
 
-function HighlightCard({title, description, href}) {
-  return (
-    <Link className={styles.highlightCard} to={href}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <span className={styles.highlightCta}>リソースを見る</span>
-    </Link>
+            return (
+              <li key={link.label}>
+                <Link className={styles.resourceLink} to={link.to}>
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
   );
 }
 
@@ -111,101 +129,28 @@ export default function Home() {
   return (
     <Layout
       title="Leo 開発者ドキュメント"
-      description="Leo と Aleo エコシステムで開発するための日本語リファレンス">
-      <header className={clsx('hero', styles.heroBanner)}>
-        <div className={clsx('container', styles.heroContainer)}>
+      description="Aleo と Leo での開発を支援する日本語ドキュメント">
+      <header className={styles.heroSection}>
+        <div className="container">
           <div className={styles.heroContent}>
-            <span className={styles.heroEyebrow}>Build private applications on Aleo</span>
-            <h1 className={styles.heroTitle}>Leo 開発者ドキュメント（日本語版）</h1>
-            <p className={styles.heroSubtitle}>
-              Aleo の公式 Developer Docs をもとに、ゼロ知識アプリケーション構築に必要な知識と手順を
-              日本語で整理しました。プライバシーを守りながら Web3 を進化させましょう。
-            </p>
-            <div className={styles.heroButtons}>
-              <Link className={clsx('button button--lg', styles.heroPrimary)} to="/docs/guides">
-                開発を始める
-              </Link>
-              <Link className={clsx('button button--lg', styles.heroSecondary)} to="/docs/concepts">
-                ドキュメントを閲覧
-              </Link>
-              <Link
-                className={clsx('button button--lg', styles.heroGhost)}
-                to="https://developer.aleo.org">
-                英語版サイトへ
-              </Link>
-            </div>
+            <h1 className={styles.heroTitle}>Aleoの開発ドキュメント</h1>
+            <Link className={`button button--lg ${styles.heroButton}`} to="/docs/guides">
+              開発を始める
+            </Link>
           </div>
         </div>
       </header>
       <main>
-        <section className={styles.section}>
+        <section className={styles.cardsSection}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <h2>主要なドキュメントへ素早くアクセス</h2>
-              <p>
-                Aleo エコシステムでよく参照されるカテゴリーをカード形式でまとめています。目的に合わせて最短ルートでアクセスしてください。
-              </p>
+              <h2>トピック別ガイド</h2>
+              <p>目的に合わせて必要なリファレンスへ最短でアクセスできます。</p>
             </div>
-            <div className={styles.quickLinksGrid}>
-              {quickLinks.map(item => (
-                <QuickLinkCard key={item.title} {...item} />
+            <div className={styles.cardsGrid}>
+              {FEATURE_BLOCKS.map(block => (
+                <ResourceCard key={block.title} {...block} />
               ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={clsx(styles.section, styles.sectionAlt)}>
-          <div className="container">
-            <div className={styles.splitLayout}>
-              <div className={styles.splitContent}>
-                <h2>Leo でプライベートアプリを構築する流れ</h2>
-                <p>
-                  Aleo ネットワークに対応したアプリケーション開発の道筋を 3 ステップで紹介します。実際に手を動かしながら学ぶことで、ゼロ知識証明の仕組みやワークフローが自然と身につきます。
-                </p>
-              </div>
-              <div className={styles.stepsGrid}>
-                {getStartedSteps.map(step => (
-                  <StepCard key={step.number} {...step} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <div className="container">
-            <div className={styles.sectionHeader}>
-              <h2>学習を加速させるハイライト</h2>
-              <p>
-                最新情報や実践的なリソースをピックアップしました。アップデート情報をキャッチしながら、すぐに使えるテンプレートやコミュニティへアクセスできます。
-              </p>
-            </div>
-            <div className={styles.highlightGrid}>
-              {resourceHighlights.map(item => (
-                <HighlightCard key={item.title} {...item} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.ctaSection}>
-          <div className="container">
-            <div className={styles.ctaCard}>
-              <div>
-                <h2>最新の Aleo ネットワーク動向をフォローしましょう</h2>
-                <p>
-                  コミュニティに参加して質問や知見を共有し、ロードマップやリリースサイクルを追跡しましょう。プライバシー指向の Web3
-                  を一緒に前へ進めませんか？
-                </p>
-              </div>
-              <div className={styles.ctaButtons}>
-                <Link className={clsx('button button--lg', styles.ctaPrimary)} to="https://discord.gg/aleo">
-                  Discord に参加
-                </Link>
-                <Link className={clsx('button button--lg', styles.ctaSecondary)} to="https://twitter.com/AleoHQ">
-                  X (Twitter) でフォロー
-                </Link>
-              </div>
             </div>
           </div>
         </section>

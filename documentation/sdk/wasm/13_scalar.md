@@ -1,7 +1,7 @@
 ---
 id: scalar
-title: Scalar
-sidebar_label: Scalar
+title: スカラー
+sidebar_label: スカラー
 ---
 
 ## クラス `Scalar`

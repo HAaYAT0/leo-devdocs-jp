@@ -1,7 +1,7 @@
 ---
 id: transaction
-title: Transaction
-sidebar_label: Transaction
+title: トランザクション
+sidebar_label: トランザクション
 ---
 
 ## クラス `Transaction`

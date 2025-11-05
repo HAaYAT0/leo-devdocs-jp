@@ -48,6 +48,8 @@ const config = {
     ],
   ],
 
+  themes: ['docusaurus-theme-openapi-docs'],
+
   themeConfig: {
     colorMode: {
       defaultMode: 'dark',
@@ -64,9 +66,41 @@ const config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'docsSidebar',
+          sidebarId: 'conceptsSidebar',
+          docId: 'concepts/concepts_overview',
+          label: 'コンセプト',
           position: 'left',
-          label: 'ドキュメント',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'guidesSidebar',
+          docId: 'guides/introduction/getting_started',
+          label: 'ガイド',
+          position: 'left',
+        },
+        {
+          href: 'https://leo-docs-jp.vercel.app/',
+          label: 'Leo言語',
+          position: 'left',
+        },
+        {
+          href: 'https://play.leo-lang.org/',
+          label: 'Leo Playground',
+          position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'sdkSidebar',
+          docId: 'sdk/sdk_overview_hub',
+          label: 'SDK',
+          position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'apisSidebar',
+          docId: 'apis/api_overview',
+          label: 'APIエンドポイント',
+          position: 'left',
         },
         {
           href: 'https://developer.aleo.org',
@@ -84,23 +118,6 @@ const config = {
       style: 'dark',
       links: [
         {
-          title: 'ガイド',
-          items: [
-            {
-              label: 'API',
-              to: '/docs/apis',
-            },
-            {
-              label: '概念',
-              to: '/docs/concepts',
-            },
-            {
-              label: 'SDK',
-              to: '/docs/sdk',
-            },
-          ],
-        },
-        {
           title: 'コミュニティ',
           items: [
             {
@@ -114,6 +131,10 @@ const config = {
             {
               label: 'Provable SDK',
               href: 'https://provable.tools/',
+            },
+            {
+              label: 'Aleo日本語コミュニティ',
+              href: 'https://x.com/Aleo_Japan',
             },
           ],
         },

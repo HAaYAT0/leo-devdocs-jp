@@ -1,6 +1,6 @@
 ---
-title: Plaintext
-sidebar_label: Plaintext
+title: 平文
+sidebar_label: 平文
 ---
 
 <a name="Plaintext"></a>

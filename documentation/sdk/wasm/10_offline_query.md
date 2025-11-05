@@ -1,6 +1,6 @@
 ---
-title: OfflineQuery
-sidebar_label: OfflineQuery
+title: オフラインクエリ
+sidebar_label: オフラインクエリ
 ---
 
 <a name="OfflineQuery"></a>
