@@ -20,4 +20,4 @@ Provable SDK や Wasm ライブラリを活用して、ブラウザやサーバ�
 - [サンプルアプリとテンプレート](/docs/guides/introduction/quick_start)
 - [コミュニティツール集](https://github.com/howardwu/awesome-aleo)
 
-開発の流れを体系的に学びたい場合は、[ガイド](/docs/guides) ページも併せてご覧ください。
+開発の流れを体系的に学びたい場合は、[ガイド](/docs/guides/introduction/getting_started) ページも併せてご覧ください。

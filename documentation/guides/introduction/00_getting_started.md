@@ -19,13 +19,13 @@ import FeatureCard from '@site/src/components/FeatureCard/FeatureCard';
 <FeatureCard
   title="🚀 クイックスタート"
   description="Leo プログラムを作成し、Aleo へデプロイしましょう。"
-  link="/guides/introduction/quick_start"
+  link="/docs/guides/introduction/quick_start"
 />
 
 <FeatureCard
   title="🦁 ローカル環境の構築"
   description="ローカル開発環境をセットアップします。"
-  link="/guides/introduction/installation"
+  link="/docs/guides/introduction/installation"
 />
 
 </div>
@@ -115,17 +115,17 @@ Aleo でプライバシーを守る開発に必要な主要概念を学びまし
   <FeatureCard
     title="アカウント"
     description="Aleo のアカウントとその仕組みを学びます。"
-    link="/concepts/fundamentals/accounts"
+    link="/docs/concepts/fundamentals/accounts"
   />
   <FeatureCard
     title="送金"
     description="Aleo におけるプライベート送金の動作を理解します。"
-    link="/concepts/fundamentals/credits"
+    link="/docs/concepts/fundamentals/credits"
   />
   <FeatureCard
     title="手数料"
     description="取引手数料の仕組みと計算方法を学びます。"
-    link="/concepts/fundamentals/transaction_fees"
+    link="/docs/concepts/fundamentals/transaction_fees"
   />
 </div>
 
@@ -133,17 +133,17 @@ Aleo でプライバシーを守る開発に必要な主要概念を学びまし
   <FeatureCard
     title="プログラム"
     description="Aleo プログラムの作成とデプロイ方法を探究しましょう。"
-    link="/concepts/fundamentals/programs"
+    link="/docs/concepts/fundamentals/programs"
   />
   <FeatureCard
     title="トランザクション"
     description="Aleo トランザクションの構造とライフサイクルを理解します。"
-    link="/concepts/fundamentals/transactions"
+    link="/docs/concepts/fundamentals/transactions"
   />
   <FeatureCard
     title="プログラム状態"
     description="Aleo でのプログラム状態の管理方法を学びます。"
-    link="/concepts/fundamentals/public_private"
+    link="/docs/concepts/fundamentals/public_private"
   />
 </div>
 
@@ -158,7 +158,7 @@ Aleo でプライバシーを守る開発に必要な主要概念を学びまし
 <!-- markdown-link-check-disable -->
 | 名称                                         | 説明                                                                                       |
 |----------------------------------------------|:-------------------------------------------------------------------------------------------|
-| [Aleo Instructions](/guides/aleo/aleo)        | Aleo プロトコルがサポートする低レベルのアセンブリ言語で、Aleo プログラムを記述できます。     |
+| [Aleo Instructions](/docs/guides/aleo/aleo)   | Aleo プロトコルがサポートする低レベルのアセンブリ言語で、Aleo プログラムを記述できます。     |
 | [Leo](https://docs.leo-lang.org/leo)          | Aleo 上でプライベートプログラムを記述するための開発者向け言語です。                         |
 | [Leo Playground](https://play.leo-lang.org/)  | Leo プログラムを記述・テストできる Web ベースの IDE です。                                 |
 <!-- markdown-link-check-enable -->

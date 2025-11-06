@@ -134,7 +134,9 @@ export default function Home() {
         <div className="container">
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>Aleoの開発ドキュメント</h1>
-            <Link className={`button button--lg ${styles.heroButton}`} to="/docs/guides">
+            <Link
+              className={`button button--lg ${styles.heroButton}`}
+              to="/docs/guides/introduction/getting_started">
               開発を始める
             </Link>
           </div>

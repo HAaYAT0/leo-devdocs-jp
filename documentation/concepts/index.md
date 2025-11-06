@@ -21,4 +21,4 @@ Aleo のコアコンセプトを横断的に学ぶためのハブです。ネッ
 - [暗号・zkSNARK](/docs/concepts/advanced/intro_to_zksnark)
 - [仕様書](/docs/concepts/specifications)
 
-学習を進める中で不明点があれば、[ガイドライン](/docs/guides) や [コミュニティリソース](/docs/guides/contribute/contribution_guidelines) も合わせて参照してください。
+学習を進める中で不明点があれば、[ガイドライン](/docs/guides/contribute/contribution_guidelines) や [コミュニティリソース](/docs/guides/how_to_get_help) も合わせて参照してください。

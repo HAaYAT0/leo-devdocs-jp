@@ -18,4 +18,4 @@
 
 ## さらに詳しく
 
-SDK の API ドキュメントは [API Specification](../../category/api-specification) セクションでご覧いただけます。
+SDK の API ドキュメントは [API Specification](../api-specification/01_account.md) セクションでご覧いただけます。
