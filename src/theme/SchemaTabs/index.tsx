@@ -1,22 +1,42 @@
 import React from 'react';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 type SchemaTabsProps = {
-  children?: React.ReactNode;
+  children: React.ReactNode;
+  defaultValue?: string;
+  groupId?: string;
 };
 
-export default function SchemaTabs(props: SchemaTabsProps) {
-  const { children } = props;
+const toTabArray = (children: React.ReactNode) =>
+  React.Children.toArray(children).filter(React.isValidElement);
+
+export default function SchemaTabs({ children, defaultValue, groupId }: SchemaTabsProps) {
+  const tabItems = toTabArray(children);
+
+  if (tabItems.length === 0) {
+    return null;
+  }
+
+  const values = tabItems.map((child, index) => {
+    const value = child.props.value ?? child.props.label ?? `tab-${index}`;
+    const label = child.props.label ?? child.props.value ?? `Tab ${index + 1}`;
+    return { value, label };
+  });
+
+  const initial = defaultValue ?? values[0].value;
 
   return (
-    <section
-      style={{
-        border: '1px solid var(--ifm-table-border-color)',
-        borderRadius: '8px',
-        padding: '1rem',
-        marginBottom: '1.5rem',
-      }}
-    >
-      {children}
-    </section>
+    <Tabs defaultValue={initial} groupId={groupId} values={values}>
+      {tabItems.map((child, index) => {
+        const { children: tabChildren, className, default: isDefault, ...rest } = child.props;
+        const { value, label } = values[index];
+        return (
+          <TabItem key={value} value={value} label={label} className={className} default={isDefault} {...rest}>
+            {tabChildren}
+          </TabItem>
+        );
+      })}
+    </Tabs>
   );
 }

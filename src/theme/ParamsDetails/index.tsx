@@ -1,65 +1,66 @@
 import React from 'react';
 
-type ParameterLike = {
+type Parameter = {
   name?: string;
   in?: string;
   required?: boolean;
   description?: string;
-  schema?: { type?: string };
+  schema?: { type?: string; [key: string]: unknown };
+  [key: string]: unknown;
 };
 
 type ParamsDetailsProps = {
-  parameters?: ParameterLike[] | Record<string, ParameterLike> | null;
+  parameters?: Parameter[] | null;
+  title?: string;
 };
 
-function normalizeParameters(
-  parameters: ParamsDetailsProps['parameters'],
-): ParameterLike[] {
-  if (!parameters) {
+const normalize = (parameters?: Parameter[] | null) => {
+  if (!parameters || !Array.isArray(parameters)) {
     return [];
   }
+  return parameters.filter(Boolean);
+};
 
-  if (Array.isArray(parameters)) {
-    return parameters;
-  }
+export default function ParamsDetails({ parameters, title }: ParamsDetailsProps) {
+  const rows = normalize(parameters);
 
-  return Object.entries(parameters).map(([name, value]) => ({
-    name,
-    ...value,
-  }));
-}
-
-export default function ParamsDetails(props: ParamsDetailsProps) {
-  const rows = normalizeParameters(props.parameters);
-
-  if (!rows.length) {
+  if (rows.length === 0) {
     return null;
   }
 
   return (
-    <section>
-      <table>
-        <thead>
-          <tr>
-            <th>名前</th>
-            <th>位置</th>
-            <th>必須</th>
-            <th>型</th>
-            <th>説明</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={row.name ?? index}>
-              <td>{row.name ?? '-'}</td>
-              <td>{row.in ?? '-'}</td>
-              <td>{row.required ? '必須' : '任意'}</td>
-              <td>{row.schema?.type ?? '-'}</td>
-              <td>{row.description ?? '-'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <section className="openapi-params__section">
+      <details className="openapi-markdown__details" open data-collapsed={false}>
+        <summary className="openapi-markdown__details-summary">
+          <h3 className="openapi-markdown__details-summary-header-params">
+            {title ?? 'Parameters'}
+          </h3>
+        </summary>
+        <div className="openapi-params__wrapper">
+          <table className="openapi-params__table">
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>位置</th>
+                <th>必須</th>
+                <th>型</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((param, index) => (
+                <tr key={`${param.name ?? index}-${param.in ?? 'param'}`}>
+                  <td>{param.name ?? '-'}</td>
+                  <td>{param.in ?? '-'}</td>
+                  <td>{param.required ? '必須' : '任意'}</td>
+                  <td>{param.schema?.type ?? '-'}</td>
+                  <td>{param.description ?? '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </section>
   );
 }

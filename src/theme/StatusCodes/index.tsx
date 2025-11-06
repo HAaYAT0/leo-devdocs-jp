@@ -2,7 +2,7 @@ import React from 'react';
 
 type ResponseEntry = {
   description?: string;
-  content?: Record<string, unknown>;
+  [key: string]: unknown;
 };
 
 type StatusCodesProps = {
@@ -10,20 +10,18 @@ type StatusCodesProps = {
   responses?: Record<string, ResponseEntry> | null;
 };
 
-export default function StatusCodes(props: StatusCodesProps) {
-  const { label, responses } = props;
-
-  if (!responses || !Object.keys(responses).length) {
+export default function StatusCodes({ label, responses }: StatusCodesProps) {
+  if (!responses || Object.keys(responses).length === 0) {
     return null;
   }
 
   return (
-    <section>
-      {label ? <h3>{label}</h3> : <h3>レスポンスコード</h3>}
+    <section className="openapi-status-codes">
+      <h3>{label ?? 'Status Codes'}</h3>
       <table>
         <thead>
           <tr>
-            <th>ステータス</th>
+            <th>コード</th>
             <th>説明</th>
           </tr>
         </thead>

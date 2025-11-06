@@ -1,35 +1,27 @@
 import React from 'react';
+import CodeBlock from '@theme/CodeBlock';
 
 type RequestSchemaProps = {
   title?: string;
   body?: unknown;
 };
 
-function stringifyBody(body: unknown): string {
-  if (typeof body === 'string') {
-    return body;
-  }
-
-  try {
-    return JSON.stringify(body, null, 2);
-  } catch (_error) {
-    return String(body);
-  }
-}
-
-export default function RequestSchema(props: RequestSchemaProps) {
-  const { title, body } = props;
-
-  if (!body) {
+export default function RequestSchema({ title, body }: RequestSchemaProps) {
+  if (!body || (typeof body === 'object' && body !== null && Object.keys(body as Record<string, unknown>).length === 0)) {
     return null;
   }
 
+  let serialized = '';
+  try {
+    serialized = JSON.stringify(body, null, 2);
+  } catch (error) {
+    serialized = String(body);
+  }
+
   return (
-    <section>
+    <section className="openapi-request-schema">
       {title ? <h3>{title}</h3> : null}
-      <pre>
-        <code>{stringifyBody(body)}</code>
-      </pre>
+      <CodeBlock language="json">{serialized}</CodeBlock>
     </section>
   );
 }

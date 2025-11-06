@@ -3,51 +3,26 @@ import React from 'react';
 type MethodEndpointProps = {
   method?: string;
   path?: string;
-  context?: string;
-  children?: React.ReactNode;
 };
 
-const methodColor: Record<string, string> = {
-  get: '#38a169',
-  post: '#3182ce',
-  put: '#d69e2e',
-  delete: '#e53e3e',
+const methodColors: Record<string, string> = {
+  get: 'badge--primary',
+  post: 'badge--success',
+  delete: 'badge--danger',
+  put: 'badge--info',
+  patch: 'badge--warning',
+  head: 'badge--secondary',
 };
 
-export default function MethodEndpoint(props: MethodEndpointProps) {
-  const { method, path, children } = props;
-  const normalizedMethod = method?.toLowerCase() ?? '';
-  const badgeColor = methodColor[normalizedMethod] ?? '#718096';
+export default function MethodEndpoint({ method = 'GET', path = '' }: MethodEndpointProps) {
+  const normalized = method.toLowerCase();
+  const badgeClass = methodColors[normalized] ?? 'badge--secondary';
 
   return (
-    <section
-      style={{
-        border: '1px solid var(--ifm-table-border-color)',
-        borderRadius: '8px',
-        padding: '1rem',
-        marginBottom: '1.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        flexWrap: 'wrap',
-      }}
-    >
-      {method ? (
-        <span
-          style={{
-            backgroundColor: badgeColor,
-            color: '#fff',
-            borderRadius: '999px',
-            padding: '0.25rem 0.75rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-          }}
-        >
-          {method}
-        </span>
-      ) : null}
-      {path ? <code style={{ fontSize: '0.95rem' }}>{path}</code> : null}
-      {children}
-    </section>
+    <div className="openapi__method-endpoint">
+      <span className={`badge ${badgeClass}`}>{normalized === 'event' ? 'Webhook' : method.toUpperCase()}</span>
+      {path ? <code className="openapi__method-endpoint-path">{path}</code> : null}
+      <div className="openapi__divider" />
+    </div>
   );
 }

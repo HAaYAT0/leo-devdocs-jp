@@ -104,7 +104,7 @@ const config = {
         },
         {
           href: 'https://developer.aleo.org',
-          label: 'Aleo Developer',
+          label: 'Aleo.org',
           position: 'right',
         },
         {
@@ -125,12 +125,8 @@ const config = {
               href: 'https://discord.com/invite/aleo',
             },
             {
-              label: 'Aleo Explorer',
-              href: 'https://explorer.provable.com',
-            },
-            {
-              label: 'Provable SDK',
-              href: 'https://provable.tools/',
+              label: 'YouTube',
+              href: 'https://www.youtube.com/@aleofoundation',
             },
             {
               label: 'Aleo日本語コミュニティ',
@@ -146,8 +142,8 @@ const config = {
               href: 'https://github.com/ProvableHQ/leo',
             },
             {
-              label: 'Dev Docs 原文',
-              href: 'https://github.com/ProvableHQ/leo-devdocs',
+              label: '開発ドキュメント(英語)',
+              href: 'https://developer.aleo.org/',
             },
             {
               label: 'このリポジトリ',

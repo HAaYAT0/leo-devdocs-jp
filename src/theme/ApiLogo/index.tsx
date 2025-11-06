@@ -1,21 +1,19 @@
 import React from 'react';
 
 type ApiLogoProps = {
-  alt?: string;
   src?: string;
+  alt?: string;
   width?: number | string;
   height?: number | string;
 };
 
-export default function ApiLogo(props: ApiLogoProps) {
-  const { src, alt = 'API Logo', width = 'auto', height = 64 } = props;
-
+export default function ApiLogo({ src, alt = 'API logo', width = 160, height = 'auto' }: ApiLogoProps) {
   if (!src) {
     return null;
   }
 
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div className="openapi-api-logo">
       <img src={src} alt={alt} style={{ width, height }} />
     </div>
   );
